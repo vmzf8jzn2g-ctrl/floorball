@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Innebandyresultat</title>
+<style>
+:root{--bg:#f4f6f8;--card:#fff;--text:#17212b;--muted:#687581;--accent:#1769aa;--win:#16803c;--loss:#c0392b;--draw:#a66b00;--border:#e2e7eb}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}
+header{background:linear-gradient(135deg,#123b5d,#1769aa);color:white;padding:34px 20px}
+.container{max-width:1050px;margin:auto;padding:0 18px}
+h1{margin:0 0 6px;font-size:32px}header p{margin:0;opacity:.86}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:-24px}
+.stat,.card{background:var(--card);border:1px solid var(--border);border-radius:14px;box-shadow:0 4px 16px #0000000a}
+.stat{padding:18px;text-align:center}.stat b{font-size:25px;display:block}.stat span{color:var(--muted);font-size:13px}
+.controls{padding:22px 0 12px;display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px}
+input,select{width:100%;padding:12px 13px;border:1px solid #ccd4db;border-radius:9px;background:white;font-size:15px}
+.card{overflow:hidden}.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;min-width:650px}th,td{padding:14px 16px;text-align:left;border-bottom:1px solid var(--border)}th{font-size:12px;text-transform:uppercase;color:var(--muted);letter-spacing:.05em;background:#fafbfc}tr:last-child td{border-bottom:0}
+.result{font-weight:750}.win{color:var(--win)}.loss{color:var(--loss)}.draw{color:var(--draw)}
+.badge{display:inline-block;padding:5px 9px;border-radius:999px;font-size:12px;background:#edf3f7}.empty{text-align:center;padding:35px;color:var(--muted)}
+footer{padding:28px 0;color:var(--muted);font-size:13px}
+@media(max-width:700px){h1{font-size:27px}.stats{grid-template-columns:repeat(2,1fr)}.controls{grid-template-columns:1fr}.stat{padding:14px}th,td{padding:12px}}
+</style>
+</head>
+<body>
+<header><div class="container"><h1>Innebandyresultat</h1><p>Matcher, cuper och resultat samlade på ett ställe</p></div></header>
+<main class="container">
+<section class="stats" id="stats"></section>
+<section class="controls">
+<input id="search" type="search" placeholder="Sök motståndare, cup eller serie...">
+<select id="type"><option value="">Alla typer</option><option>Seriespel</option><option>Cup</option></select>
+<select id="year"><option value="">Alla år</option></select>
+</section>
+<section class="card"><div class="table-wrap"><table>
+<thead><tr><th>Datum</th><th>Motståndare</th><th>Resultat</th><th>Typ</th><th>Cup / serie</th></tr></thead>
+<tbody id="matches"></tbody>
+</table></div></section>
+<footer>Första versionen – matchdata finns i <code>matches</code>-listan i <code>app.js</code>.</footer>
+</main>
+<script src="app.js"></script>
+</body>
+</html>
