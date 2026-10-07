@@ -2,41 +2,369 @@
 <html lang="sv">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Innebandyresultat</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Innebandyresultat 2026</title>
+<meta name="description" content="Resultat, matcher och statistik för innebandy 2026.">
 <style>
-:root{--bg:#f4f6f8;--card:#fff;--text:#17212b;--muted:#687581;--accent:#1769aa;--win:#16803c;--loss:#c0392b;--draw:#a66b00;--border:#e2e7eb}
-*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}
-header{background:linear-gradient(135deg,#123b5d,#1769aa);color:white;padding:34px 20px}
-.container{max-width:1050px;margin:auto;padding:0 18px}
-h1{margin:0 0 6px;font-size:32px}header p{margin:0;opacity:.86}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:-24px}
-.stat,.card{background:var(--card);border:1px solid var(--border);border-radius:14px;box-shadow:0 4px 16px #0000000a}
-.stat{padding:18px;text-align:center}.stat b{font-size:25px;display:block}.stat span{color:var(--muted);font-size:13px}
-.controls{padding:22px 0 12px;display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px}
-input,select{width:100%;padding:12px 13px;border:1px solid #ccd4db;border-radius:9px;background:white;font-size:15px}
-.card{overflow:hidden}.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;min-width:650px}th,td{padding:14px 16px;text-align:left;border-bottom:1px solid var(--border)}th{font-size:12px;text-transform:uppercase;color:var(--muted);letter-spacing:.05em;background:#fafbfc}tr:last-child td{border-bottom:0}
-.result{font-weight:750}.win{color:var(--win)}.loss{color:var(--loss)}.draw{color:var(--draw)}
-.badge{display:inline-block;padding:5px 9px;border-radius:999px;font-size:12px;background:#edf3f7}.empty{text-align:center;padding:35px;color:var(--muted)}
-footer{padding:28px 0;color:var(--muted);font-size:13px}
-@media(max-width:700px){h1{font-size:27px}.stats{grid-template-columns:repeat(2,1fr)}.controls{grid-template-columns:1fr}.stat{padding:14px}th,td{padding:12px}}
+:root{--bg:#f4f7fb;--card:#fff;--text:#172033;--muted:#697386;--line:#e5e9f0;--accent:#1769e0;--accent2:#0b4fb3;--win:#15803d;--loss:#dc2626;--draw:#b7791f;--shadow:0 8px 28px rgba(23,32,51,.07)}
+*{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}
+header{background:linear-gradient(135deg,#0c1d3d,#1769e0);color:white;padding:44px 20px 34px}
+.wrap{max-width:1120px;margin:auto}.eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:12px;font-weight:800;opacity:.75}
+h1{font-size:clamp(30px,5vw,48px);margin:8px 0 8px}.lead{margin:0;opacity:.86;font-size:16px}
+.controls{margin-top:24px;display:grid;grid-template-columns:1.5fr 1fr;gap:12px}
+input,select{width:100%;border:0;border-radius:12px;padding:14px 16px;font-size:15px;background:white;color:var(--text);box-shadow:0 5px 18px rgba(0,0,0,.1)}
+main{padding:28px 20px 60px}.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:22px}
+.pill{border:1px solid var(--line);background:var(--card);padding:8px 13px;border-radius:999px;font-size:13px;color:var(--muted)}
+h2{font-size:24px;margin:34px 0 14px}.section-head{display:flex;justify-content:space-between;align-items:end;gap:15px}
+.stats{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}.stat{background:var(--card);border:1px solid var(--line);border-radius:15px;padding:16px;box-shadow:var(--shadow)}.stat b{display:block;font-size:25px}.stat span{font-size:12px;color:var(--muted)}
+.competition{background:var(--card);border:1px solid var(--line);border-radius:18px;margin:12px 0;overflow:hidden;box-shadow:var(--shadow)}
+.comp-title{padding:18px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line)}.comp-title h3{margin:0;font-size:18px}.comp-title small{color:var(--muted)}
+.match{display:grid;grid-template-columns:145px 1fr 90px 170px;gap:12px;align-items:center;padding:14px 20px;border-bottom:1px solid #eef1f5}.match:last-child{border-bottom:0}.stage{font-size:12px;color:var(--muted);font-weight:700}.teams{display:flex;justify-content:flex-end;gap:10px;align-items:center;text-align:right}.vs{color:#9aa3b2;font-size:12px}.score{font-weight:900;font-size:20px;white-space:nowrap}.meta{font-size:12px;color:var(--muted)}.result{font-size:12px;font-weight:800;text-align:center;border-radius:999px;padding:6px 9px}.W{background:#dcfce7;color:var(--win)}.L{background:#fee2e2;color:var(--loss)}.D{background:#fef3c7;color:var(--draw)}
+.empty{padding:30px 20px;color:var(--muted)}
+.note{margin-top:26px;color:var(--muted);font-size:13px}
+.hidden{display:none}
+@media(max-width:800px){.controls{grid-template-columns:1fr}.stats{grid-template-columns:repeat(3,1fr)}.match{grid-template-columns:1fr 1fr auto}.stage{grid-column:1/-1}.meta{grid-column:1/-1}.teams{justify-content:flex-start;text-align:left}}
+@media(max-width:520px){.stats{grid-template-columns:repeat(2,1fr)}.comp-title{align-items:flex-start;flex-direction:column}.match{grid-template-columns:1fr auto}.teams{grid-column:1/-1;justify-content:space-between}.result{grid-column:2;grid-row:1}.score{grid-column:1;grid-row:2}.meta{grid-column:1/-1;grid-row:3}}
 </style>
 </head>
 <body>
-<header><div class="container"><h1>Innebandyresultat</h1><p>Matcher, cuper och resultat samlade på ett ställe</p></div></header>
-<main class="container">
-<section class="stats" id="stats"></section>
-<section class="controls">
-<input id="search" type="search" placeholder="Sök motståndare, cup eller serie...">
-<select id="type"><option value="">Alla typer</option><option>Seriespel</option><option>Cup</option></select>
-<select id="year"><option value="">Alla år</option></select>
+<header>
+<div class="wrap">
+<div class="eyebrow">Innebandy 2026</div>
+<h1>Matchresultat</h1>
+<p class="lead">Matcher, cuper och statistik – samlat på ett ställe.</p>
+<div class="controls">
+<input id="search" type="search" placeholder="Sök lag, t.ex. Örebro SK eller Nacka IBK…">
+<select id="competition"><option value="all">Alla cuper</option></select>
+</div>
+</div>
+</header>
+<main class="wrap">
+<div class="toolbar">
+<span class="pill" id="matchCount"></span>
+<span class="pill" id="teamCount"></span>
+<span class="pill">V = vinst · O = oavgjort · F = förlust</span>
+</div>
+
+<section id="statsSection">
+<div class="section-head"><div><div class="eyebrow">Valt lag</div><h2 id="selectedTeam">Örebro SK</h2></div></div>
+<div class="stats" id="stats"></div>
 </section>
-<section class="card"><div class="table-wrap"><table>
-<thead><tr><th>Datum</th><th>Motståndare</th><th>Resultat</th><th>Typ</th><th>Cup / serie</th></tr></thead>
-<tbody id="matches"></tbody>
-</table></div></section>
-<footer>Första versionen – matchdata finns i <code>matches</code>-listan i <code>app.js</code>.</footer>
+
+<section>
+<div class="section-head"><div><div class="eyebrow">Matcher</div><h2>Resultat per cup</h2></div></div>
+<div id="competitions"></div>
+</section>
+<p class="note">Seriespel kan läggas till på samma sätt som cuperna. Datat i denna version bygger på matcherna i den bifogade bilden.</p>
 </main>
-<script src="app.js"></script>
+
+<script>
+const matches = [
+  {
+    "competition": "Linköping Floorball Games 2026",
+    "type": "cup",
+    "stage": "Gruppspel",
+    "home": "Söderköpings IBK SIBK",
+    "away": "Örebro SK",
+    "homeGoals": 3,
+    "awayGoals": 3,
+    "date": "2026-04-10",
+    "time": "17:45",
+    "venue": "Wahlbeckshallen B 1"
+  },
+  {
+    "competition": "Linköping Floorball Games 2026",
+    "type": "cup",
+    "stage": "Gruppspel",
+    "home": "Örebro SK",
+    "away": "Hofterup IBF",
+    "homeGoals": 2,
+    "awayGoals": 1,
+    "date": "2026-04-11",
+    "time": "12:15",
+    "venue": "Wahlbeckshallen B 1"
+  },
+  {
+    "competition": "Linköping Floorball Games 2026",
+    "type": "cup",
+    "stage": "Gruppspel",
+    "home": "Örebro SK",
+    "away": "Ölmstad IBIS",
+    "homeGoals": 2,
+    "awayGoals": 0,
+    "date": "2026-04-11",
+    "time": "18:15",
+    "venue": "Wahlbeckshallen B 1"
+  },
+  {
+    "competition": "Linköping Floorball Games 2026",
+    "type": "cup",
+    "stage": "Åttondelsfinal",
+    "home": "Örebro SK",
+    "away": "Fagerhult Habo IB",
+    "homeGoals": 3,
+    "awayGoals": 4,
+    "date": "2026-04-12",
+    "time": "08:15",
+    "venue": "Linköping Sporthall"
+  },
+  {
+    "competition": "Örebrocupen 2026",
+    "type": "cup",
+    "stage": "Gruppspel",
+    "home": "Örebro SK",
+    "away": "Mesta IBK",
+    "homeGoals": 6,
+    "awayGoals": 1,
+    "date": "2026-04-17",
+    "time": "17:30",
+    "venue": "Svealandsskolan"
+  },
+  {
+    "competition": "Örebrocupen 2026",
+    "type": "cup",
+    "stage": "Gruppspel",
+    "home": "IK Frej Täby IBK",
+    "away": "Örebro SK",
+    "homeGoals": 3,
+    "awayGoals": 0,
+    "date": "2026-04-18",
+    "time": "09:15",
+    "venue": "Rostahallen 1"
+  },
+  {
+    "competition": "Örebrocupen 2026",
+    "type": "cup",
+    "stage": "Gruppspel",
+    "home": "Örebro SK",
+    "away": "Strömso IBF Blå",
+    "homeGoals": 3,
+    "awayGoals": 0,
+    "date": "2026-04-18",
+    "time": "15:15",
+    "venue": "Rostahallen 2"
+  },
+  {
+    "competition": "Örebrocupen 2026",
+    "type": "cup",
+    "stage": "Kvartsfinal",
+    "home": "Nacka IBK",
+    "away": "Örebro SK",
+    "homeGoals": 1,
+    "awayGoals": 4,
+    "date": "2026-04-19",
+    "time": "09:40",
+    "venue": "Norrbyskolan"
+  },
+  {
+    "competition": "Örebrocupen 2026",
+    "type": "cup",
+    "stage": "Semifinal",
+    "home": "FBC Sollentuna",
+    "away": "Örebro SK",
+    "homeGoals": 3,
+    "awayGoals": 4,
+    "date": "2026-04-19",
+    "time": "13:20",
+    "venue": "Rostahallen 2"
+  },
+  {
+    "competition": "Örebrocupen 2026",
+    "type": "cup",
+    "stage": "Final",
+    "home": "Herrhagens IF",
+    "away": "Örebro SK",
+    "homeGoals": 2,
+    "awayGoals": 3,
+    "date": "2026-04-19",
+    "time": "16:30",
+    "venue": "Rostahallen 2"
+  },
+  {
+    "competition": "IBF Cupen Örebro 2026",
+    "type": "cup",
+    "stage": "",
+    "home": "IBF Örebro Vit",
+    "away": "Örebro SK",
+    "homeGoals": 4,
+    "awayGoals": 2,
+    "date": "",
+    "time": "",
+    "venue": ""
+  },
+  {
+    "competition": "IBF Cupen Örebro 2026",
+    "type": "cup",
+    "stage": "",
+    "home": "Örebro SK",
+    "away": "Dottevik",
+    "homeGoals": 2,
+    "awayGoals": 2,
+    "date": "",
+    "time": "",
+    "venue": ""
+  },
+  {
+    "competition": "IBF Cupen Örebro 2026",
+    "type": "cup",
+    "stage": "",
+    "home": "Örebro SK",
+    "away": "Askersund",
+    "homeGoals": 2,
+    "awayGoals": 6,
+    "date": "",
+    "time": "",
+    "venue": ""
+  },
+  {
+    "competition": "IBF Cupen Örebro 2026",
+    "type": "cup",
+    "stage": "",
+    "home": "Örebro SK",
+    "away": "Karlskoga Innebandy",
+    "homeGoals": 0,
+    "awayGoals": 6,
+    "date": "",
+    "time": "",
+    "venue": ""
+  },
+  {
+    "competition": "IBF Cupen Örebro 2026",
+    "type": "cup",
+    "stage": "",
+    "home": "Örebro SK",
+    "away": "Ekeby",
+    "homeGoals": 4,
+    "awayGoals": 6,
+    "date": "",
+    "time": "",
+    "venue": ""
+  },
+  {
+    "competition": "Göransson Cup 2026",
+    "type": "cup",
+    "stage": "Gruppspel",
+    "home": "Örebro SK Innebandy 1",
+    "away": "IBK Runsten Svart",
+    "homeGoals": 4,
+    "awayGoals": 5,
+    "date": "2026-10-02",
+    "time": "21:40",
+    "venue": "Göransson Arena 5"
+  },
+  {
+    "competition": "Göransson Cup 2026",
+    "type": "cup",
+    "stage": "Gruppspel",
+    "home": "Segeltorps IF IBF 2",
+    "away": "Örebro SK Innebandy 1",
+    "homeGoals": 2,
+    "awayGoals": 1,
+    "date": "2026-10-03",
+    "time": "14:40",
+    "venue": "Göransson Arena 3"
+  },
+  {
+    "competition": "Göransson Cup 2026",
+    "type": "cup",
+    "stage": "Gruppspel",
+    "home": "IBF Borlänge 1",
+    "away": "Örebro SK Innebandy 1",
+    "homeGoals": 3,
+    "awayGoals": 1,
+    "date": "2026-10-03",
+    "time": "20:00",
+    "venue": "Göransson Arena 1"
+  },
+  {
+    "competition": "Göransson Cup 2026",
+    "type": "cup",
+    "stage": "Kvartsfinal",
+    "home": "IBF Hudik 1",
+    "away": "Örebro SK Innebandy 1",
+    "homeGoals": 3,
+    "awayGoals": 4,
+    "date": "2026-10-04",
+    "time": "10:40",
+    "venue": "Ferrum Arena 2"
+  },
+  {
+    "competition": "Göransson Cup 2026",
+    "type": "cup",
+    "stage": "Semifinal",
+    "home": "FBC Sollentuna 1",
+    "away": "Örebro SK Innebandy 1",
+    "homeGoals": 3,
+    "awayGoals": 0,
+    "date": "2026-10-04",
+    "time": "13:20",
+    "venue": "Ferrum Arena 2"
+  }
+];
+
+const searchEl=document.getElementById('search');
+const compEl=document.getElementById('competition');
+const comps=[...new Set(matches.map(m=>m.competition))];
+comps.forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c;compEl.appendChild(o)});
+
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}
+function teams(){return [...new Set(matches.flatMap(m=>[m.home,m.away]))].sort((a,b)=>a.localeCompare(b,'sv'))}
+function outcomeFor(team,m){
+ const gf=m.home===team?m.homeGoals:m.awayGoals, ga=m.home===team?m.awayGoals:m.homeGoals;
+ return gf>ga?'W':gf<ga?'L':'D';
+}
+function calc(team,arr){
+ let w=0,d=0,l=0,gf=0,ga=0;
+ arr.filter(m=>m.home===team||m.away===team).forEach(m=>{
+  const home=m.home===team; const f=home?m.homeGoals:m.awayGoals, a=home?m.awayGoals:m.homeGoals;
+  gf+=f;ga+=a;if(f>a)w++;else if(f<a)l++;else d++;
+ });
+ return {played:w+d+l,w,d,l,gf,ga};
+}
+function selectedTeam(){
+ const q=searchEl.value.trim().toLowerCase();
+ if(!q) return 'Örebro SK';
+ return teams().find(t=>t.toLowerCase().includes(q)) || 'Örebro SK';
+}
+function renderStats(){
+ const team=selectedTeam(), arr=matches.filter(m=>compEl.value==='all'||m.competition===compEl.value), s=calc(team,arr);
+ document.getElementById('selectedTeam').textContent=team;
+ document.getElementById('stats').innerHTML=[
+  ['Matcher',s.played],['Vunna',s.w],['Oavgjorda',s.d],['Förlorade',s.l],['Gjorda mål',s.gf],['Insläppta',s.ga]
+ ].map(x=>`<div class="stat"><b>${x[1]}</b><span>${x[0]}</span></div>`).join('');
+ document.getElementById('matchCount').textContent=`${arr.length} matcher i urvalet`;
+ document.getElementById('teamCount').textContent=`${teams().length} lag totalt`;
+}
+function formatDate(m){
+ if(!m.date) return '';
+ const d=new Date(m.date+'T12:00:00');
+ return d.toLocaleDateString('sv-SE',{day:'numeric',month:'short'}).replace('.','')+(m.time?' · '+m.time:'');
+}
+function render(){
+ const q=searchEl.value.trim().toLowerCase();
+ const selectedComp=compEl.value;
+ let arr=matches.filter(m=>{
+  const text=(m.home+' '+m.away+' '+m.competition+' '+m.stage).toLowerCase();
+  return (!q||text.includes(q))&&(selectedComp==='all'||m.competition===selectedComp);
+ });
+ const groups={}; arr.forEach(m=>(groups[m.competition]??=[]).push(m));
+ const container=document.getElementById('competitions');
+ container.innerHTML=Object.keys(groups).length?Object.entries(groups).map(([comp,ms])=>{
+  return `<div class="competition"><div class="comp-title"><h3>${esc(comp)}</h3><small>${ms.length} matcher</small></div>${ms.map(m=>{
+   const team=selectedTeam(), has=team===m.home||team===m.away, r=has?outcomeFor(team,m):'';
+   return `<div class="match">
+    <div class="stage">${esc(m.stage||'Match')}</div>
+    <div class="teams"><span>${esc(m.home)}</span><span class="vs">–</span><span>${esc(m.away)}</span></div>
+    <div class="score">${m.homeGoals} – ${m.awayGoals}</div>
+    ${has?`<div class="result ${r}">${r==='W'?'VINST':r==='L'?'FÖRLUST':'OAVGJORT'}</div>`:'<div></div>'}
+    <div class="meta">${esc(formatDate(m))}${m.venue?' · '+esc(m.venue):''}</div>
+   </div>`
+  }).join('')}</div>`;
+ }).join(''):`<div class="competition"><div class="empty">Inga matcher hittades. Prova ett annat lag eller en annan cup.</div></div>`;
+ renderStats();
+}
+searchEl.addEventListener('input',render); compEl.addEventListener('change',render);
+render();
+</script>
 </body>
 </html>
