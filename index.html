@@ -8,16 +8,32 @@
 <style>
 :root{--bg:#f4f7fb;--card:#fff;--text:#172033;--muted:#697386;--line:#e5e9f0;--accent:#1769e0;--accent2:#0b4fb3;--win:#15803d;--loss:#dc2626;--draw:#b7791f;--shadow:0 8px 28px rgba(23,32,51,.07)}
 *{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}
-header{background:#080a07;color:white;padding:14px 20px 30px;text-align:center}
+header{background:#080a07;color:white;padding:10px 20px 16px;text-align:center}
 .hero{display:flex;justify-content:center}
-.hero img{display:block;height:clamp(130px,22vw,230px);width:auto;max-width:100%;object-fit:contain;-webkit-mask-image:radial-gradient(ellipse closest-side,#000 80%,transparent 100%);mask-image:radial-gradient(ellipse closest-side,#000 80%,transparent 100%)}
+.hero img{display:block;margin-top:-18px;height:clamp(100px,14vw,130px);width:auto;max-width:100%;object-fit:contain;-webkit-mask-image:radial-gradient(ellipse closest-side,#000 80%,transparent 100%);mask-image:radial-gradient(ellipse closest-side,#000 80%,transparent 100%)}
 .wrap{max-width:1120px;margin:auto}.eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:12px;font-weight:800;opacity:.75}
-h1{font-size:clamp(28px,4.5vw,42px);margin:6px 0 8px}.lead{margin:0;opacity:.86;font-size:16px}
-.controls{margin-top:22px;display:grid;grid-template-columns:1.5fr 1fr;gap:12px;text-align:left}
+h1{font-size:clamp(28px,4.5vw,40px);margin:4px 0 0;line-height:1.15}
+.topbar{display:flex;justify-content:flex-end}
+.header-auth{display:flex;gap:8px}
+.hbtn{font:inherit;font-size:13px;font-weight:700;color:#cfd8d2;background:transparent;border:1px solid #2a352e;border-radius:10px;padding:7px 14px;cursor:pointer;text-decoration:none}
+.hbtn:hover{background:#141a15}
+.tabs{background:#080a07;position:sticky;top:0;z-index:20;border-bottom:1px solid #151d17}
+.tabs-in{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;max-width:1120px;margin:0 auto;padding:0 12px}
+.tabs a{padding:14px 22px;font-size:15px;font-weight:700;color:#aab5ae;border-bottom:3px solid transparent;text-decoration:none}
+.tabs a:hover{color:#fff}
+.tabs a[aria-current=page]{color:#fff;border-bottom-color:#4d9bff}
+.tabs a:focus-visible,.hbtn:focus-visible{outline:2px solid #4d9bff;outline-offset:2px}
+.badge{margin-left:8px;font-size:12px;background:#1c2620;color:#cfd8d2;border-radius:999px;padding:2px 8px}
+.tabs a[aria-current=page] .badge{background:#24303a;color:#dbe6f2}
+.short{display:none}
+.dim{color:var(--muted);opacity:1}
+.filters{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:14px}
+.filters input,.filters select{border:1px solid #d5dce8;box-shadow:none;width:auto}
+.filters input{flex:1.5 1 280px}.filters select{flex:1 1 200px}
 input,select{width:100%;border:0;border-radius:12px;padding:14px 16px;font-size:15px;background:white;color:var(--text);box-shadow:0 5px 18px rgba(0,0,0,.1)}
 main{padding:28px 20px 60px}.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:22px}
 .pill{border:1px solid var(--line);background:var(--card);padding:8px 13px;border-radius:999px;font-size:13px;color:var(--muted)}
-h2{font-size:24px;margin:34px 0 14px}.section-head{display:flex;justify-content:space-between;align-items:end;gap:15px;margin-top:34px}.section-head h2{margin:4px 0 14px}#seriesSection .section-head{margin-top:0}
+h2{font-size:24px;margin:34px 0 14px}.section-head{display:flex;justify-content:space-between;align-items:end;gap:15px;margin-top:34px}.section-head h2{margin:4px 0 14px}.tabpanel>.section-head:first-child{margin-top:0}
 .stats{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}.stat{background:var(--card);border:1px solid var(--line);border-radius:15px;padding:16px;box-shadow:var(--shadow)}.stat b{display:block;font-size:25px}.stat span{font-size:12px;color:var(--muted)}
 
 /* Cuper och serie: ihopfällbara kort */
@@ -53,8 +69,6 @@ details[open] .chev{transform:rotate(45deg)}
 /* Serie-ruta: resultat till vänster, ligor fast uppe till höger */
 .series-box{background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:20px;display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:22px;align-items:start}
 .series-main{min-width:0}
-.series-main .stats{gap:8px;margin-bottom:12px}
-.series-main .stat{padding:12px 14px;box-shadow:none;background:#f6f8fc;border-color:transparent}.series-main .stat b{font-size:22px}
 .series-title{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin:8px 0 6px}.series-title h3{margin:0;font-size:18px}.series-title small{color:var(--muted)}
 .series-main .match{padding-right:4px}
 .series-side{position:sticky;top:16px;display:grid;gap:14px;max-height:calc(100vh - 32px);overflow:auto}
@@ -65,6 +79,30 @@ details[open] .chev{transform:rotate(45deg)}
 .lb tr:last-child td{border-bottom:0}
 .lb .n{text-align:right;font-variant-numeric:tabular-nums}.lb .rk{width:30px;color:var(--muted)}
 .lb-card .empty{padding:10px 0}
+
+/* Statistikfliken */
+.seg{display:flex;max-width:100%;background:#e9eef6;border-radius:12px;padding:4px;gap:4px}
+.seg button{border:0;border-radius:9px;padding:9px 12px;flex:1 1 auto;min-width:0;font:inherit;font-size:14px;font-weight:700;background:transparent;color:#4b5568;cursor:pointer}
+.seg button[aria-pressed="true"]{background:#fff;color:var(--text);box-shadow:0 1px 3px rgba(23,32,51,.15)}
+#tab-statistik .stats{margin-bottom:12px}
+.stats2{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-bottom:12px}
+.stat b small{font-size:14px;font-weight:600;color:var(--muted)}
+.dots{display:flex;gap:6px}
+.dot{width:28px;height:28px;border-radius:50%;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center}
+.records{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:10px;margin-bottom:12px}
+.rec{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--line);border-radius:15px;padding:14px 16px}
+.rec.win{border-left-color:var(--win)}.rec.loss{border-left-color:var(--loss)}
+.rec b{display:block;font-size:17px;font-weight:800;margin-top:2px}.rec small{font-size:12px;color:var(--muted)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:18px 20px;margin-bottom:12px;overflow-x:auto}
+.card h3{margin:0 0 10px;font-size:18px}.card .empty{padding:10px 0}.card .foot{font-size:12px;color:var(--muted);margin-top:8px}
+.tbl{width:100%;border-collapse:collapse;font-size:14px}
+.tbl th,.tbl td{padding:10px 4px;border-bottom:1px solid #eef1f5;text-align:right;font-weight:400;font-variant-numeric:tabular-nums;white-space:nowrap}
+.tbl thead th{color:var(--muted);font-size:12px;padding:8px 6px;border-bottom-color:var(--line)}
+.tbl .l{text-align:left}.tbl th[scope=row]{font-weight:600;overflow-wrap:anywhere;white-space:normal}.tbl .rk{width:32px;color:var(--muted)}.tbl td.m{font-weight:800}
+.tbl tbody tr:last-child td,.tbl tbody tr:last-child th{border-bottom:0}
+.tbl tfoot th,.tbl tfoot td{font-weight:800;background:#f6f8fc;border-bottom:0}
+.pos{color:#166534;font-weight:700}.neg{color:#b91c1c;font-weight:700}
+.lb-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:12px}.lb-row .card{margin-bottom:0}
 
 /* Formulär */
 .panel{background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:20px}
@@ -101,32 +139,32 @@ dialog h3{margin:0 0 16px;font-size:20px}
 .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#172033;color:#fff;padding:12px 18px;border-radius:12px;font-size:14px;box-shadow:0 10px 30px rgba(0,0,0,.25);z-index:50}
 
 @media(max-width:960px){.series-box{grid-template-columns:1fr}.series-side{position:static;max-height:none;grid-template-columns:1fr 1fr}}
-@media(max-width:800px){.controls{grid-template-columns:1fr}.stats{grid-template-columns:repeat(3,1fr)}.login-grid{grid-template-columns:1fr}.series-side{grid-template-columns:1fr}}
-@media(max-width:600px){.match{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"when result" "fixture fixture" "meta meta" "goals goals"}.when{flex-direction:row;gap:8px;align-items:baseline}.fixture{gap:10px}.score{font-size:22px;min-width:76px;padding:5px 10px}.team{font-size:15px}}
+@media(max-width:800px){.stats{grid-template-columns:repeat(3,1fr)}.login-grid{grid-template-columns:1fr}.series-side{grid-template-columns:1fr}}
+@media(max-width:600px){.tabs-in{gap:0;flex-wrap:nowrap}.tabs a{flex:1;text-align:center;padding:13px 4px;font-size:14px}.badge{margin-left:4px;font-size:11px;padding:2px 7px}.long{display:none}.short{display:inline}.match{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"when result" "fixture fixture" "meta meta" "goals goals"}.when{flex-direction:row;gap:8px;align-items:baseline}.fixture{gap:10px}.score{font-size:22px;min-width:76px;padding:5px 10px}.team{font-size:15px}}
 @media(max-width:520px){.form-grid{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.comp-title{padding:16px}.goal-row{grid-template-columns:1fr auto}.goal-row .assist{grid-column:1/2;grid-row:2}.series-box{padding:14px}}
 </style>
 </head>
 <body>
-<header>
+<header id="siteHeader">
+<div class="topbar wrap"><div class="header-auth" id="headerAuth"></div></div>
 <div class="hero"><img src="header.jpg" alt="Örebro SK" onerror="this.parentElement.style.display='none'"></div>
-<div class="wrap">
 <div class="eyebrow">Innebandy 2026</div>
 <h1>Matchresultat</h1>
-<p class="lead">Matcher, cuper och statistik – samlat på ett ställe.</p>
-<div class="controls">
-<input id="search" type="search" placeholder="Sök bland cuperna, t.ex. Nacka IBK eller Örebrocupen…">
-<select id="competition"><option value="all">Alla cuper</option></select>
-</div>
-</div>
 </header>
+<nav class="tabs" aria-label="Sidor">
+<div class="tabs-in">
+<a href="#serie" data-tab="serie"><span class="long">Seriematcher</span><span class="short">Serie</span><span class="badge" id="badgeSerie"></span></a>
+<a href="#cuper" data-tab="cuper">Cuper<span class="badge" id="badgeCuper"></span></a>
+<a href="#statistik" data-tab="statistik">Statistik</a>
+</div>
+</nav>
 <main class="wrap">
 
-<!-- Serie överst -->
-<section id="seriesSection">
-<div class="section-head"><div><div class="eyebrow" style="color:var(--muted)">Seriespel</div><h2 style="margin-top:0">Seriematcher</h2></div></div>
+<!-- Flik 1: Seriematcher -->
+<section id="tab-serie" class="tabpanel hidden">
+<div class="section-head"><div><div class="eyebrow dim">Seriespel</div><h2>Seriematcher</h2></div></div>
 <div class="series-box">
   <div class="series-main">
-    <div class="stats" id="seriesStats"></div>
     <div id="seriesMatches"></div>
   </div>
   <aside class="series-side" aria-label="Skytteliga och poängliga">
@@ -138,23 +176,44 @@ dialog h3{margin:0 0 16px;font-size:20px}
 <p class="note" style="margin-top:12px">Skytteliga och poängliga bygger på mål och assist i seriematcherna. Poäng = mål + assist.</p>
 </section>
 
-<div class="toolbar" style="margin-top:34px">
+<!-- Flik 2: Cuper -->
+<section id="tab-cuper" class="tabpanel hidden">
+<div class="section-head"><div><div class="eyebrow dim">Matcher</div><h2>Cuper</h2></div><span class="pill">Klicka på en cup för att visa matcherna</span></div>
+<div class="filters">
+<input id="search" type="search" aria-label="Sök bland cuperna" placeholder="Sök bland cuperna, t.ex. Nacka IBK eller Örebrocupen…">
+<select id="competition" aria-label="Välj cup"><option value="all">Alla cuper</option></select>
+</div>
+<div class="toolbar">
 <span class="pill" id="matchCount"></span>
-<span class="pill" id="teamCount"></span>
+<span class="pill" id="cupNum"></span>
 <span class="pill">V = vinst · O = oavgjort · F = förlust</span>
 </div>
-
-<section id="statsSection">
-<div class="section-head"><div><div class="eyebrow" style="color:var(--muted)">Valt lag · cuper</div><h2 id="selectedTeam" style="margin-top:0">Örebro SK</h2></div></div>
-<div class="stats" id="stats"></div>
-</section>
-
-<section>
-<div class="section-head"><div><div class="eyebrow" style="color:var(--muted)">Matcher</div><h2>Cuper</h2></div><span class="pill">Klicka på en cup för att visa matcherna</span></div>
 <div id="competitions"></div>
 </section>
 
-<section id="registerSection">
+<!-- Flik 3: Statistik -->
+<section id="tab-statistik" class="tabpanel hidden">
+<div class="section-head">
+  <div><div class="eyebrow dim">Örebro SK</div><h2>Statistik</h2></div>
+  <div class="seg" role="group" aria-label="Urval">
+    <button type="button" data-scope="all" aria-pressed="true">Alla matcher</button>
+    <button type="button" data-scope="serie" aria-pressed="false">Seriespel</button>
+    <button type="button" data-scope="cup" aria-pressed="false">Cuper</button>
+  </div>
+</div>
+<div class="stats" id="statTiles"></div>
+<div class="stats2" id="statTiles2"></div>
+<div class="records" id="statRecords"></div>
+<div class="card" id="statComps"></div>
+<div class="card" id="statOpp"></div>
+<div class="lb-row">
+  <div class="card"><h3>Skytteliga</h3><div id="statScorerBoard"></div></div>
+  <div class="card"><h3>Poängliga</h3><div id="statPointBoard"></div></div>
+</div>
+</section>
+
+<!-- Flik för administratör (nås via Logga in i sidhuvudet) -->
+<section id="tab-admin" class="tabpanel hidden">
 <div class="section-head">
   <div><div class="eyebrow" style="color:var(--muted)">Administratör</div><h2>Registrera match</h2></div>
   <div class="authbar" id="authBar"></div>
@@ -257,7 +316,6 @@ dialog h3{margin:0 0 16px;font-size:20px}
 </div>
 </section>
 
-<p class="note">Alla matcher hämtas från databasen.</p>
 </main>
 
 <dialog id="editDialog">
@@ -383,14 +441,14 @@ function ranked(list,keyFn){
  return list.map((p,i)=>{const k=keyFn(p); if(k!==prev){rank=i+1;prev=k;} return {...p,rank};});
 }
 const cmpName=(a,b)=>a.name.localeCompare(b.name,'sv');
-function renderBoards(players){
+function renderBoards(players,scorerId,pointId){
  const sc=ranked(players.filter(p=>p.g>0).sort((a,b)=>b.g-a.g||b.a-a.a||cmpName(a,b)),p=>p.g);
- $('scorerBoard').innerHTML=sc.length
+ $(scorerId).innerHTML=sc.length
   ? `<table class="lb"><thead><tr><th class="rk">#</th><th>Spelare</th><th class="n">Mål</th><th class="n">Ass.</th></tr></thead><tbody>${
      sc.map(p=>`<tr><td class="rk">${p.rank}</td><td>${esc(p.name)}</td><td class="n"><b>${p.g}</b></td><td class="n">${p.a}</td></tr>`).join('')}</tbody></table>`
   : '<div class="empty">Inga mål registrerade än.</div>';
  const pt=ranked(players.filter(p=>p.p>0).sort((a,b)=>b.p-a.p||b.g-a.g||cmpName(a,b)),p=>p.p+'/'+p.g);
- $('pointBoard').innerHTML=pt.length
+ $(pointId).innerHTML=pt.length
   ? `<table class="lb"><thead><tr><th class="rk">#</th><th>Spelare</th><th class="n">Mål</th><th class="n">Ass.</th><th class="n">Poäng</th></tr></thead><tbody>${
      pt.map(p=>`<tr><td class="rk">${p.rank}</td><td>${esc(p.name)}</td><td class="n">${p.g}</td><td class="n">${p.a}</td><td class="n"><b>${p.p}</b></td></tr>`).join('')}</tbody></table>`
   : '<div class="empty">Inga poäng registrerade än.</div>';
@@ -399,7 +457,6 @@ function renderBoards(players){
 /* ===== Rendering ===== */
 function renderSeries(){
  const arr=matches.filter(m=>m.type==='serie').sort(byDate);
- $('seriesStats').innerHTML=statTiles(calc(OUR,arr));
  const groups={}; arr.forEach(m=>(groups[m.competition]??=[]).push(m));
  $('seriesMatches').innerHTML=arr.length
   ? Object.entries(groups).map(([c,ms])=>{
@@ -407,7 +464,7 @@ function renderSeries(){
      return `<div class="series-comp"><div class="series-title"><h3>${esc(c)}</h3><small>${ms.length} ${ms.length===1?'match':'matcher'}${s.played?` · ${s.w}V ${s.d}O ${s.l}F`:''}</small></div>${ms.map(m=>matchRow(m,OUR)).join('')}</div>`;
     }).join('')
   : `<div class="empty">${loadError?esc(loadError):'Inga seriematcher än. Registrera en match med tävlingstyp Seriespel.'}</div>`;
- renderBoards(leaderboard(arr));
+ renderBoards(leaderboard(arr),'scorerBoard','pointBoard');
  $('goalsNote').innerHTML=goalsError?`<div class="msg err">${esc(goalsError)}</div>`:'';
 }
 function rebuildCompetitionFilter(){
@@ -425,15 +482,104 @@ function render(){
   return (!q||text.includes(q))&&(selectedComp==='all'||m.competition===selectedComp);
  });
  const groups={}; arr.forEach(m=>(groups[m.competition]??=[]).push(m));
+ const nCups=Object.keys(groups).length;
  const team=selectedTeam();
  const force=!!q||selectedComp!=='all';   // sökning eller valt cupnamn fäller ut korten
- $('competitions').innerHTML=Object.keys(groups).length
+ $('competitions').innerHTML=nCups
   ? Object.entries(groups).map(([c,ms])=>compCard('cup',c,ms,team,force)).join('')
   : `<div class="competition"><div class="empty">${loadError?esc(loadError):'Inga matcher hittades. Prova ett annat lag eller en annan cup.'}</div></div>`;
- $('selectedTeam').textContent=team;
- $('stats').innerHTML=statTiles(calc(team,arr));
  $('matchCount').textContent=`${arr.length} cupmatcher i urvalet`;
- $('teamCount').textContent=`${teams().length} lag totalt`;
+ $('cupNum').textContent=`${nCups} ${nCups===1?'cup':'cuper'}`;
+ $('badgeSerie').textContent=matches.filter(m=>m.type==='serie').length;
+ $('badgeCuper').textContent=cups.length;
+ renderStatistik();
+}
+
+/* ===== Statistikfliken ===== */
+let statScope='all';   // 'all' | 'serie' | 'cup'
+const fmtDiff=n=>n>0?'+'+n:n<0?'−'+Math.abs(n):'0';
+const f2=n=>n.toLocaleString('sv-SE',{minimumFractionDigits:2,maximumFractionDigits:2});
+const diffCls=n=>n>0?'pos':n<0?'neg':'';
+function ourResults(arr){   // spelade matcher med vårt lag, sett från vårt håll
+ return arr.filter(m=>isPlayed(m)&&(isOur(m.home)||isOur(m.away))).map(m=>{
+  const home=isOur(m.home);
+  const gf=home?m.homeGoals:m.awayGoals, ga=home?m.awayGoals:m.homeGoals;
+  return {m,opp:home?m.away:m.home,gf,ga,r:gf>ga?'W':gf<ga?'L':'D'};
+ });
+}
+function sumResults(res){
+ return res.reduce((t,x)=>({n:t.n+1,w:t.w+(x.r==='W'?1:0),d:t.d+(x.r==='D'?1:0),l:t.l+(x.r==='L'?1:0),gf:t.gf+x.gf,ga:t.ga+x.ga}),{n:0,w:0,d:0,l:0,gf:0,ga:0});
+}
+function renderStatistik(){
+ document.querySelectorAll('#tab-statistik [data-scope]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.scope===statScope)));
+ const arr=matches.filter(m=>statScope==='all'||(statScope==='serie'?m.type==='serie':m.type!=='serie'));
+ const res=ourResults(arr), t=sumResults(res), n=t.n;
+ $('statTiles').innerHTML=statTiles({played:n,w:t.w,d:t.d,l:t.l,gf:t.gf,ga:t.ga});
+
+ // målskillnad, snitt per match och form (senaste 5 matcher med datum, äldst till nyast)
+ const form=res.filter(x=>x.m.date).sort((a,b)=>byDate(a.m,b.m)).slice(-5);
+ const letter={W:'V',D:'O',L:'F'};
+ $('statTiles2').innerHTML=
+  `<div class="stat"><b>${n?fmtDiff(t.gf-t.ga):'–'}</b><span>Målskillnad</span></div>`+
+  `<div class="stat"><b>${n?f2(t.gf/n):'–'} <small>/ ${n?f2(t.ga/n):'–'}</small></b><span>Gjorda / insläppta mål per match</span></div>`+
+  `<div class="stat">${form.length?`<div class="dots">${form.map(x=>`<span class="dot ${x.r}">${letter[x.r]}</span>`).join('')}</div>`:'<b>–</b>'}<span style="display:block;margin-top:8px">${form.length?`Senaste ${form.length} matcherna (äldst till nyast)`:'Senaste matcherna'}</span></div>`;
+
+ // största seger och förlust
+ const best=res.filter(x=>x.r==='W').sort((a,b)=>(b.gf-b.ga)-(a.gf-a.ga)||b.gf-a.gf||byDate(b.m,a.m))[0];
+ const worst=res.filter(x=>x.r==='L').sort((a,b)=>(a.gf-a.ga)-(b.gf-b.ga)||byDate(b.m,a.m))[0];
+ const recCard=(label,x,cls)=>x
+  ? `<div class="rec ${cls}"><small>${label}</small><b>${x.gf} – ${x.ga} mot ${esc(x.opp)}</b><small>${esc([x.m.competition,x.m.date?dateParts(x.m).d:''].filter(Boolean).join(' · '))}</small></div>`
+  : `<div class="rec ${cls}"><small>${label}</small><b>–</b></div>`;
+ $('statRecords').innerHTML=recCard('Största seger',best,'win')+recCard('Största förlust',worst,'loss');
+
+ // resultat per tävling (cuper först, sedan serie)
+ const byComp=new Map();
+ arr.forEach(m=>{
+  if(!byComp.has(m.competition)) byComp.set(m.competition,{type:m.type,first:m.date||'9999'});
+  const e=byComp.get(m.competition); if(m.date&&m.date<e.first) e.first=m.date;
+ });
+ const compRows=[...byComp.entries()]
+  .sort((a,b)=>((a[1].type==='serie')-(b[1].type==='serie'))||a[1].first.localeCompare(b[1].first)||a[0].localeCompare(b[0],'sv'))
+  .map(([name])=>{ const s=sumResults(res.filter(x=>x.m.competition===name)); return `<tr><th scope="row" class="l">${esc(name)}</th><td>${s.n}</td><td>${s.w}</td><td>${s.d}</td><td>${s.l}</td><td>${s.gf} – ${s.ga}</td><td class="${diffCls(s.gf-s.ga)}">${fmtDiff(s.gf-s.ga)}</td></tr>`; });
+ $('statComps').innerHTML=`<h3>Resultat per tävling</h3>`+(compRows.length
+  ? `<table class="tbl"><thead><tr><th scope="col" class="l">Tävling</th><th scope="col">M</th><th scope="col">V</th><th scope="col">O</th><th scope="col">F</th><th scope="col">Mål</th><th scope="col">+/−</th></tr></thead><tbody>${compRows.join('')}</tbody><tfoot><tr><th scope="row" class="l">Totalt</th><td>${t.n}</td><td>${t.w}</td><td>${t.d}</td><td>${t.l}</td><td>${t.gf} – ${t.ga}</td><td class="${diffCls(t.gf-t.ga)}">${fmtDiff(t.gf-t.ga)}</td></tr></tfoot></table>`
+  : '<div class="empty">Inga matcher i urvalet.</div>');
+
+ // de fem lag vi mött flest gånger (lika många möten sorteras alfabetiskt)
+ const opp=new Map();
+ res.forEach(x=>{
+  const k=x.opp.trim().toLowerCase();
+  if(!opp.has(k)) opp.set(k,{name:x.opp.trim(),m:0,w:0,d:0,l:0,gf:0,ga:0});
+  const e=opp.get(k); e.m++; e[x.r==='W'?'w':x.r==='D'?'d':'l']++; e.gf+=x.gf; e.ga+=x.ga;
+ });
+ const top=ranked([...opp.values()].sort((a,b)=>b.m-a.m||cmpName(a,b)).slice(0,5),p=>p.m);
+ $('statOpp').innerHTML=`<h3>Lag vi mött flest gånger</h3>`+(top.length
+  ? `<table class="tbl"><thead><tr><th scope="col" class="l rk">#</th><th scope="col" class="l">Lag</th><th scope="col">M</th><th scope="col">V</th><th scope="col">O</th><th scope="col">F</th><th scope="col">Mål</th></tr></thead><tbody>${
+     top.map(p=>`<tr><td class="l rk">${p.rank}</td><th scope="row" class="l">${esc(p.name)}</th><td class="m">${p.m}</td><td>${p.w}</td><td>${p.d}</td><td>${p.l}</td><td>${p.gf} – ${p.ga}</td></tr>`).join('')}</tbody></table><div class="foot">Lag med lika många möten sorteras alfabetiskt. Matcher som inte är spelade räknas inte.</div>`
+  : '<div class="empty">Inga spelade matcher i urvalet.</div>');
+
+ renderBoards(leaderboard(arr),'statScorerBoard','statPointBoard');
+}
+
+/* ===== Flikar (egna adresser: #serie, #cuper, #statistik, #admin) ===== */
+const TABS=['serie','cuper','statistik','admin'];
+const currentTab=()=>{const h=location.hash.replace('#','');return TABS.includes(h)?h:'serie';};
+function showTab(){
+ const t=currentTab();
+ TABS.forEach(id=>$('tab-'+id).classList.toggle('hidden',id!==t));
+ document.querySelectorAll('.tabs a[data-tab]').forEach(a=>{
+  if(a.dataset.tab===t) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current');
+ });
+}
+window.addEventListener('hashchange',()=>{
+ showTab();
+ const h=$('siteHeader').offsetHeight;
+ if(window.scrollY>h) window.scrollTo(0,h);   // nytt innehåll börjar direkt under flikraden
+});
+function renderHeaderAuth(){
+ $('headerAuth').innerHTML=session
+  ? '<a class="hbtn" href="#admin">Registrera match</a><button type="button" class="hbtn" id="hLogout">Logga ut</button>'
+  : '<a class="hbtn" href="#admin">Logga in</a>';
 }
 
 /* ===== Formulär: registrera och redigera ===== */
@@ -642,6 +788,7 @@ $('editDialog').addEventListener('close',()=>{
 
 /* ===== Inloggning ===== */
 function renderAuth(){
+ renderHeaderAuth();
  const bar=$('authBar');
  if(!sb){ bar.innerHTML=''; $('loginBox').classList.add('hidden'); $('formBox').classList.add('hidden'); $('setupBox').classList.remove('hidden'); render(); return; }
  $('setupBox').classList.add('hidden');
@@ -675,6 +822,9 @@ document.addEventListener('click',e=>{
  if(sum) openState.set(sum.dataset.key,!sum.parentElement.open);   // klicket sker före själva växlingen
  const b=e.target.closest('[data-edit]');
  if(b) openEdit(b.dataset.edit);
+ const sc=e.target.closest('[data-scope]');
+ if(sc){ statScope=sc.dataset.scope; renderStatistik(); }
+ if(e.target.closest('#hLogout')&&sb) sb.auth.signOut();
 });
 
 $('matchForm').addEventListener('submit',saveMatch);
@@ -714,6 +864,7 @@ $('deleteBtn').addEventListener('click',deleteMatch);
 $('loginForm').addEventListener('submit',login);
 
 (async function init(){
+ showTab();
  await loadRemote(); rebuildCompetitionFilter(); render();
  if(sb){
   const {data}=await sb.auth.getSession(); session=data.session;
