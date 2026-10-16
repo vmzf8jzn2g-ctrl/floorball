@@ -383,13 +383,13 @@ const byDateDesc=(a,b)=>((b.date||'')+(b.time||'')).localeCompare((a.date||'')+(
 const byDate=(a,b)=>((a.date||'9999')+(a.time||'')).localeCompare((b.date||'9999')+(b.time||''));
 const isOur=t=>String(t||'').trim().toLowerCase()===OUR.toLowerCase();
 function outcomeFor(team,m){
- const gf=m.home===team?m.homeGoals:m.awayGoals, ga=m.home===team?m.awayGoals:m.homeGoals;
+ const gf=isOur(m.home)?m.homeGoals:m.awayGoals, ga=isOur(m.home)?m.awayGoals:m.homeGoals;
  return gf>ga?'W':gf<ga?'L':'D';
 }
 function calc(team,arr){
  let w=0,d=0,l=0,gf=0,ga=0;
- arr.filter(m=>isPlayed(m)&&(m.home===team||m.away===team)).forEach(m=>{
-  const home=m.home===team; const f=home?m.homeGoals:m.awayGoals, a=home?m.awayGoals:m.homeGoals;
+ arr.filter(m=>isPlayed(m)&&(isOur(m.home)||isOur(m.away))).forEach(m=>{
+  const home=isOur(m.home); const f=home?m.homeGoals:m.awayGoals, a=home?m.awayGoals:m.homeGoals;
   gf+=f;ga+=a;if(f>a)w++;else if(f<a)l++;else d++;
  });
  return {played:w+d+l,w,d,l,gf,ga};
@@ -400,8 +400,7 @@ function statTiles(s){
 }
 function selectedTeam(){
  const q=searchEl.value.trim().toLowerCase();
- if(!q) return OUR;
- return teams().find(t=>t.toLowerCase().includes(q)) || OUR;
+ return OUR;   // Örebro SK är alltid vårt lag – sökningen ändrar aldrig perspektivet
 }
 const todayStr=()=>new Date().toLocaleDateString('sv-SE');
 function dateParts(m){
@@ -412,10 +411,10 @@ function dateParts(m){
 const goalsOpen=new Set();   // matcher vars målskyttar användaren fällt ut
 function matchRow(m,team,dateFallback){
  const played=isPlayed(m);
- const involved=team===m.home||team===m.away;
+ const involved=isOur(m.home)||isOur(m.away);
  const r=(involved&&played)?outcomeFor(team,m):'';
  const cls=played?(r?'o-'+r:'o-N'):'o-U';
- const tm=name=>`<div class="team${name===team?' our':''}">${esc(name)}</div>`;
+ const tm=name=>`<div class="team${isOur(name)?' our':''}">${esc(name)}</div>`;
  const {d,t}=dateParts(m);
  const when=`<div class="when"><b>${esc(d||dateFallback||'–')}</b>${t?`<span>${esc(t)}</span>`:''}</div>`;
  let pill='';
