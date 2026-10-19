@@ -405,6 +405,54 @@ function selectedTeam(){
  const q=searchEl.value.trim().toLowerCase();
  return OUR;   // Örebro SK är alltid vårt lag – sökningen ändrar aldrig perspektivet
 }
+/* ===== Lagikoner ===== */
+const ICON_DIR='lagikoner/';   // mapp bredvid index.html med alla bildfiler
+const ICON_FILES=["AskersundIBK.png", "Bankeryd.jpeg", "Borensberg|BC.jpeg", "Dottevik.png", "EkebylF.png", "FagerhultHabolB.png", "FCBSollentuna.png", "FrotunalBF.png", "GropensIF.png", "Hagundaf IF.png", "HerrhagensIF.png", "HofterupIBF.jpeg", "HovslattslK.png", "IBFBorlange.jpeg", "pRERO IBFOrebro.png", "IBK Runsten.png", "IBKHudik.png", "IBKLund.jpeg", "IFKArbogalBK.png", "Ik FrejTaby.jpeg", "Karlskoga.png", "LillanIBK.png", "Linkoping|BK.jpeg", "MestalBK.jpeg", "NackalBK.jpeg", "OlmstadIS.png", "OrebroSK.png", "Per-Ols.png", "RonnebyVasteras.png", "SandvikensAlK.png", "Segeltorps IF IBK.jpeg", "Skoghalls IBK.jpeg", "SoderkopingsIBK.png", "StrangnasIBK.png", "StromsbrolBF.jpeg", "Sundsvall city IBC.jpeg", "Surahammar.png", "TillbergalK.png", "VasterasIBS.png", "VaxholmsIBF.jpeg"];
+// Lag som inte kan gissas fram från namnet
+const ICON_OVERRIDES={'hagundaif':'Hagundaf IF.png','hagunda':'Hagundaf IF.png','ibforebro':'pRERO IBFOrebro.png','ronnbyvasterasibk':'RonnebyVasteras.png','osk':'OrebroSK.png','oskp14':'OrebroSK.png','orebrosk':'OrebroSK.png'};
+const ICON_TOKENS=['innebandy','ibk','ibf','ibs','ibc','ifk','fbc','fcb','ib','if','is','ik','bk','sk','ibl'];
+const ICON_COLOURS=new Set(['bla','vit','vita','rod','gul','gron','svart','orange','rosa','lila']);
+const iconBase=t=>String(t||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\|/g,'i');
+// i/l/| förväxlas lätt i filnamn, så l räknas som i vid jämförelsen
+const iconSq=t=>t.replace(/[^a-z]/g,'').replace(/l/g,'i');
+function iconStripTokens(k){
+ let ch=true;
+ while(ch){ ch=false;
+  for(const t of ICON_TOKENS){
+   if(k.length>t.length+2&&k.startsWith(t)){k=k.slice(t.length);ch=true;}
+   if(k.length>t.length+2&&k.endsWith(t)){k=k.slice(0,-t.length);ch=true;}
+  }}
+ return k;
+}
+const ICON_INDEX=(()=>{ const m=new Map(), full=new Map();
+ ICON_FILES.forEach(f=>{ const stem=f.replace(/\.[a-z]+$/i,''), b=iconBase(stem);
+  full.set(iconSq(b),f); const k=iconStripTokens(iconSq(b)); if(k&&!m.has(k)) m.set(k,f); });
+ return {m,full}; })();
+function iconFileFor(name){
+ const b=iconBase(name);
+ const words=b.split(/[^a-z0-9]+/).filter(Boolean).filter(w=>!ICON_TOKENS.includes(w)&&!ICON_COLOURS.has(w)&&!/^[pf]\d{1,2}$/.test(w));
+ const fullKey=iconSq(b), k=iconSq(words.join(''));
+ for(const [ok,f] of Object.entries(ICON_OVERRIDES)){ if(fullKey===iconSq(ok)||fullKey.startsWith('orebrosk')&&ok==='orebrosk') return f; }
+ if(!k||k==='orebro') return null;
+ return ICON_INDEX.full.get(fullKey)||ICON_INDEX.m.get(k)||null;
+}
+// Möjliga stavningar av filnamnet (I/l/| förväxlas) – första som finns på servern används
+function iconSrcs(file){
+ const alt=({'Hagundaf IF.png':['HagundalF.png','HagundaIF.png']})[file]||[];
+ const ext=file.replace(/\.(png|jpe?g)$/i,'');
+ const v=[file,...alt, ext+'.png', ext+'.jpeg', ext+'.jpg', file.replace(/(?<=[a-zåäö])l(?=[A-ZÅÄÖ]|\.)/g,'I'), file.replace(/\|/g,'I'), file.replace(/\|/g,'l')];
+ return [...new Set(v)].map(f=>ICON_DIR+encodeURIComponent(f));
+}
+function iconErr(img){
+ const a=JSON.parse(img.dataset.srcs), i=+img.dataset.i+1;
+ if(i<a.length){ img.dataset.i=i; img.src=a[i]; } else img.remove();
+}
+function teamHtml(name){
+ const f=iconFileFor(name);
+ const ic=f?(()=>{ const a=iconSrcs(f); return `<img class="club-icon" alt="" src="${a[0]}" data-i="0" data-srcs='${esc(JSON.stringify(a)).replace(/&quot;/g,'&quot;')}' onerror="iconErr(this)">`; })():'';
+ return ic+esc(name);
+}
+
 const todayStr=()=>new Date().toLocaleDateString('sv-SE');
 function dateParts(m){
  if(!m.date) return {d:'',t:m.time||''};
@@ -417,7 +465,7 @@ function matchRow(m,team,dateFallback){
  const involved=isOur(m.home)||isOur(m.away);
  const r=(involved&&played)?outcomeFor(team,m):'';
  const cls=played?(r?'o-'+r:'o-N'):'o-U';
- const tm=name=>isOur(name)?`<div class="team our"><img class="club-icon" src="icon.png" alt="" onerror="this.remove()">${esc(name)}</div>`:`<div class="team">${esc(name)}</div>`;
+ const tm=name=>`<div class="team${isOur(name)?' our':''}">${teamHtml(name)}</div>`;
  const {d,t}=dateParts(m);
  const when=`<div class="when"><b>${esc(d||dateFallback||'–')}</b>${t?`<span>${esc(t)}</span>`:''}</div>`;
  let pill='';
@@ -585,7 +633,7 @@ function renderStatistik(){
  const top=ranked([...opp.values()].sort((a,b)=>b.m-a.m||cmpName(a,b)).slice(0,5),p=>p.m);
  $('statOpp').innerHTML=`<h3>Lag vi mött flest gånger</h3>`+(top.length
   ? `<table class="tbl"><thead><tr><th scope="col" class="l rk">#</th><th scope="col" class="l">Lag</th><th scope="col">M</th><th scope="col">V</th><th scope="col">O</th><th scope="col">F</th><th scope="col">Mål</th></tr></thead><tbody>${
-     top.map(p=>`<tr><td class="l rk">${p.rank}</td><th scope="row" class="l">${esc(p.name)}</th><td class="m">${p.m}</td><td>${p.w}</td><td>${p.d}</td><td>${p.l}</td><td>${p.gf} – ${p.ga}</td></tr>`).join('')}</tbody></table><div class="foot">Lag med lika många möten sorteras alfabetiskt. Matcher som inte är spelade räknas inte.</div>`
+     top.map(p=>`<tr><td class="l rk">${p.rank}</td><th scope="row" class="l">${teamHtml(p.name)}</th><td class="m">${p.m}</td><td>${p.w}</td><td>${p.d}</td><td>${p.l}</td><td>${p.gf} – ${p.ga}</td></tr>`).join('')}</tbody></table><div class="foot">Lag med lika många möten sorteras alfabetiskt. Matcher som inte är spelade räknas inte.</div>`
   : '<div class="empty">Inga spelade matcher i urvalet.</div>');
 
  renderBoards(leaderboard(arr),'statScorerBoard','statPointBoard');
