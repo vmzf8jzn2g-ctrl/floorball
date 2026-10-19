@@ -1,13 +1,15 @@
 <!doctype html>
 <html lang="sv">
 <head>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Innebandyresultat ÖSK Ungdom P13 2026</title>
 <meta name="description" content="Resultat, matcher och statistik för innebandy 2026.">
 <style>
 :root{--bg:#f4f7fb;--card:#fff;--text:#172033;--muted:#697386;--line:#e5e9f0;--accent:#1769e0;--accent2:#0b4fb3;--win:#15803d;--loss:#dc2626;--draw:#b7791f;--shadow:0 8px 28px rgba(23,32,51,.07)}
-*{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}
+*{box-sizing:border-box}button,input,select,textarea{font-family:inherit} body{margin:0;font-family:Roboto,system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}
 header{background:#080a07;color:white;padding:10px 20px 16px;text-align:center}
 .hero{display:flex;justify-content:center}
 .hero img{display:block;margin-top:-18px;height:clamp(100px,14vw,130px);width:auto;max-width:100%;object-fit:contain;-webkit-mask-image:radial-gradient(ellipse closest-side,#000 80%,transparent 100%);mask-image:radial-gradient(ellipse closest-side,#000 80%,transparent 100%)}
@@ -19,6 +21,7 @@ h1{font-size:clamp(28px,4.5vw,40px);margin:4px 0 0;line-height:1.15}
 .hbtn:hover{background:#141a15}
 .tabs{background:#080a07;position:sticky;top:0;z-index:20;border-bottom:1px solid #151d17}
 .tabs-in{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;max-width:1120px;margin:0 auto;padding:0 12px}
+.tabs-in{align-items:center}.nav-search{margin-left:auto;width:230px;max-width:100%;border:1px solid #2a352e;background:#121812;color:#fff;border-radius:10px;padding:8px 12px;font-size:14px;box-shadow:none}.nav-search::placeholder{color:#8c978f}.nav-search:focus{outline:2px solid #4d9bff;outline-offset:1px}
 .tabs a{padding:14px 22px;font-size:15px;font-weight:700;color:#aab5ae;border-bottom:3px solid transparent;text-decoration:none}
 .tabs a:hover{color:#fff}
 .tabs a[aria-current=page]{color:#fff;border-bottom-color:#4d9bff}
@@ -54,7 +57,7 @@ details[open] .chev{transform:rotate(45deg)}
 .fixture{grid-area:fixture;display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:14px;align-items:center}
 .team{font-size:16px;line-height:1.25;overflow-wrap:break-word;hyphens:auto}
 .fixture .team:first-child{text-align:right}
-.team.our{color:var(--accent2);font-weight:800}
+.club-icon{width:1.15em;height:1.15em;object-fit:contain;vertical-align:-.2em;margin-right:.3em}.team.our{color:var(--accent2);font-weight:800}
 .score{box-sizing:border-box;width:104px;min-height:48px;display:flex;align-items:center;justify-content:center;position:relative;text-align:center;padding:6px 14px;border-radius:14px;border:0;background:#eef2f8;color:inherit;font:inherit;font-size:26px;font-weight:900;line-height:1;white-space:nowrap;font-variant-numeric:tabular-nums}
 button.score{cursor:pointer}button.score:hover{filter:brightness(.97)}button.score:focus-visible{outline:3px solid #9ec5ff;outline-offset:2px}
 button.score::after{content:"";position:absolute;right:8px;bottom:7px;width:5px;height:5px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg);opacity:.45;transition:transform .15s}
@@ -89,7 +92,7 @@ button.score::after{content:"";position:absolute;right:8px;bottom:7px;width:5px;
 .lb-card .empty{padding:10px 0}
 
 /* Statistikfliken */
-.seg{display:flex;max-width:100%;background:#e9eef6;border-radius:12px;padding:4px;gap:4px}
+.seg{display:flex;max-width:100%;margin:0 auto;background:#e9eef6;border-radius:12px;padding:4px;gap:4px}
 .seg button{border:0;border-radius:9px;padding:9px 12px;flex:1 1 auto;min-width:0;font:inherit;font-size:14px;font-weight:700;background:transparent;color:#4b5568;cursor:pointer}
 .seg button[aria-pressed="true"]{background:#fff;color:var(--text);box-shadow:0 1px 3px rgba(23,32,51,.15)}
 #tab-statistik .stats{margin-bottom:12px}
@@ -148,7 +151,7 @@ dialog h3{margin:0 0 16px;font-size:20px}
 
 @media(max-width:960px){.comp-body{grid-template-columns:1fr;padding:6px 16px 16px}.cup-side{grid-template-columns:1fr 1fr}.series-box{grid-template-columns:1fr}.series-side{position:static;max-height:none;grid-template-columns:1fr 1fr}}
 @media(max-width:800px){.stats{grid-template-columns:repeat(3,1fr)}.login-grid{grid-template-columns:1fr}.series-side{grid-template-columns:1fr}}
-@media(max-width:600px){.tabs-in{gap:0;flex-wrap:nowrap}.tabs a{flex:1;text-align:center;padding:13px 4px;font-size:14px}.badge{margin-left:4px;font-size:11px;padding:2px 7px}.long{display:none}.short{display:inline}.match{grid-template-columns:minmax(0,1fr) 124px;grid-template-areas:"when result" "fixture fixture" "more more"}.when{flex-direction:row;gap:8px;align-items:baseline}.fixture{gap:10px}.score{font-size:20px;width:84px;padding:5px 6px}.fixture{gap:8px}.team{font-size:14px}.team{font-size:15px}}
+@media(max-width:600px){.tabs-in{gap:0;flex-wrap:wrap}.nav-search{order:9;flex:1 0 100%;margin:0 0 10px;width:100%}.tabs a{flex:1;text-align:center;padding:13px 4px;font-size:14px}.badge{margin-left:4px;font-size:11px;padding:2px 7px}.long{display:none}.short{display:inline}.match{grid-template-columns:minmax(0,1fr) 124px;grid-template-areas:"when result" "fixture fixture" "more more"}.when{flex-direction:row;gap:8px;align-items:baseline}.fixture{gap:10px}.score{font-size:20px;width:84px;padding:5px 6px}.fixture{gap:8px}.team{font-size:14px}.team{font-size:15px}}
 @media(max-width:700px){.cup-side{grid-template-columns:1fr}}
 @media(max-width:520px){.form-grid{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.comp-title{padding:16px}.goal-row{grid-template-columns:1fr auto}.goal-row .assist{grid-column:1/2;grid-row:2}.series-box{padding:14px}}
 </style>
@@ -165,6 +168,7 @@ dialog h3{margin:0 0 16px;font-size:20px}
 <a href="#serie" data-tab="serie"><span class="long">Seriematcher</span><span class="short">Serie</span><span class="badge" id="badgeSerie"></span></a>
 <a href="#cuper" data-tab="cuper">Cuper<span class="badge" id="badgeCuper"></span></a>
 <a href="#statistik" data-tab="statistik">Statistik</a>
+<input id="search" class="nav-search" type="search" aria-label="Sök lag eller tävling" placeholder="Sök lag eller cup…" autocomplete="off">
 </div>
 </nav>
 <main class="wrap">
@@ -189,7 +193,6 @@ dialog h3{margin:0 0 16px;font-size:20px}
 <section id="tab-cuper" class="tabpanel hidden">
 <div class="section-head"><div><div class="eyebrow dim">Matcher</div><h2>Cuper</h2></div><span class="pill">Klicka på en cup för att visa matcherna</span></div>
 <div class="filters">
-<input id="search" type="search" aria-label="Sök bland cuperna" placeholder="Sök bland cuperna, t.ex. Nacka IBK eller Örebrocupen…">
 <select id="competition" aria-label="Välj cup"><option value="all">Alla cuper</option></select>
 </div>
 <div class="toolbar">
@@ -202,9 +205,8 @@ dialog h3{margin:0 0 16px;font-size:20px}
 
 <!-- Flik 3: Statistik -->
 <section id="tab-statistik" class="tabpanel hidden">
-<div class="section-head">
-  <div><div class="eyebrow dim">Örebro SK</div><h2>Statistik</h2></div>
-  <div class="seg" role="group" aria-label="Urval">
+<div class="section-head" style="display:block"><div><div class="eyebrow dim">Örebro SK</div><h2>Statistik</h2></div>
+  <div class="seg" style="margin-top:14px;width:fit-content" role="group" aria-label="Urval">
     <button type="button" data-scope="all" aria-pressed="true">Alla matcher</button>
     <button type="button" data-scope="serie" aria-pressed="false">Seriespel</button>
     <button type="button" data-scope="cup" aria-pressed="false">Cuper</button>
@@ -352,8 +354,9 @@ const sbConfigured = !SUPABASE_URL.includes('DITT-PROJEKT') && !SUPABASE_ANON_KE
 const sb = (sbConfigured && window.supabase) ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
 let session = null;
 
+const SERIES_NAME='Seriespel 26/27';   // alla seriematcher hör till denna serie
 function fromRow(r, goals){
-  return {id:r.id,competition:r.competition,type:r.type,stage:r.stage||'',home:r.home,away:r.away,
+  return {id:r.id,competition:r.type==='serie'?SERIES_NAME:r.competition,type:r.type,stage:r.stage||'',home:r.home,away:r.away,
     homeGoals:r.home_goals,awayGoals:r.away_goals,date:r.match_date||'',time:(r.match_time||'').slice(0,5),venue:r.venue||'',
     goals:goals||[]};
 }
@@ -414,7 +417,7 @@ function matchRow(m,team,dateFallback){
  const involved=isOur(m.home)||isOur(m.away);
  const r=(involved&&played)?outcomeFor(team,m):'';
  const cls=played?(r?'o-'+r:'o-N'):'o-U';
- const tm=name=>`<div class="team${isOur(name)?' our':''}">${esc(name)}</div>`;
+ const tm=name=>isOur(name)?`<div class="team our"><img class="club-icon" src="icon.png" alt="" onerror="this.remove()">${esc(name)}</div>`:`<div class="team">${esc(name)}</div>`;
  const {d,t}=dateParts(m);
  const when=`<div class="when"><b>${esc(d||dateFallback||'–')}</b>${t?`<span>${esc(t)}</span>`:''}</div>`;
  let pill='';
@@ -482,7 +485,8 @@ function boardCards(players){
 
 /* ===== Rendering ===== */
 function renderSeries(){
- const arr=matches.filter(m=>m.type==='serie').sort(byDateDesc);
+ const q0=searchEl.value.trim().toLowerCase();
+ const arr=matches.filter(m=>m.type==='serie'&&(!q0||(m.home+' '+m.away+' '+m.competition+' '+m.stage).toLowerCase().includes(q0))).sort(byDateDesc);
  const groups={}; arr.forEach(m=>(groups[m.competition]??=[]).push(m));
  $('seriesMatches').innerHTML=arr.length
   ? Object.entries(groups).map(([c,ms])=>{
@@ -490,7 +494,7 @@ function renderSeries(){
      return `<div class="series-comp"><div class="series-title"><h3>${esc(c)}</h3><small>${ms.length} ${ms.length===1?'match':'matcher'}${s.played?` · ${s.w}V ${s.d}O ${s.l}F`:''}</small></div>${ms.map(m=>matchRow(m,OUR)).join('')}</div>`;
     }).join('')
   : `<div class="empty">${loadError?esc(loadError):'Inga seriematcher än. Registrera en match med tävlingstyp Seriespel.'}</div>`;
- renderBoards(leaderboard(arr),'scorerBoard','pointBoard');
+ renderBoards(leaderboard(matches.filter(m=>m.type==='serie')),'scorerBoard','pointBoard');
  $('goalsNote').innerHTML=goalsError?`<div class="msg err">${esc(goalsError)}</div>`:'';
 }
 function rebuildCompetitionFilter(){
@@ -840,7 +844,7 @@ async function login(e){
 }
 
 /* ===== Init ===== */
-searchEl.addEventListener('input',render);
+searchEl.addEventListener('input',()=>{ if(!['serie','cuper'].includes(currentTab())) location.hash='#cuper'; render(); });
 compEl.addEventListener('change',render);
 
 document.addEventListener('click',e=>{
