@@ -92,12 +92,12 @@ details[open] .chev{transform:rotate(45deg)}
 .lb th{text-align:left;font-size:12px;color:var(--muted);padding:6px 6px;border-bottom:1px solid #dde4ee}
 .lb td{padding:7px 6px;border-bottom:1px solid #e6ebf2}
 .lb tr:last-child td{border-bottom:0}
-.lb .n{text-align:right;font-variant-numeric:tabular-nums}.lb .rk{width:30px;color:var(--muted)}
+.lb .n{text-align:center;font-variant-numeric:tabular-nums}.lb .rk{width:30px;color:var(--muted)}
 .lb-card .empty{padding:10px 0}
-.lb{font-size:13px}.lb th,.lb td{padding:6px 4px}.lb th.n,.lb td.n{text-align:right}
+.lb{font-size:13px}.lb th,.lb td{padding:6px 4px}.lb th.n,.lb td.n{text-align:center}
 .lb th[data-sort]{cursor:pointer;user-select:none;white-space:nowrap}.lb th[data-sort]:hover{color:var(--text)}
 .lb th .ar{display:inline-block;width:9px;font-size:9px;margin-left:2px;color:var(--accent)}
-.lb td.nm{min-width:112px}.lb td.nm,.lb td.n{padding-left:4px;padding-right:4px}.lb td.nr{width:34px;color:var(--muted);text-align:right;font-variant-numeric:tabular-nums}
+.lb td.nm{min-width:112px}.lb td.nm,.lb td.n{padding-left:4px;padding-right:4px}.lb td.nr{width:34px;color:var(--muted);text-align:center;font-variant-numeric:tabular-nums}
 .lb-card .lb td.n,.lb-card .lb th.n{font-variant-numeric:tabular-nums}
 .lb-wide{font-size:14px}.lb-wide th,.lb-wide td{padding:9px 8px}
 .lb-foot{font-size:12px;color:var(--muted);margin-top:8px}
@@ -614,10 +614,10 @@ function lbTable(key,rows,cols,defKey,opts={}){
    return k==='name'?`<td class="nm">${esc(p.name)}</td>`:`<td class="n">${k==='p'&&txt!=='–'?`<b>${txt}</b>`:txt}</td>`; }).join('')}${opts.edit?`<td class="n">${p.id?`<button type="button" class="btn ghost small" data-pedit="${esc(p.id)}">Redigera</button>`:''}</td>`:''}</tr>`).join('');
  return `<table class="lb${opts.wide?' lb-wide':''}"><thead><tr>${opts.rank===false?'':'<th class="rk" scope="col">#</th>'}${head}${opts.edit?'<th></th>':''}</tr></thead><tbody>${body}</tbody></table>`;
 }
-const BOARD_COLS=['name','m','g','a','p','ppm','wp'];
+const BOARD_COLS=['name','m','g','a','p','ppm'];
 function boardCard(title,key,arr,baseFn){
  const rows=playerBoard(arr,baseFn,false);
- const inner=rows.length?lbTable(key,rows,BOARD_COLS,'p')+`<div class="lb-foot">M = matcher · P/M = poäng per match · V% = vinster av matcher med registrerad spelartrupp</div>`:'<div class="empty">Inga spelare eller poäng registrerade än.</div>';
+ const inner=rows.length?lbTable(key,rows,BOARD_COLS,'p')+`<div class="lb-foot">M = matcher · P/M = poäng per match</div>`:'<div class="empty">Inga spelare eller poäng registrerade än.</div>';
  return `<div class="lb-card"><h3>${esc(title)}</h3>${inner}</div>`;
 }
 
@@ -723,7 +723,7 @@ function renderStatistik(){
   : '<div class="empty">Inga spelade matcher i urvalet.</div>');
 
  const rows=playerBoard(arr,statScope==='all'?(p=>p.baseSerie+p.baseDm):statScope==='serie'?(p=>p.baseSerie):(p=>p.baseDm),false);
- $('statPointBoard').innerHTML=rows.length?lbTable('stat',rows,BOARD_COLS,'p',{wide:true})+'<div class="foot">M = matcher (tidigare säsongsmatcher från spelartruppen + matcher där spelare lagts in) · P/M = poäng per match · V% = vinster av matcher med registrerad spelartrupp. Klicka på en kolumnrubrik för att sortera.</div>':'<div class="empty">Inga spelare eller poäng registrerade än.</div>';
+ $('statPointBoard').innerHTML=rows.length?lbTable('stat',rows,BOARD_COLS,'p',{wide:true})+'<div class="foot">M = matcher (tidigare säsongsmatcher från spelartruppen + matcher där spelare lagts in) · P/M = poäng per match. Klicka på en kolumnrubrik för att sortera.</div>':'<div class="empty">Inga spelare eller poäng registrerade än.</div>';
  renderTrupp();
 }
 
@@ -733,7 +733,7 @@ function renderTrupp(){
  $('truppMsg').innerHTML=playersError?`<div class="msg err">${esc(playersError)}</div>`:'';
  const rows=playerBoard(matches,p=>p.baseSerie+p.baseDm,true);
  $('truppBoard').innerHTML=rows.length
-  ? lbTable('trupp',rows,['num','name','m','g','a','p','ppm','wp'],'num',{wide:true,rank:false,edit:!!session})+`<div class="foot">${rows.length} spelare. Matcher = seriespel 25/26 + DM 2026 (från truppen) + matcher där spelaren lagts in i en matchregistrering. Mål och assist räknas från registrerade matcher. Klicka på en kolumnrubrik för att sortera.</div>`
+  ? lbTable('trupp',rows,['num','name','m','g','a','p','ppm'],'num',{wide:true,rank:false,edit:!!session})+`<div class="foot">${rows.length} spelare. Matcher = seriespel 25/26 + DM 2026 (från truppen) + matcher där spelaren lagts in i en matchregistrering. Mål och assist räknas från registrerade matcher. Klicka på en kolumnrubrik för att sortera.</div>`
   : '<div class="empty">Inga spelare än.</div>';
 }
 
