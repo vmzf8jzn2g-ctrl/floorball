@@ -70,7 +70,7 @@ details[open] .chev{transform:rotate(45deg)}
 .expand{grid-area:expand;justify-self:center;width:7px;height:7px;margin:3px 0 5px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg);opacity:.5;transition:transform .15s}
 .match.open .expand{transform:rotate(-135deg);margin-top:7px}
 .o-U .score{color:var(--muted);font-weight:500}
-.comp-body{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:14px;align-items:start;padding:6px 14px 20px 0}.comp-matches{min-width:0}
+.comp-body{display:grid;grid-template-columns:minmax(0,1fr) 420px;gap:14px;align-items:start;padding:6px 14px 20px 0}.comp-matches{min-width:0}
 .cup-side{display:grid;gap:14px;margin-top:12px}
 .empty-pad{padding:0}
 .more{grid-area:more;display:none;gap:8px;margin-top:2px}.match.open .more{display:grid}
@@ -83,7 +83,7 @@ details[open] .chev{transform:rotate(45deg)}
 .hidden{display:none !important}
 
 /* Serie-ruta: resultat till vänster, ligor fast uppe till höger */
-.series-box{background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:20px;display:grid;grid-template-columns:minmax(0,1fr) 290px;gap:16px;align-items:start}
+.series-box{background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:20px;display:grid;grid-template-columns:minmax(0,1fr) 440px;gap:16px;align-items:start}
 .series-main{min-width:0}
 .series-title{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin:8px 0 6px}.series-title h3{margin:0;font-size:18px}.series-title small{color:var(--muted)}
 .series-side{position:sticky;top:16px;display:grid;gap:14px;max-height:calc(100vh - 32px);overflow:auto}
@@ -94,6 +94,20 @@ details[open] .chev{transform:rotate(45deg)}
 .lb tr:last-child td{border-bottom:0}
 .lb .n{text-align:right;font-variant-numeric:tabular-nums}.lb .rk{width:30px;color:var(--muted)}
 .lb-card .empty{padding:10px 0}
+.lb{font-size:13px}.lb th,.lb td{padding:6px 4px}.lb th.n,.lb td.n{text-align:right}
+.lb th[data-sort]{cursor:pointer;user-select:none;white-space:nowrap}.lb th[data-sort]:hover{color:var(--text)}
+.lb th .ar{display:inline-block;width:9px;font-size:9px;margin-left:2px;color:var(--accent)}
+.lb td.nm{min-width:112px}.lb td.nm,.lb td.n{padding-left:4px;padding-right:4px}.lb td.nr{width:34px;color:var(--muted);text-align:right;font-variant-numeric:tabular-nums}
+.lb-card .lb td.n,.lb-card .lb th.n{font-variant-numeric:tabular-nums}
+.lb-wide{font-size:14px}.lb-wide th,.lb-wide td{padding:9px 8px}
+.lb-foot{font-size:12px;color:var(--muted);margin-top:8px}
+.lineup{font-size:13px;color:var(--text);background:#f4f7fb;border-radius:10px;padding:8px 12px;line-height:1.5}.lineup b{font-weight:500;color:var(--muted);margin-right:4px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--line);background:#fff;color:var(--text);border-radius:999px;padding:6px 11px;font-size:13px;cursor:pointer}
+.chip b{color:var(--muted);font-weight:500;margin-right:4px}
+.chip[aria-pressed="true"]{background:#eaf2ff;border-color:var(--accent);color:var(--accent2)}
+.chip[aria-pressed="true"] b{color:var(--accent2)}
+.trupp-head{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
 
 /* Statistikfliken */
 .seg{display:flex;max-width:100%;margin:0 auto;background:#e9eef6;border-radius:12px;padding:4px;gap:4px}
@@ -117,7 +131,6 @@ details[open] .chev{transform:rotate(45deg)}
 .tbl tbody tr:last-child td,.tbl tbody tr:last-child th{border-bottom:0}
 .tbl tfoot th,.tbl tfoot td{font-weight:800;background:#f6f8fc;border-bottom:0}
 .pos{color:#166534;font-weight:700}.neg{color:#b91c1c;font-weight:700}
-.lb-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:12px}.lb-row .card{margin-bottom:0}
 
 /* Formulär */
 .panel{background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:20px}
@@ -153,11 +166,11 @@ dialog h3{margin:0 0 16px;font-size:20px}
 
 .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#172033;color:#fff;padding:12px 18px;border-radius:12px;font-size:14px;box-shadow:0 10px 30px rgba(0,0,0,.25);z-index:50}
 
-@media(max-width:1060px){.comp-body{grid-template-columns:1fr;padding:6px 16px 16px}.cup-side{grid-template-columns:1fr 1fr}.series-box{grid-template-columns:1fr}.series-side{position:static;max-height:none;grid-template-columns:1fr 1fr}}
+@media(max-width:1060px){.lb-card{overflow-x:auto}.comp-body{grid-template-columns:1fr;padding:6px 16px 16px}.cup-side{grid-template-columns:1fr 1fr}.series-box{grid-template-columns:1fr}.series-side{position:static;max-height:none;grid-template-columns:1fr 1fr}}
 @media(max-width:800px){.stats{grid-template-columns:repeat(3,1fr)}.login-grid{grid-template-columns:1fr}.series-side{grid-template-columns:1fr}}
 @media(max-width:600px){.tabs-in{gap:0;flex-wrap:wrap}.nav-search{order:9;flex:1 0 100%;margin:0 0 10px;width:100%}.tabs a{flex:1;text-align:center;padding:13px 4px;font-size:14px}.badge{margin-left:4px;font-size:11px;padding:2px 7px}.long{display:none}.short{display:inline}.team{font-size:15px}.score{font-size:19px}}
 @media(max-width:700px){.cup-side{grid-template-columns:1fr}}
-@media(max-width:520px){.form-grid{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.comp-title{padding:16px}.goal-row{grid-template-columns:1fr auto}.goal-row .assist{grid-column:1/2;grid-row:2}.series-box{padding:14px}}
+@media(max-width:520px){.lb-wide{font-size:13px}.lb-wide th,.lb-wide td{padding:8px 3px}.card{padding:14px 12px}.form-grid{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.comp-title{padding:16px}.goal-row{grid-template-columns:1fr auto}.goal-row .assist{grid-column:1/2;grid-row:2}.series-box{padding:14px}}
 </style>
 </head>
 <body>
@@ -172,6 +185,7 @@ dialog h3{margin:0 0 16px;font-size:20px}
 <a href="#serie" data-tab="serie"><span class="long">Seriematcher</span><span class="short">Serie</span><span class="badge" id="badgeSerie"></span></a>
 <a href="#cuper" data-tab="cuper">Cuper<span class="badge" id="badgeCuper"></span></a>
 <a href="#statistik" data-tab="statistik">Statistik</a>
+<a href="#spelartrupp" data-tab="spelartrupp"><span class="long">Spelartrupp</span><span class="short">Trupp</span></a>
 <input id="search" class="nav-search" type="search" aria-label="Sök lag eller tävling" placeholder="Sök lag eller cup…" autocomplete="off">
 </div>
 </nav>
@@ -182,7 +196,7 @@ dialog h3{margin:0 0 16px;font-size:20px}
 <div class="section-head"><div><div class="eyebrow dim">Seriespel</div><h2>Seriematcher</h2></div></div>
 <div id="seriesMatches"></div>
 <div id="goalsNote"></div>
-<p class="note" style="margin-top:12px">Varje säsong har egna tabeller för skytteliga och poängliga. Poäng = mål + assist.</p>
+<p class="note" style="margin-top:12px">Varje säsong har en egen poängliga. Poäng = mål + assist. Klicka på en kolumnrubrik för att sortera.</p>
 </section>
 
 <!-- Flik 2: Cuper -->
@@ -213,10 +227,15 @@ dialog h3{margin:0 0 16px;font-size:20px}
 <div class="records" id="statRecords"></div>
 <div class="card" id="statComps"></div>
 <div class="card" id="statOpp"></div>
-<div class="lb-row">
-  <div class="card"><h3>Skytteliga</h3><div id="statScorerBoard"></div></div>
-  <div class="card"><h3>Poängliga</h3><div id="statPointBoard"></div></div>
-</div>
+<div class="card"><h3>Poängliga</h3><div id="statPointBoard"></div></div>
+</section>
+
+<!-- Flik 4: Spelartrupp -->
+<section id="tab-spelartrupp" class="tabpanel hidden">
+<div class="section-head"><div><div class="eyebrow dim">Örebro SK</div><h2>Spelartrupp</h2></div></div>
+<div class="trupp-head" id="truppHead"></div>
+<div id="truppMsg"></div>
+<div class="card" id="truppBoard"></div>
 </section>
 
 <!-- Flik för administratör (nås via Logga in i sidhuvudet) -->
@@ -298,6 +317,12 @@ dialog h3{margin:0 0 16px;font-size:20px}
           <input id="fTime" type="time" aria-label="Tid">
         </div>
       </div>
+      <div class="field full" id="lineupField">
+        <span class="lbl">Spelare i matchen (Örebro SK)</span>
+        <div class="chips" id="lineupChips"></div>
+        <div class="goal-hint" id="lineupHint"></div>
+        <div><button type="button" class="btn ghost small" id="lineupAll">Markera alla</button> <button type="button" class="btn ghost small" id="lineupNone">Rensa</button></div>
+      </div>
       <div class="field full" id="goalsField">
         <span class="lbl">Målskyttar och assist (Örebro SK)</span>
         <div id="goalRows"></div>
@@ -329,6 +354,24 @@ dialog h3{margin:0 0 16px;font-size:20px}
   <h3>Redigera match</h3>
   <div id="editHost"></div>
 </dialog>
+<dialog id="playerDialog">
+  <h3 id="playerTitle">Spelare</h3>
+  <form id="playerForm" novalidate>
+    <div class="form-grid">
+      <div class="field"><label for="pNumber">Tröjnummer</label><input id="pNumber" type="number" min="0" max="999" step="1" inputmode="numeric"></div>
+      <div class="field"><label for="pName">Namn</label><input id="pName" type="text" autocomplete="off"></div>
+      <div class="field"><label for="pBaseSerie">Matcher seriespel 25/26 (före registrerade matcher)</label><input id="pBaseSerie" type="number" min="0" max="999" step="1" inputmode="numeric"></div>
+      <div class="field"><label for="pBaseDm">Matcher DM 2026 (före registrerade matcher)</label><input id="pBaseDm" type="number" min="0" max="999" step="1" inputmode="numeric"></div>
+    </div>
+    <div class="actions">
+      <button class="btn" type="submit" id="pSave">Spara</button>
+      <button class="btn ghost" type="button" id="pCancel">Avbryt</button>
+      <span class="spacer"></span>
+      <button class="btn danger hidden" type="button" id="pDelete">Ta bort spelare</button>
+    </div>
+    <div id="pMsg"></div>
+  </form>
+</dialog>
 <div class="toast hidden" id="toast"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -342,7 +385,10 @@ const $ = id => document.getElementById(id);
 
 let matches = [];
 let loadError = '';
-let goalsError = '';
+let goalsError='';
+let players=[], playersError='';
+let playersById=new Map(), playerByName=new Map();
+const normName=n=>String(n||'').trim().toLowerCase();
 const openState = new Map();   // användarens val: öppen/stängd per cup
 
 /* ===== Supabase ===== */
@@ -353,20 +399,26 @@ let session = null;
 function fromRow(r, goals){
   return {id:r.id,competition:r.competition,type:r.type,stage:r.stage||'',home:r.home,away:r.away,
     homeGoals:r.home_goals,awayGoals:r.away_goals,date:r.match_date||'',time:(r.match_time||'').slice(0,5),venue:r.venue||'',
-    goals:goals||[]};
+    goals:goals||[],players:[]};
 }
 async function loadRemote(){
   if(!sb){ matches=[]; loadError='Supabase är inte konfigurerat.'; return; }
-  const [mr,gr]=await Promise.all([
+  const [mr,gr,pr,mpr]=await Promise.all([
     sb.from('matches').select('*').order('match_date',{ascending:true,nullsFirst:false}).order('match_time',{ascending:true}),
-    sb.from('match_goals').select('*').order('created_at',{ascending:true})
+    sb.from('match_goals').select('*').order('created_at',{ascending:true}),
+    sb.from('players').select('*').order('number',{ascending:true}),
+    sb.from('match_players').select('*')
   ]);
   if(mr.error){ console.error('Kunde inte hämta matcher:',mr.error.message); matches=[]; loadError='Kunde inte hämta matcher: '+mr.error.message; return; }
   loadError='';
   const by={};
   if(gr.error){ console.error('Kunde inte hämta mål:',gr.error.message); goalsError='Målskyttar kunde inte hämtas ('+gr.error.message+'). Har du kört supabase-goals.sql?'; }
   else { goalsError=''; gr.data.forEach(g=>(by[g.match_id]??=[]).push({id:g.id,scorer:g.scorer,assist:g.assist||''})); }
-  matches=mr.data.map((r,i)=>({...fromRow(r,by[r.id]),_i:i}));
+  const lineups={};
+  if(pr.error||mpr.error){ const e=(pr.error||mpr.error).message; console.error('Kunde inte hämta spelare:',e); players=[]; playersError='Spelartruppen kunde inte hämtas ('+e+'). Har du kört supabase-players.sql?'; }
+  else { playersError=''; players=pr.data.map(r=>({id:r.id,number:r.number,name:r.name,baseSerie:r.base_serie||0,baseDm:r.base_dm||0})); mpr.data.forEach(x=>(lineups[x.match_id]??=[]).push(x.player_id)); }
+  playersById=new Map(players.map(x=>[x.id,x])); playerByName=new Map(players.map(x=>[normName(x.name),x]));
+  matches=mr.data.map((r,i)=>({...fromRow(r,by[r.id]),players:lineups[r.id]||[],_i:i}));
 }
 
 /* ===== Hjälpfunktioner ===== */
@@ -375,7 +427,8 @@ const compEl=$('competition');
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}
 function competitions(list){return [...new Set((list||matches).map(m=>m.competition))]}
 function teams(){return [...new Set(matches.flatMap(m=>[m.home,m.away]))].sort((a,b)=>a.localeCompare(b,'sv'))}
-function playerNames(){return [...new Set(matches.flatMap(m=>m.goals.flatMap(g=>[g.scorer,g.assist]).filter(Boolean)))].sort((a,b)=>a.localeCompare(b,'sv'))}
+function playerNames(){return [...new Set([...players.map(p=>p.name),...matches.flatMap(m=>m.goals.flatMap(g=>[g.scorer,g.assist]).filter(Boolean))])].sort((a,b)=>a.localeCompare(b,'sv'))}
+const lineupNames=ids=>(ids||[]).map(id=>playersById.get(id)).filter(Boolean).sort((a,b)=>(a.number??1e9)-(b.number??1e9)||a.name.localeCompare(b.name,'sv'));
 const isPlayed=m=>m.homeGoals!==null&&m.awayGoals!==null;
 const byDateDesc=(a,b)=>((b.date||'')+(b.time||'')).localeCompare((a.date||'')+(a.time||''))||(b._i||0)-(a._i||0);   // senaste överst, odaterade sist
 const byDate=(a,b)=>((a.date||'9999')+(a.time||'')).localeCompare((b.date||'9999')+(b.time||''));
@@ -478,10 +531,12 @@ function matchRow(m,team,dateFallback){
  else if(!played&&involved) pill=(m.date&&m.date<todayStr())?'<div class="resultcol"><span class="result M">Resultat saknas</span></div>':'<div class="resultcol"><span class="result U">Kommande</span></div>';
  const goals=(m.goals||[]).length
   ? `<div class="goals">${m.goals.map(g=>`<div>${esc(g.scorer)}${g.assist?' ('+esc(g.assist)+')':''}</div>`).join('')}</div>` : '';
+ const lu=lineupNames(m.players);
+ const lineup=lu.length?`<div class="lineup"><b>Spelare (${lu.length})</b>${lu.map(p=>esc((p.number!=null?p.number+' ':'')+p.name)).join(' · ')}</div>`:'';
  const edit=(session&&m.id)?`<button type="button" class="btn ghost small" data-edit="${esc(m.id)}">Redigera</button>`:'';
  const info=[m.stage,m.venue].filter(Boolean).join(' · ');
  const meta=(info||edit)?`<div class="meta">${info?`<span>${esc(info)}</span>`:''}${edit}</div>`:'';
- const more=meta+goals;
+ const more=meta+goals+lineup;
  const key=m.id||(m.competition+'|'+m.home+'|'+m.away+'|'+m.date);
  const open=!!more&&goalsOpen.has(key);
  const hg=played?m.homeGoals:'–', ag=played?m.awayGoals:'–';
@@ -489,7 +544,7 @@ function matchRow(m,team,dateFallback){
  const score=more
   ? `<div class="score">${nums}</div>`
   : `<div class="score">${nums}</div>`;
- const attrs=more?` data-toggle="${esc(key)}" role="button" tabindex="0" aria-expanded="${open}" title="Visa/dölj målskyttar och matchinfo"`:'';
+ const attrs=more?` data-toggle="${esc(key)}" role="button" tabindex="0" aria-expanded="${open}" title="Visa/dölj målskyttar, spelare och matchinfo"`:'';
  return `<div class="match ${cls}${open?' open':''}"${attrs}>${when}${pill}<div class="fixture">${isOur(m.home)?'<div class="hl hl-1"></div>':''}${isOur(m.away)?'<div class="hl hl-2"></div>':''}${tm(m.home,1)}${tm(m.away,2)}${score}</div>${more?`<div class="expand" aria-hidden="true"></div><div class="more">${more}</div>`:''}</div>`;
 }
 function compCard(kind,comp,ms,team,force,defOpen){
@@ -500,42 +555,70 @@ function compCard(kind,comp,ms,team,force,defOpen){
  return `<details class="competition"${open?' open':''}>
   <summary class="comp-title" data-key="${esc(key)}"><div class="comp-left"><span class="chev"></span><h3>${esc(comp)}</h3></div><small>${ms.length} ${ms.length===1?'match':'matcher'}${rec}</small></summary>
   <div class="comp-body"><div class="comp-matches">${ms.map(m=>matchRow(m,team)).join('')}</div>
-   <aside class="cup-side" aria-label="Skytteliga och poängliga i ${esc(comp)}">${boardCards(leaderboard(matches.filter(x=>(kind==='serie'?x.type==='serie':x.type!=='serie')&&x.competition===comp)))}</aside></div>
+   <aside class="cup-side" aria-label="Poängliga i ${esc(comp)}">${boardCard('Poängliga','c:'+key,matches.filter(x=>(kind==='serie'?x.type==='serie':x.type!=='serie')&&x.competition===comp),compBase(kind,comp))}</aside></div>
  </details>`;
 }
 
-/* ===== Skytteliga och poängliga ===== */
-function leaderboard(arr){
- const map=new Map();
- const get=n=>{const name=n.trim(),k=name.toLowerCase(); if(!map.has(k)) map.set(k,{name,g:0,a:0}); return map.get(k);};
- arr.forEach(m=>(m.goals||[]).forEach(x=>{ if(x.scorer&&x.scorer.trim()) get(x.scorer).g++; if(x.assist&&x.assist.trim()) get(x.assist).a++; }));
- return [...map.values()].map(p=>({...p,p:p.g+p.a}));
-}
+/* ===== Poängliga (en tabell: matcher, mål, assist, poäng, poängsnitt, vinst%) ===== */
+const BASE_SERIE_COMP='Seriespel 25/26';
+const cmpName=(a,b)=>a.name.localeCompare(b.name,'sv');
 function ranked(list,keyFn){
  let prev=null,rank=0;
  return list.map((p,i)=>{const k=keyFn(p); if(k!==prev){rank=i+1;prev=k;} return {...p,rank};});
 }
-const cmpName=(a,b)=>a.name.localeCompare(b.name,'sv');
-function boardsHtml(players){
- const sc=ranked(players.filter(p=>p.g>0).sort((a,b)=>b.g-a.g||b.a-a.a||cmpName(a,b)),p=>p.g);
- const scHtml=sc.length
-  ? `<table class="lb"><thead><tr><th class="rk">#</th><th>Spelare</th><th class="n">Mål</th><th class="n">Ass.</th></tr></thead><tbody>${
-     sc.map(p=>`<tr><td class="rk">${p.rank}</td><td>${esc(p.name)}</td><td class="n"><b>${p.g}</b></td><td class="n">${p.a}</td></tr>`).join('')}</tbody></table>`
-  : '<div class="empty">Inga mål registrerade än.</div>';
- const pt=ranked(players.filter(p=>p.p>0).sort((a,b)=>b.p-a.p||b.g-a.g||cmpName(a,b)),p=>p.p+'/'+p.g);
- const ptHtml=pt.length
-  ? `<table class="lb"><thead><tr><th class="rk">#</th><th>Spelare</th><th class="n">Mål</th><th class="n">Ass.</th><th class="n">Poäng</th></tr></thead><tbody>${
-     pt.map(p=>`<tr><td class="rk">${p.rank}</td><td>${esc(p.name)}</td><td class="n">${p.g}</td><td class="n">${p.a}</td><td class="n"><b>${p.p}</b></td></tr>`).join('')}</tbody></table>`
-  : '<div class="empty">Inga poäng registrerade än.</div>';
- return {scHtml,ptHtml};
+// tidigare spelade matcher (från spelartruppen) som läggs till i en tabell
+function compBase(kind,comp){
+ if(kind==='serie') return comp===BASE_SERIE_COMP?(p=>p.baseSerie):(()=>0);
+ return /^DM\b/i.test(comp)?(p=>p.baseDm):(()=>0);
 }
-function renderBoards(players,scorerId,pointId){
- const {scHtml,ptHtml}=boardsHtml(players);
- $(scorerId).innerHTML=scHtml; $(pointId).innerHTML=ptHtml;
+function playerBoard(arr,baseFn,all){
+ const map=new Map();
+ const get=(name,pl)=>{ const k=normName(name); if(!map.has(k)){ pl=pl||playerByName.get(k); map.set(k,{id:pl?pl.id:null,num:pl?pl.number:null,name:pl?pl.name:String(name).trim(),g:0,a:0,base:pl?baseFn(pl):0,lm:0,lp:0,w:0}); } return map.get(k); };
+ players.forEach(pl=>{ if(all||baseFn(pl)>0) get(pl.name,pl); });
+ arr.forEach(m=>{
+  (m.goals||[]).forEach(x=>{ if(x.scorer&&x.scorer.trim()) get(x.scorer).g++; if(x.assist&&x.assist.trim()) get(x.assist).a++; });
+  const res=(isPlayed(m)&&(isOur(m.home)||isOur(m.away)))?outcomeFor(OUR,m):'';
+  (m.players||[]).forEach(id=>{ const pl=playersById.get(id); if(!pl) return; const e=get(pl.name,pl); e.lm++; if(res){ e.lp++; if(res==='W') e.w++; } });
+ });
+ return [...map.values()].map(e=>({...e,m:e.base+e.lm,p:e.g+e.a,ppm:(e.base+e.lm)?(e.g+e.a)/(e.base+e.lm):null,wp:e.lp?e.w/e.lp*100:null}))
+  .filter(e=>all||e.m>0||e.p>0);
 }
-function boardCards(players){
- const {scHtml,ptHtml}=boardsHtml(players);
- return `<div class="lb-card"><h3>Skytteliga</h3>${scHtml}</div><div class="lb-card"><h3>Poängliga</h3>${ptHtml}</div>`;
+const LB_COLS={
+ num:{t:'Nr',tt:'Tröjnummer',v:p=>p.num,asc:true},
+ name:{t:'Spelare',tt:'Namn',v:p=>p.name,asc:true,text:true},
+ m:{t:'M',tt:'Matcher',v:p=>p.m},
+ g:{t:'Mål',tt:'Mål',v:p=>p.g},
+ a:{t:'Ass.',tt:'Assist',v:p=>p.a},
+ p:{t:'Poäng',tt:'Poäng (mål + assist)',v:p=>p.p},
+ ppm:{t:'P/M',tt:'Poängsnitt per match',v:p=>p.ppm,fmt:v=>f2(v)},
+ wp:{t:'V%',tt:'Vinstprocent av matcher med registrerad spelartrupp',v:p=>p.wp,fmt:v=>Math.round(v)+'%'}
+};
+const sortState=new Map();   // tabellnyckel → {k,dir}
+function sortedBoard(key,rows,defKey){
+ const st=sortState.get(key)||{k:defKey,dir:LB_COLS[defKey].asc?1:-1}, c=LB_COLS[st.k];
+ const val=p=>c.v(p), nul=v=>v===null||v===undefined;
+ const out=rows.slice().sort((x,y)=>{
+  const a=val(x), b=val(y);
+  if(nul(a)!==nul(b)) return nul(a)?1:-1;   // saknade värden alltid sist
+  const d=nul(a)?0:(c.text?a.localeCompare(b,'sv'):a-b)*st.dir;
+  return d||(y.p-x.p)||(y.g-x.g)||cmpName(x,y);
+ });
+ let prev,rank=0;
+ return {st,rows:out.map((p,i)=>{ const v=val(p); if(i===0||v!==prev){rank=i+1;prev=v;} return {...p,rank:c.text||st.k==='num'?i+1:rank}; })};
+}
+function lbTable(key,rows,cols,defKey,opts={}){
+ const {st,rows:r}=sortedBoard(key,rows,defKey);
+ const head=cols.map(k=>{ const c=LB_COLS[k], on=st.k===k;
+  return `<th class="${c.text?'':'n'}" data-sort="${k}" data-tbl="${esc(key)}" title="${esc(c.tt)} – klicka för att sortera" aria-sort="${on?(st.dir>0?'ascending':'descending'):'none'}" scope="col">${c.t}<span class="ar" aria-hidden="true">${on?(st.dir>0?'▲':'▼'):''}</span></th>`; }).join('');
+ const body=r.map(p=>`<tr>${opts.rank===false?'':`<td class="rk">${p.rank}</td>`}${cols.map(k=>{ const c=LB_COLS[k], v=c.v(p), txt=(v===null||v===undefined)?'–':(c.fmt?c.fmt(v):v);
+   return k==='name'?`<td class="nm">${esc(p.name)}</td>`:`<td class="n">${k==='p'&&txt!=='–'?`<b>${txt}</b>`:txt}</td>`; }).join('')}${opts.edit?`<td class="n">${p.id?`<button type="button" class="btn ghost small" data-pedit="${esc(p.id)}">Redigera</button>`:''}</td>`:''}</tr>`).join('');
+ return `<table class="lb${opts.wide?' lb-wide':''}"><thead><tr>${opts.rank===false?'':'<th class="rk" scope="col">#</th>'}${head}${opts.edit?'<th></th>':''}</tr></thead><tbody>${body}</tbody></table>`;
+}
+const BOARD_COLS=['name','m','g','a','p','ppm','wp'];
+function boardCard(title,key,arr,baseFn){
+ const rows=playerBoard(arr,baseFn,false);
+ const inner=rows.length?lbTable(key,rows,BOARD_COLS,'p')+`<div class="lb-foot">M = matcher · P/M = poäng per match · V% = vinster av matcher med registrerad spelartrupp</div>`:'<div class="empty">Inga spelare eller poäng registrerade än.</div>';
+ return `<div class="lb-card"><h3>${esc(title)}</h3>${inner}</div>`;
 }
 
 /* ===== Rendering ===== */
@@ -546,7 +629,7 @@ function renderSeries(){
  $('seriesMatches').innerHTML=arr.length
   ? Object.entries(groups).map(([c,ms],i)=>compCard('serie',c,ms,OUR,!!q0,i===0)).join('')
   : `<div class="competition"><div class="empty">${loadError?esc(loadError):(q0?'Inga seriematcher matchar sökningen.':'Inga seriematcher än. Registrera en match med tävlingstyp Seriespel.')}</div></div>`;
- $('goalsNote').innerHTML=goalsError?`<div class="msg err">${esc(goalsError)}</div>`:'';
+ $('goalsNote').innerHTML=(goalsError?`<div class="msg err">${esc(goalsError)}</div>`:'')+(playersError?`<div class="msg err">${esc(playersError)}</div>`:'');
 }
 function rebuildCompetitionFilter(){
  const cur=compEl.value, list=competitions(matches.filter(m=>m.type!=='serie'));
@@ -639,11 +722,23 @@ function renderStatistik(){
      top.map(p=>`<tr><td class="l rk">${p.rank}</td><th scope="row" class="l"><span class="team-cell">${teamHtml(p.name)}</span></th><td class="m">${p.m}</td><td>${p.w}</td><td>${p.d}</td><td>${p.l}</td><td>${p.gf} – ${p.ga}</td></tr>`).join('')}</tbody></table><div class="foot">Lag med lika många möten sorteras alfabetiskt. Matcher som inte är spelade räknas inte.</div>`
   : '<div class="empty">Inga spelade matcher i urvalet.</div>');
 
- renderBoards(leaderboard(arr),'statScorerBoard','statPointBoard');
+ const rows=playerBoard(arr,statScope==='all'?(p=>p.baseSerie+p.baseDm):statScope==='serie'?(p=>p.baseSerie):(p=>p.baseDm),false);
+ $('statPointBoard').innerHTML=rows.length?lbTable('stat',rows,BOARD_COLS,'p',{wide:true})+'<div class="foot">M = matcher (tidigare säsongsmatcher från spelartruppen + matcher där spelare lagts in) · P/M = poäng per match · V% = vinster av matcher med registrerad spelartrupp. Klicka på en kolumnrubrik för att sortera.</div>':'<div class="empty">Inga spelare eller poäng registrerade än.</div>';
+ renderTrupp();
+}
+
+/* ===== Spelartrupp ===== */
+function renderTrupp(){
+ $('truppHead').innerHTML=session&&!playersError?'<button type="button" class="btn" id="addPlayerBtn">+ Lägg till spelare</button>':'';
+ $('truppMsg').innerHTML=playersError?`<div class="msg err">${esc(playersError)}</div>`:'';
+ const rows=playerBoard(matches,p=>p.baseSerie+p.baseDm,true);
+ $('truppBoard').innerHTML=rows.length
+  ? lbTable('trupp',rows,['num','name','m','g','a','p','ppm','wp'],'num',{wide:true,rank:false,edit:!!session})+`<div class="foot">${rows.length} spelare. Matcher = seriespel 25/26 + DM 2026 (från truppen) + matcher där spelaren lagts in i en matchregistrering. Mål och assist räknas från registrerade matcher. Klicka på en kolumnrubrik för att sortera.</div>`
+  : '<div class="empty">Inga spelare än.</div>';
 }
 
 /* ===== Flikar (egna adresser: #serie, #cuper, #statistik, #admin) ===== */
-const TABS=['serie','cuper','statistik','admin'];
+const TABS=['serie','cuper','statistik','spelartrupp','admin'];
 const currentTab=()=>{const h=location.hash.replace('#','');return TABS.includes(h)?h:'serie';};
 function showTab(){
  const t=currentTab();
@@ -668,6 +763,7 @@ const NEW_COMP='__new__';
 const DEFAULTS={type:'cup',competition:'Örebrocupen 2026',stage:'Gruppspel',home:OUR,away:'',hg:0,ag:0,date:'',time:'',venue:'',unplayed:false};
 let editingId=null;
 let goalRows=[];
+let lineup=new Set();
 
 function ensureOption(sel,value,label){
  if(![...sel.options].some(o=>o.value===value)){ const o=document.createElement('option'); o.value=value; o.textContent=label||value; sel.insertBefore(o,sel.options[sel.options.length-(sel.id==='fCompetition'?1:0)]||null); }
@@ -718,7 +814,7 @@ function fillDefaults(){
  $('fDate').value=DEFAULTS.date; $('fTime').value=DEFAULTS.time;
  $('fVenue').value=DEFAULTS.venue;
  $('fUnplayed').checked=DEFAULTS.unplayed;
- goalRows=[]; renderGoalRows();
+ goalRows=[]; renderGoalRows(); lineup=new Set(); renderLineup();
  syncUnplayed(); renderPreview();
 }
 function loadIntoForm(m){
@@ -736,6 +832,7 @@ function loadIntoForm(m){
  $('fDate').value=m.date; $('fTime').value=m.time;
  $('fVenue').value=m.venue;
  goalRows=m.goals.map(g=>({...g}));
+ lineup=new Set(m.players||[]); renderLineup();
  renderGoalRows(); syncUnplayed(); renderPreview();
 }
 function syncUnplayed(){
@@ -761,6 +858,13 @@ const involvesOur=f=>isOur(f.home)||isOur(f.away);
 const ourGoals=f=>isOur(f.home)?f.homeGoals:f.awayGoals;
 const cleanGoals=()=>goalRows.map(g=>({id:g.id,scorer:(g.scorer||'').trim(),assist:(g.assist||'').trim()})).filter(g=>g.scorer||g.assist);
 
+/* Spelare i matchen */
+function renderLineup(){
+ const list=players.slice().sort((a,b)=>(a.number??1e9)-(b.number??1e9)||a.name.localeCompare(b.name,'sv'));
+ $('lineupChips').innerHTML=list.map(p=>`<button type="button" class="chip" data-pl="${esc(p.id)}" aria-pressed="${lineup.has(p.id)}"><b>${p.number??''}</b>${esc(p.name)}</button>`).join('');
+ $('lineupHint').textContent=`${lineup.size} av ${list.length} spelare valda. Varje vald spelare får matchen adderad till sitt antal matcher.`;
+}
+
 /* Målrader */
 function renderGoalRows(){
  $('goalRows').innerHTML=goalRows.map((g,i)=>`<div class="goal-row">
@@ -773,6 +877,7 @@ function renderGoalRows(){
 function updateGoalHint(){
  const f=readForm(), show=involvesOur(f);
  $('goalsField').classList.toggle('hidden',!show);
+ $('lineupField').classList.toggle('hidden',!show||!players.length);
  if(!show) return;
  const reg=cleanGoals().length, ours=Number.isInteger(ourGoals(f))?ourGoals(f):null;
  const h=$('goalHint');
@@ -806,7 +911,7 @@ function renderPreview(){
   competition:f.competition||'—',
   homeGoals:Number.isInteger(f.homeGoals)?f.homeGoals:(f.homeGoals===null?null:0),
   awayGoals:Number.isInteger(f.awayGoals)?f.awayGoals:(f.awayGoals===null?null:0),
-  goals:involvesOur(f)?cleanGoals():[]};
+  goals:involvesOur(f)?cleanGoals():[],players:involvesOur(f)?[...lineup]:[]};
  $('preview').innerHTML=
   `<div style="padding:12px 20px 0;font-size:13px;color:var(--muted)"><b style="color:var(--text)">${esc(m.competition)}</b> · ${f.type==='cup'?'Cup':'Seriespel'}</div>`+
   matchRow(m,OUR,'Datum ej valt');
@@ -850,10 +955,16 @@ async function saveMatch(e){
   const add=goals.filter(g=>!g.id).map(g=>({match_id:matchId,scorer:g.scorer,assist:g.assist||null}));
   if(add.length){ const {error}=await sb.from('match_goals').insert(add); if(error) problems.push(error.message); }
  }
+ if(involvesOur(f)&&!playersError){
+  const old=new Set(editingId?(matches.find(m=>m.id===editingId)?.players||[]):[]);
+  const del=[...old].filter(id=>!lineup.has(id)), add=[...lineup].filter(id=>!old.has(id)).map(id=>({match_id:matchId,player_id:id}));
+  if(del.length){ const {error}=await sb.from('match_players').delete().eq('match_id',matchId).in('player_id',del); if(error) problems.push(error.message); }
+  if(add.length){ const {error}=await sb.from('match_players').insert(add); if(error) problems.push(error.message); }
+ }
  $('saveBtn').disabled=false;
  const wasEditing=!!editingId;
  await loadRemote(); rebuildCompetitionFilter(); render();
- if(problems.length){ showMsg('formMsg','Matchen sparades men målskyttarna kunde inte sparas: '+problems[0],'err'); if(wasEditing){ const m=matches.find(x=>x.id===matchId); if(m){ goalRows=m.goals.map(g=>({...g})); renderGoalRows(); } } return; }
+ if(problems.length){ showMsg('formMsg','Matchen sparades men målskyttar/spelare kunde inte sparas: '+problems[0],'err'); if(wasEditing){ const m=matches.find(x=>x.id===matchId); if(m){ goalRows=m.goals.map(g=>({...g})); renderGoalRows(); } } return; }
  if(wasEditing) $('editDialog').close(); else fillDefaults();
  toast(wasEditing?'Matchen är uppdaterad.':'Matchen är sparad.');
 }
@@ -861,7 +972,7 @@ async function saveMatch(e){
 async function deleteMatch(){
  if(!editingId||!sb||!session) return;
  const m=matches.find(x=>x.id===editingId);
- if(!confirm(`Ta bort matchen ${m?m.home+' – '+m.away:''}? Målskyttarna i matchen tas också bort. Det går inte att ångra.`)) return;
+ if(!confirm(`Ta bort matchen ${m?m.home+' – '+m.away:''}? Målskyttar och spelarlistan i matchen tas också bort. Det går inte att ångra.`)) return;
  $('deleteBtn').disabled=true;
  const {error}=await sb.from('matches').delete().eq('id',editingId);
  $('deleteBtn').disabled=false;
@@ -930,12 +1041,77 @@ document.addEventListener('click',e=>{
  if(sum) openState.set(sum.dataset.key,!sum.parentElement.open);   // klicket sker före själva växlingen
  const tg=e.target.closest('.match[data-toggle]');
  if(tg&&!e.target.closest('button,a,input,select')) toggleMatch(tg);
+ const th=e.target.closest('th[data-sort]');
+ if(th){ const key=th.dataset.tbl,k=th.dataset.sort,cur=sortState.get(key); sortState.set(key,cur&&cur.k===k?{k,dir:-cur.dir}:{k,dir:LB_COLS[k].asc?1:-1}); render(); return; }
+ if(e.target.closest('#addPlayerBtn')) openPlayer(null);
+ const pe=e.target.closest('[data-pedit]'); if(pe) openPlayer(pe.dataset.pedit);
  const b=e.target.closest('[data-edit]');
  if(b) openEdit(b.dataset.edit);
  const sc=e.target.closest('[data-scope]');
  if(sc){ statScope=sc.dataset.scope; renderStatistik(); }
  if(e.target.closest('#hLogout')&&sb) sb.auth.signOut();
 });
+
+$('lineupChips').addEventListener('click',e=>{
+ const b=e.target.closest('[data-pl]'); if(!b) return;
+ const id=b.dataset.pl; lineup.has(id)?lineup.delete(id):lineup.add(id);
+ renderLineup(); renderPreview();
+});
+$('lineupAll').addEventListener('click',()=>{ lineup=new Set(players.map(p=>p.id)); renderLineup(); renderPreview(); });
+$('lineupNone').addEventListener('click',()=>{ lineup=new Set(); renderLineup(); renderPreview(); });
+
+/* Spelare: lägg till, ändra, ta bort */
+let editingPlayer=null;
+function openPlayer(id){
+ if(!session) return;
+ const p=id?playersById.get(id):null;
+ editingPlayer=p?p.id:null;
+ $('playerTitle').textContent=p?'Redigera spelare':'Lägg till spelare';
+ $('pNumber').value=p&&p.number!=null?p.number:''; $('pName').value=p?p.name:'';
+ $('pBaseSerie').value=p?p.baseSerie:0; $('pBaseDm').value=p?p.baseDm:0;
+ $('pDelete').classList.toggle('hidden',!p); showMsg('pMsg','','');
+ $('playerDialog').showModal();
+}
+async function savePlayer(e){
+ e.preventDefault();
+ if(!sb||!session) return;
+ const name=$('pName').value.trim(), numRaw=$('pNumber').value.trim();
+ const num=numRaw===''?null:parseInt(numRaw,10), bs=parseInt($('pBaseSerie').value||'0',10), bd=parseInt($('pBaseDm').value||'0',10);
+ if(!name){ showMsg('pMsg','Ange namn.','err'); return; }
+ if(num!==null&&(!Number.isInteger(num)||num<0||num>999)){ showMsg('pMsg','Tröjnumret måste vara ett heltal.','err'); return; }
+ if(!Number.isInteger(bs)||bs<0||!Number.isInteger(bd)||bd<0){ showMsg('pMsg','Matchantalen måste vara heltal från 0.','err'); return; }
+ const dup=players.find(p=>normName(p.name)===normName(name)&&p.id!==editingPlayer);
+ if(dup){ showMsg('pMsg','Det finns redan en spelare med det namnet.','err'); return; }
+ $('pSave').disabled=true; showMsg('pMsg','Sparar…','info');
+ const row={number:num,name,base_serie:bs,base_dm:bd};
+ let err=null, renameErr=null;
+ if(editingPlayer){
+  const old=playersById.get(editingPlayer);
+  ({error:err}=await sb.from('players').update(row).eq('id',editingPlayer));
+  if(!err&&old&&old.name!==name){   // målskyttar sparas som text, så namnbytet följer med
+   const r1=await sb.from('match_goals').update({scorer:name}).eq('scorer',old.name);
+   const r2=await sb.from('match_goals').update({assist:name}).eq('assist',old.name);
+   renameErr=(r1.error||r2.error)||null;
+  }
+ } else ({error:err}=await sb.from('players').insert(row));
+ $('pSave').disabled=false;
+ if(err){ showMsg('pMsg','Kunde inte spara: '+err.message,'err'); return; }
+ await loadRemote(); rebuildCompetitionFilter(); render(); buildFormOptions(); renderLineup();
+ $('playerDialog').close();
+ toast(renameErr?'Spelaren sparades men målskyttarna kunde inte byta namn: '+renameErr.message:'Spelaren är sparad.');
+}
+async function deletePlayer(){
+ if(!editingPlayer||!sb||!session) return;
+ const p=playersById.get(editingPlayer);
+ if(!confirm(`Ta bort ${p?p.name:'spelaren'}? Hen tas bort från alla matchtrupper. Registrerade mål och assist ligger kvar som text. Det går inte att ångra.`)) return;
+ const {error}=await sb.from('players').delete().eq('id',editingPlayer);
+ if(error){ showMsg('pMsg','Kunde inte ta bort: '+error.message,'err'); return; }
+ await loadRemote(); rebuildCompetitionFilter(); render(); buildFormOptions(); renderLineup();
+ $('playerDialog').close(); toast('Spelaren är borttagen.');
+}
+$('playerForm').addEventListener('submit',savePlayer);
+$('pCancel').addEventListener('click',()=>$('playerDialog').close());
+$('pDelete').addEventListener('click',deletePlayer);
 
 $('matchForm').addEventListener('submit',saveMatch);
 $('matchForm').addEventListener('input',e=>{
