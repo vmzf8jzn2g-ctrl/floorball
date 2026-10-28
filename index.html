@@ -107,8 +107,7 @@ details[open] .chev{transform:rotate(45deg)}
 .chip b{color:var(--muted);font-weight:500;margin-right:4px}
 .chip[aria-pressed="true"]{background:#eaf2ff;border-color:var(--accent);color:var(--accent2)}
 .chip[aria-pressed="true"] b{color:var(--accent2)}
-.plink{display:inline-flex;vertical-align:middle;margin-right:6px}.plink img{width:13px;height:17px;object-fit:contain;display:block}
-.numc{white-space:nowrap}
+.numc{white-space:nowrap;position:relative}.plink{position:absolute;left:2px;top:50%;transform:translateY(-50%);display:flex;align-items:center;line-height:1}.plink img{height:16px;width:auto;display:block}
 .lb td.ps{color:var(--text)}
 .nm[data-pid]{cursor:default}
 .tip{position:fixed;z-index:60;background:#172033;color:#fff;border-radius:12px;padding:10px 12px;font-size:13px;box-shadow:0 10px 30px rgba(0,0,0,.3);max-width:280px;pointer-events:none}
