@@ -114,7 +114,7 @@ details[open] .chev{transform:rotate(45deg)}
 .tip b{display:block;margin-bottom:6px;font-size:13px}.tip ol{margin:0;padding:0;list-style:none}.tip li{display:flex;justify-content:space-between;gap:14px}.tip li span:last-child{color:#9fb4d6}.tip .none{color:#cdd7e8}
 .back{display:inline-block;margin-bottom:10px;color:var(--accent2);font-weight:700;font-size:14px;text-decoration:none}.back:hover{text-decoration:underline}
 .nm a.pl{color:inherit;text-decoration:none}.nm a.pl:hover{color:var(--accent2);text-decoration:underline}
-.ppage-head{display:flex;gap:12px;align-items:baseline;flex-wrap:wrap;margin:2px 0 14px}.ppage-head h2{margin:0}.ppage-head .sub{color:var(--muted);font-size:15px}
+.ppage-head{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:2px 0 14px}.ppage-head h2{margin:0}.ppage-head .sub{color:var(--muted);font-size:15px}
 .pitch{display:grid;gap:10px}.prow{display:grid;grid-template-columns:90px 1fr;gap:10px;align-items:center}.prow>span{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
 .pchips{display:flex;flex-wrap:wrap;gap:8px}
 .pchip{display:inline-flex;align-items:center;gap:6px;background:#f4f7fb;border:1px solid var(--line);border-radius:12px;padding:7px 11px;font-size:14px;color:var(--text);text-decoration:none}
@@ -123,6 +123,12 @@ a.pchip:hover{border-color:var(--accent)}
 .pchip.me{background:#eaf2ff;border-color:var(--accent);color:var(--accent2);font-weight:700}.pchip.me small,.pchip.me b{color:var(--accent2)}
 .pchip.miss{background:transparent;border-style:dashed;color:var(--muted)}
 .formlist{margin-top:10px;font-size:13px;color:var(--muted);display:grid;gap:3px}
+.lb tr.inactive td,.lb tr.inactive a.pl{color:#a3abb9}.lb tr.inactive .plink img{opacity:.45}.lb tr.inactive td b{font-weight:500}
+.pchip.inactive,.chip.inactive{opacity:.5}.chip.inactive{background:#f1f3f6}
+.badge-off{display:inline-block;font-size:12px;font-weight:700;background:#e9ecf1;color:#6b7383;border-radius:999px;padding:3px 10px}
+.ppage-head h2{font-size:clamp(32px,5vw,46px);line-height:1.1}
+.ppage-head.off h2{color:#8b93a3}
+.plink-big{display:inline-flex;align-self:center}.plink-big img{height:clamp(32px,5vw,46px);width:auto;display:block}
 .trupp-head{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
 
 /* Statistikfliken */
@@ -387,6 +393,7 @@ dialog h3{margin:0 0 16px;font-size:20px}
       <div class="field"><label for="pBaseDm">Matcher DM 2026 (före registrerade matcher)</label><input id="pBaseDm" type="number" min="0" max="999" step="1" inputmode="numeric"></div>
       <div class="field"><label for="pPos">Position</label><select id="pPos"><option value="">(ingen)</option><option>Målvakt</option><option>Back</option><option>Center</option><option>Forward</option></select></div>
       <div class="field"><label for="pLink">Länk (valfritt)</label><input id="pLink" type="url" placeholder="https://…" autocomplete="off"></div>
+      <div class="field full"><label class="check"><input id="pInactive" type="checkbox"> Inaktiv spelare (visas utgråad)</label></div>
     </div>
     <div class="actions">
       <button class="btn" type="submit" id="pSave">Spara</button>
@@ -440,8 +447,8 @@ async function loadRemote(){
   if(gr.error){ console.error('Kunde inte hämta mål:',gr.error.message); goalsError='Målskyttar kunde inte hämtas ('+gr.error.message+'). Har du kört supabase-goals.sql?'; }
   else { goalsError=''; gr.data.forEach(g=>(by[g.match_id]??=[]).push({id:g.id,scorer:g.scorer,assist:g.assist||''})); }
   const lineups={};
-  if(pr.error||mpr.error){ const e=(pr.error||mpr.error).message; console.error('Kunde inte hämta spelare:',e); players=[]; playersError='Spelartruppen kunde inte hämtas ('+e+'). Har du kört supabase-players.sql och supabase-players-3.sql?'; }
-  else { playersError=''; players=pr.data.map(r=>({id:r.id,number:r.number,name:r.name,baseSerie:r.base_serie||0,baseDm:r.base_dm||0,pos:r.position||'',link:r.link||''})); mpr.data.forEach(x=>(lineups[x.match_id]??=[]).push(x.player_id)); }
+  if(pr.error||mpr.error){ const e=(pr.error||mpr.error).message; console.error('Kunde inte hämta spelare:',e); players=[]; playersError='Spelartruppen kunde inte hämtas ('+e+'). Har du kört supabase-players.sql, supabase-players-3.sql och supabase-players-4.sql?'; }
+  else { playersError=''; players=pr.data.map(r=>({id:r.id,number:r.number,name:r.name,baseSerie:r.base_serie||0,baseDm:r.base_dm||0,pos:r.position||'',link:r.link||'',active:r.active!==false})); mpr.data.forEach(x=>(lineups[x.match_id]??=[]).push(x.player_id)); }
   playersById=new Map(players.map(x=>[x.id,x])); playerByName=new Map(players.map(x=>[normName(x.name),x]));
   matches=mr.data.map((r,i)=>({...fromRow(r,by[r.id]),players:lineups[r.id]||[],_i:i}));
 }
@@ -598,7 +605,7 @@ function compBase(kind,comp){
 }
 function playerBoard(arr,baseFn,all){
  const map=new Map();
- const get=(name,pl)=>{ const k=normName(name); if(!map.has(k)){ pl=pl||playerByName.get(k); map.set(k,{id:pl?pl.id:null,pos:pl?pl.pos:'',link:pl?pl.link:'',num:pl?pl.number:null,name:pl?pl.name:String(name).trim(),g:0,a:0,base:pl?baseFn(pl):0,lm:0,lp:0,w:0}); } return map.get(k); };
+ const get=(name,pl)=>{ const k=normName(name); if(!map.has(k)){ pl=pl||playerByName.get(k); map.set(k,{id:pl?pl.id:null,pos:pl?pl.pos:'',link:pl?pl.link:'',inactive:pl?!pl.active:false,num:pl?pl.number:null,name:pl?pl.name:String(name).trim(),g:0,a:0,base:pl?baseFn(pl):0,lm:0,lp:0,w:0}); } return map.get(k); };
  players.forEach(pl=>{ if(all||baseFn(pl)>0) get(pl.name,pl); });
  arr.forEach(m=>{
   (m.goals||[]).forEach(x=>{ if(x.scorer&&x.scorer.trim()) get(x.scorer).g++; if(x.assist&&x.assist.trim()) get(x.assist).a++; });
@@ -636,7 +643,7 @@ function lbTable(key,rows,cols,defKey,opts={}){
  const {st,rows:r}=sortedBoard(key,rows,defKey);
  const head=cols.map(k=>{ const c=LB_COLS[k], on=st.k===k;
   return `<th class="${c.text?'':'n'}" data-sort="${k}" data-tbl="${esc(key)}" title="${esc(c.tt)} – klicka för att sortera" aria-sort="${on?(st.dir>0?'ascending':'descending'):'none'}" scope="col">${c.t}<span class="ar" aria-hidden="true">${on?(st.dir>0?'▲':'▼'):''}</span></th>`; }).join('');
- const body=r.map(p=>`<tr>${opts.rank===false?'':`<td class="rk">${p.rank}</td>`}${cols.map(k=>{ const c=LB_COLS[k], v=c.v(p), txt=(v===null||v===undefined)?'–':(c.fmt?c.fmt(v):v);
+ const body=r.map(p=>`<tr${p.inactive?' class="inactive"':''}>${opts.rank===false?'':`<td class="rk">${p.rank}</td>`}${cols.map(k=>{ const c=LB_COLS[k], v=c.v(p), txt=(v===null||v===undefined)?'–':(c.fmt?c.fmt(v):v);
    if(k==='num') return `<td class="n numc">${p.link?`<a class="plink" href="${esc(p.link)}" target="_blank" rel="noopener noreferrer" title="Öppna länk för ${esc(p.name)}"><img src="spelarlank.png" alt="Länk" onerror="this.parentElement.textContent='🔗'"></a>`:''}${txt}</td>`;
    if(k==='pos') return `<td class="ps">${esc(p.pos||'')}</td>`;
    return k==='name'?`<td class="nm"${p.id?` data-pid="${esc(p.id)}"`:''}>${opts.link&&p.id?`<a class="pl" href="#spelare/${esc(p.id)}">${esc(p.name)}</a>`:esc(p.name)}</td>`:`<td class="n">${k==='p'&&txt!=='–'?`<b>${txt}</b>`:txt}</td>`; }).join('')}${opts.edit?`<td class="n">${p.id?`<button type="button" class="btn ghost small" data-pedit="${esc(p.id)}">Redigera</button>`:''}</td>`:''}</tr>`).join('');
@@ -771,7 +778,7 @@ function topNames(map){   // alla med högsta antalet (vid lika)
  let best=0; map.forEach(n=>{ if(n>best) best=n; });
  return {n:best,names:best?[...map.entries()].filter(([,n])=>n===best).map(([k])=>k).sort((a,b)=>a.localeCompare(b,'sv')):[]};
 }
-const chipHtml=(p,n,me)=>`<a class="pchip${me?' me':''}" href="#spelare/${esc(p.id)}"><b>${p.number??''}</b>${esc(p.name)}${n!=null?`<small>${n} ${n===1?'match':'matcher'}</small>`:''}</a>`;
+const chipHtml=(p,n,me)=>`<a class="pchip${me?' me':''}${p.active?'':' inactive'}" href="#spelare/${esc(p.id)}"><b>${p.number??''}</b>${esc(p.name)}${n!=null?`<small>${n} ${n===1?'match':'matcher'}</small>`:''}</a>`;
 function renderPlayerPage(){
  const host=$('playerPage'); if(!host) return;
  if(currentTab()!=='spelare'){ host.innerHTML=''; return; }
@@ -812,7 +819,7 @@ function renderPlayerPage(){
   for(let i=pick.length;i<need;i++) chips.push('<span class="pchip miss">saknas</span>');
   return `<div class="prow"><span>${label}</span><div class="pchips">${chips.join('')}</div></div>`;
  }).join('')+'</div><div class="lb-foot">Spelarna som spelat flest matcher tillsammans med '+esc(pl.name)+', fördelade på 1 målvakt, 4 backar, 2 centrar och 4 forwards. Siffran är gemensamma matcher.</div>';
- host.innerHTML=`<div class="ppage-head"><div><div class="eyebrow dim">Spelare</div><h2>${pl.number!=null?pl.number+' ':''}${esc(pl.name)}</h2></div><span class="sub">${esc(pl.pos||'Position saknas')}</span>${session?`<button type="button" class="btn ghost small" data-pedit="${esc(pl.id)}">Redigera</button>`:''}${pl.link?`<a class="btn ghost small" href="${esc(pl.link)}" target="_blank" rel="noopener noreferrer" style="text-decoration:none">Länk</a>`:''}</div>
+ host.innerHTML=`<div class="ppage-head${pl.active?'':' off'}"><div><div class="eyebrow dim">Spelare</div><h2>${pl.number!=null?pl.number+' ':''}${esc(pl.name)}</h2></div>${pl.link?`<a class="plink-big" href="${esc(pl.link)}" target="_blank" rel="noopener noreferrer" title="Öppna länk för ${esc(pl.name)}"><img src="spelarlank.png" alt="Länk" onerror="this.parentElement.textContent='🔗'"></a>`:''}<span class="sub">${esc(pl.pos||'Position saknas')}</span>${pl.active?'':'<span class="badge-off">Inaktiv</span>'}${session?`<button type="button" class="btn ghost small" data-pedit="${esc(pl.id)}">Redigera</button>`:''}</div>
  ${tiles}${formList?`<div class="card"><h3>Senaste fem matcherna</h3>${formList.replace('class="formlist"','class="formlist" style="margin-top:0"')}</div>`:''}
  <div class="card"><h3>Vanligaste uppställningen</h3>${pitch}</div>
  <div class="records">
@@ -945,7 +952,7 @@ const cleanGoals=()=>goalRows.map(g=>({id:g.id,scorer:(g.scorer||'').trim(),assi
 /* Spelare i matchen */
 function renderLineup(){
  const list=players.slice().sort((a,b)=>(a.number??1e9)-(b.number??1e9)||a.name.localeCompare(b.name,'sv'));
- $('lineupChips').innerHTML=list.map(p=>`<button type="button" class="chip" data-pl="${esc(p.id)}" aria-pressed="${lineup.has(p.id)}"><b>${p.number??''}</b>${esc(p.name)}</button>`).join('');
+ $('lineupChips').innerHTML=list.map(p=>`<button type="button" class="chip${p.active?'':' inactive'}" data-pl="${esc(p.id)}" aria-pressed="${lineup.has(p.id)}"><b>${p.number??''}</b>${esc(p.name)}</button>`).join('');
  $('lineupHint').textContent=`${lineup.size} av ${list.length} spelare valda. Varje vald spelare får matchen adderad till sitt antal matcher.`;
 }
 
@@ -1152,7 +1159,7 @@ function openPlayer(id){
  editingPlayer=p?p.id:null;
  $('playerTitle').textContent=p?'Redigera spelare':'Lägg till spelare';
  $('pNumber').value=p&&p.number!=null?p.number:''; $('pName').value=p?p.name:'';
- $('pPos').value=p?p.pos:''; $('pLink').value=p?p.link:''; $('pBaseSerie').value=p?p.baseSerie:0; $('pBaseDm').value=p?p.baseDm:0;
+ $('pInactive').checked=p?!p.active:false; $('pPos').value=p?p.pos:''; $('pLink').value=p?p.link:''; $('pBaseSerie').value=p?p.baseSerie:0; $('pBaseDm').value=p?p.baseDm:0;
  $('pDelete').classList.toggle('hidden',!p); showMsg('pMsg','','');
  $('playerDialog').showModal();
 }
@@ -1169,7 +1176,7 @@ async function savePlayer(e){
  $('pSave').disabled=true; showMsg('pMsg','Sparar…','info');
  const link=$('pLink').value.trim();
  if(link&&!/^https?:\/\/\S+$/i.test(link)){ showMsg('pMsg','Länken måste börja med http:// eller https://','err'); $('pSave').disabled=false; return; }
- const row={number:num,name,base_serie:bs,base_dm:bd,position:$('pPos').value||null,link:link||null};
+ const row={number:num,name,base_serie:bs,base_dm:bd,position:$('pPos').value||null,active:!$('pInactive').checked,link:link||null};
  let err=null, renameErr=null;
  if(editingPlayer){
   const old=playersById.get(editingPlayer);
