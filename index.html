@@ -112,6 +112,17 @@ details[open] .chev{transform:rotate(45deg)}
 .nm[data-pid]{cursor:default}
 .tip{position:fixed;z-index:60;background:#172033;color:#fff;border-radius:12px;padding:10px 12px;font-size:13px;box-shadow:0 10px 30px rgba(0,0,0,.3);max-width:280px;pointer-events:none}
 .tip b{display:block;margin-bottom:6px;font-size:13px}.tip ol{margin:0;padding:0;list-style:none}.tip li{display:flex;justify-content:space-between;gap:14px}.tip li span:last-child{color:#9fb4d6}.tip .none{color:#cdd7e8}
+.back{display:inline-block;margin-bottom:10px;color:var(--accent2);font-weight:700;font-size:14px;text-decoration:none}.back:hover{text-decoration:underline}
+.nm a.pl{color:inherit;text-decoration:none}.nm a.pl:hover{color:var(--accent2);text-decoration:underline}
+.ppage-head{display:flex;gap:12px;align-items:baseline;flex-wrap:wrap;margin:2px 0 14px}.ppage-head h2{margin:0}.ppage-head .sub{color:var(--muted);font-size:15px}
+.pitch{display:grid;gap:10px}.prow{display:grid;grid-template-columns:90px 1fr;gap:10px;align-items:center}.prow>span{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.pchips{display:flex;flex-wrap:wrap;gap:8px}
+.pchip{display:inline-flex;align-items:center;gap:6px;background:#f4f7fb;border:1px solid var(--line);border-radius:12px;padding:7px 11px;font-size:14px;color:var(--text);text-decoration:none}
+.pchip b{color:var(--muted);font-weight:500;min-width:18px;text-align:right}.pchip small{color:var(--muted);font-size:12px;margin-left:2px}
+a.pchip:hover{border-color:var(--accent)}
+.pchip.me{background:#eaf2ff;border-color:var(--accent);color:var(--accent2);font-weight:700}.pchip.me small,.pchip.me b{color:var(--accent2)}
+.pchip.miss{background:transparent;border-style:dashed;color:var(--muted)}
+.formlist{margin-top:10px;font-size:13px;color:var(--muted);display:grid;gap:3px}
 .trupp-head{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
 
 /* Statistikfliken */
@@ -242,6 +253,12 @@ dialog h3{margin:0 0 16px;font-size:20px}
 <div id="truppMsg"></div>
 <div class="tip hidden" id="tip" role="tooltip"></div>
 <div class="card" id="truppBoard"></div>
+</section>
+
+<!-- Spelarsida (öppnas från Spelartrupp) -->
+<section id="tab-spelare" class="tabpanel hidden">
+<a class="back" href="#spelartrupp">← Till spelartruppen</a>
+<div id="playerPage"></div>
 </section>
 
 <!-- Flik för administratör (nås via Logga in i sidhuvudet) -->
@@ -622,7 +639,7 @@ function lbTable(key,rows,cols,defKey,opts={}){
  const body=r.map(p=>`<tr>${opts.rank===false?'':`<td class="rk">${p.rank}</td>`}${cols.map(k=>{ const c=LB_COLS[k], v=c.v(p), txt=(v===null||v===undefined)?'–':(c.fmt?c.fmt(v):v);
    if(k==='num') return `<td class="n numc">${p.link?`<a class="plink" href="${esc(p.link)}" target="_blank" rel="noopener noreferrer" title="Öppna länk för ${esc(p.name)}"><img src="spelarlank.png" alt="Länk" onerror="this.parentElement.textContent='🔗'"></a>`:''}${txt}</td>`;
    if(k==='pos') return `<td class="ps">${esc(p.pos||'')}</td>`;
-   return k==='name'?`<td class="nm"${p.id?` data-pid="${esc(p.id)}"`:''}>${esc(p.name)}</td>`:`<td class="n">${k==='p'&&txt!=='–'?`<b>${txt}</b>`:txt}</td>`; }).join('')}${opts.edit?`<td class="n">${p.id?`<button type="button" class="btn ghost small" data-pedit="${esc(p.id)}">Redigera</button>`:''}</td>`:''}</tr>`).join('');
+   return k==='name'?`<td class="nm"${p.id?` data-pid="${esc(p.id)}"`:''}>${opts.link&&p.id?`<a class="pl" href="#spelare/${esc(p.id)}">${esc(p.name)}</a>`:esc(p.name)}</td>`:`<td class="n">${k==='p'&&txt!=='–'?`<b>${txt}</b>`:txt}</td>`; }).join('')}${opts.edit?`<td class="n">${p.id?`<button type="button" class="btn ghost small" data-pedit="${esc(p.id)}">Redigera</button>`:''}</td>`:''}</tr>`).join('');
  return `<table class="lb${opts.wide?' lb-wide':''}"><thead><tr>${opts.rank===false?'':'<th class="rk" scope="col">#</th>'}${head}${opts.edit?'<th></th>':''}</tr></thead><tbody>${body}</tbody></table>`;
 }
 const BOARD_COLS=['name','m','g','a','p','ppm'];
@@ -735,7 +752,7 @@ function renderStatistik(){
 
  const rows=playerBoard(arr,statScope==='all'?(p=>p.baseSerie+p.baseDm):statScope==='serie'?(p=>p.baseSerie):(p=>p.baseDm),false);
  $('statPointBoard').innerHTML=rows.length?lbTable('stat',rows,BOARD_COLS,'p',{wide:true})+'<div class="foot">M = matcher (tidigare säsongsmatcher från spelartruppen + matcher där spelare lagts in) · P/M = poäng per match. Klicka på en kolumnrubrik för att sortera.</div>':'<div class="empty">Inga spelare eller poäng registrerade än.</div>';
- renderTrupp();
+ renderTrupp(); renderPlayerPage();
 }
 
 /* ===== Spelartrupp ===== */
@@ -744,22 +761,78 @@ function renderTrupp(){
  $('truppMsg').innerHTML=playersError?`<div class="msg err">${esc(playersError)}</div>`:'';
  const rows=playerBoard(matches,p=>p.baseSerie+p.baseDm,true);
  $('truppBoard').innerHTML=rows.length
-  ? lbTable('trupp',rows,['num','name','pos','m','g','a','p','ppm'],'num',{wide:true,rank:false,edit:!!session})+`<div class="foot">${rows.length} spelare. Matcher = seriespel 25/26 + DM 2026 (från truppen) + matcher där spelaren lagts in i en matchregistrering. Mål och assist räknas från registrerade matcher. Klicka på en kolumnrubrik för att sortera.</div>`
+  ? lbTable('trupp',rows,['num','name','pos','m','g','a','p','ppm'],'num',{wide:true,rank:false,link:true,edit:!!session})+`<div class="foot">${rows.length} spelare. Matcher = seriespel 25/26 + DM 2026 (från truppen) + matcher där spelaren lagts in i en matchregistrering. Mål och assist räknas från registrerade matcher. Klicka på en kolumnrubrik för att sortera.</div>`
   : '<div class="empty">Inga spelare än.</div>';
 }
 
+/* ===== Spelarsida ===== */
+const POS_SLOTS=[['Målvakt',1,'Målvakt'],['Back',4,'Backar'],['Center',2,'Centrar'],['Forward',4,'Forwards']];
+function topNames(map){   // alla med högsta antalet (vid lika)
+ let best=0; map.forEach(n=>{ if(n>best) best=n; });
+ return {n:best,names:best?[...map.entries()].filter(([,n])=>n===best).map(([k])=>k).sort((a,b)=>a.localeCompare(b,'sv')):[]};
+}
+const chipHtml=(p,n,me)=>`<a class="pchip${me?' me':''}" href="#spelare/${esc(p.id)}"><b>${p.number??''}</b>${esc(p.name)}${n!=null?`<small>${n} ${n===1?'match':'matcher'}</small>`:''}</a>`;
+function renderPlayerPage(){
+ const host=$('playerPage'); if(!host) return;
+ if(currentTab()!=='spelare'){ host.innerHTML=''; return; }
+ const id=decodeURIComponent(location.hash.split('/')[1]||''), pl=playersById.get(id);
+ if(!pl){ host.innerHTML=`<div class="card"><div class="empty">${playersError?esc(playersError):'Spelaren hittades inte.'}</div></div>`; return; }
+ const mine=matches.filter(m=>(m.players||[]).includes(id));
+ const res=mine.filter(m=>isPlayed(m)&&(isOur(m.home)||isOur(m.away))).sort(byDate);
+ const out=m=>outcomeFor(OUR,m);
+ const wins=res.filter(m=>out(m)==='W').length;
+ // gemensamma matcher med varje lagkamrat
+ const tog=new Map(); mine.forEach(m=>m.players.forEach(o=>{ if(o!==id) tog.set(o,(tog.get(o)||0)+1); }));
+ // mål och assist från registrerade mål (sparas som namn)
+ const key=normName(pl.name); let g=0,a=0; const toMap=new Map(), fromMap=new Map();
+ matches.forEach(m=>(m.goals||[]).forEach(x=>{
+  const sc=normName(x.scorer), as=normName(x.assist);
+  if(sc===key){ g++; if(as) fromMap.set(as,(fromMap.get(as)||0)+1); }
+  if(as===key){ a++; if(sc) toMap.set(sc,(toMap.get(sc)||0)+1); }
+ }));
+ const nameOf=k=>playerByName.get(k)?.name||k;
+ const who=t=>t.n?`${t.names.map(k=>{const q=playerByName.get(k); return q?`<a href="#spelare/${esc(q.id)}" class="pl" style="color:inherit">${esc(q.name)}</a>`:esc(nameOf(k));}).join(', ')} <small>(${t.n} ${t.n===1?'assist':'assist'})</small>`:'–';
+ const total=pl.baseSerie+pl.baseDm+mine.length;
+ const form=res.slice(-5), letter={W:'V',D:'O',L:'F'};
+ const tiles=`<div class="stats2">
+  <div class="stat"><b>${total}</b><span>Matcher totalt</span></div>
+  <div class="stat"><b>${g} <small>mål</small> · ${a} <small>assist</small></b><span>Poäng: ${g+a}</span></div>
+  <div class="stat"><b>${res.length?Math.round(wins/res.length*100)+'%':'–'}${res.length?` <small>(${wins} av ${res.length})</small>`:''}</b><span>Vinster i matcher med spelaren i laget</span></div>
+  <div class="stat">${form.length?`<div class="dots">${form.map(m=>`<span class="dot ${out(m)}" title="${esc(m.home+' '+m.homeGoals+'–'+m.awayGoals+' '+m.away)}">${letter[out(m)]}</span>`).join('')}</div>`:'<b>–</b>'}<span style="display:block;margin-top:8px">Form, senaste ${form.length||5} matcher (äldst till nyast)</span></div>
+ </div>`;
+ const formList=form.length?`<div class="formlist">${form.slice().reverse().map(m=>{const home=isOur(m.home); return `<div>${esc(dateParts(m).d||'')} · ${esc(m.home)} ${m.homeGoals}–${m.awayGoals} ${esc(m.away)} <b style="color:var(--${out(m)==='W'?'win':out(m)==='L'?'loss':'draw'})">${letter[out(m)]}</b></div>`;}).join('')}</div>`:'';
+ // vanligaste uppställningen med vald spelare
+ let pitch='';
+ if(!pl.pos) pitch='<div class="empty">Ange spelarens position (Redigera i Spelartrupp) för att se uppställningen.</div>';
+ else if(!mine.length) pitch='<div class="empty">Inga matcher med registrerad spelartrupp än.</div>';
+ else pitch='<div class="pitch">'+POS_SLOTS.map(([pos,n,label])=>{
+  const others=players.filter(q=>q.id!==id&&q.pos===pos&&tog.has(q.id)).sort((x,y)=>tog.get(y.id)-tog.get(x.id)||x.name.localeCompare(y.name,'sv'));
+  const need=n-(pl.pos===pos?1:0), pick=others.slice(0,need);
+  const chips=[...(pl.pos===pos?[chipHtml(pl,mine.length,true)]:[]),...pick.map(q=>chipHtml(q,tog.get(q.id)))];
+  for(let i=pick.length;i<need;i++) chips.push('<span class="pchip miss">saknas</span>');
+  return `<div class="prow"><span>${label}</span><div class="pchips">${chips.join('')}</div></div>`;
+ }).join('')+'</div><div class="lb-foot">Spelarna som spelat flest matcher tillsammans med '+esc(pl.name)+', fördelade på 1 målvakt, 4 backar, 2 centrar och 4 forwards. Siffran är gemensamma matcher.</div>';
+ host.innerHTML=`<div class="ppage-head"><div><div class="eyebrow dim">Spelare</div><h2>${pl.number!=null?pl.number+' ':''}${esc(pl.name)}</h2></div><span class="sub">${esc(pl.pos||'Position saknas')}</span>${session?`<button type="button" class="btn ghost small" data-pedit="${esc(pl.id)}">Redigera</button>`:''}${pl.link?`<a class="btn ghost small" href="${esc(pl.link)}" target="_blank" rel="noopener noreferrer" style="text-decoration:none">Länk</a>`:''}</div>
+ ${tiles}${formList?`<div class="card"><h3>Senaste fem matcherna</h3>${formList.replace('class="formlist"','class="formlist" style="margin-top:0"')}</div>`:''}
+ <div class="card"><h3>Vanligaste uppställningen</h3>${pitch}</div>
+ <div class="records">
+  <div class="rec win"><small>Flest assist till</small><b>${who(topNames(toMap))}</b><small>Spelaren som gjort flest mål på ${esc(pl.name)}s assist</small></div>
+  <div class="rec win"><small>Flest assist från</small><b>${who(topNames(fromMap))}</b><small>Spelaren som assisterat ${esc(pl.name)} till flest mål</small></div>
+ </div>`;
+}
+
 /* ===== Flikar (egna adresser: #serie, #cuper, #statistik, #admin) ===== */
-const TABS=['serie','cuper','statistik','spelartrupp','admin'];
-const currentTab=()=>{const h=location.hash.replace('#','');return TABS.includes(h)?h:'serie';};
+const TABS=['serie','cuper','statistik','spelartrupp','spelare','admin'];
+const currentTab=()=>{const h=location.hash.replace('#','').split('/')[0];return TABS.includes(h)?h:'serie';};
 function showTab(){
  const t=currentTab();
  TABS.forEach(id=>$('tab-'+id).classList.toggle('hidden',id!==t));
  document.querySelectorAll('.tabs a[data-tab]').forEach(a=>{
-  if(a.dataset.tab===t) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current');
+  if(a.dataset.tab===(t==='spelare'?'spelartrupp':t)) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current');
  });
 }
 window.addEventListener('hashchange',()=>{
- showTab();
+ showTab(); renderPlayerPage();
  const h=$('siteHeader').offsetHeight;
  if(window.scrollY>h) window.scrollTo(0,h);   // nytt innehåll börjar direkt under flikraden
 });
