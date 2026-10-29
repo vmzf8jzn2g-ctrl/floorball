@@ -110,8 +110,6 @@ details[open] .chev{transform:rotate(45deg)}
 .numc{white-space:nowrap;position:relative}.plink{position:absolute;left:2px;top:50%;transform:translateY(-50%);display:flex;align-items:center;line-height:1}.plink img{height:16px;width:auto;display:block}
 .lb td.ps{color:var(--text)}
 .nm[data-pid]{cursor:default}
-.tip{position:fixed;z-index:60;background:#172033;color:#fff;border-radius:12px;padding:10px 12px;font-size:13px;box-shadow:0 10px 30px rgba(0,0,0,.3);max-width:280px;pointer-events:none}
-.tip b{display:block;margin-bottom:6px;font-size:13px}.tip ol{margin:0;padding:0;list-style:none}.tip li{display:flex;justify-content:space-between;gap:14px}.tip li span:last-child{color:#9fb4d6}.tip .none{color:#cdd7e8}
 .back{display:inline-block;margin-bottom:10px;color:var(--accent2);font-weight:700;font-size:14px;text-decoration:none}.back:hover{text-decoration:underline}
 .nm a.pl{color:inherit;text-decoration:none}.nm a.pl:hover{color:var(--accent2);text-decoration:underline}
 .ppage-head{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:2px 0 14px}.ppage-head h2{margin:0}.ppage-head .sub{color:var(--muted);font-size:15px}
@@ -257,7 +255,6 @@ dialog h3{margin:0 0 16px;font-size:20px}
 <div class="section-head"><div><div class="eyebrow dim">Örebro SK</div><h2>Spelartrupp</h2></div></div>
 <div class="trupp-head" id="truppHead"></div>
 <div id="truppMsg"></div>
-<div class="tip hidden" id="tip" role="tooltip"></div>
 <div class="card" id="truppBoard"></div>
 </section>
 
@@ -1202,28 +1199,6 @@ async function deletePlayer(){
  await loadRemote(); rebuildCompetitionFilter(); render(); buildFormOptions(); renderLineup();
  $('playerDialog').close(); toast('Spelaren är borttagen.');
 }
-/* Mouse-over på spelarnamn: de 10 spelare som spelat flest matcher med spelaren */
-function teammates(pid){
- const cnt=new Map(); let total=0;
- matches.forEach(m=>{ const ps=m.players||[]; if(!ps.includes(pid)) return; total++; ps.forEach(o=>{ if(o!==pid) cnt.set(o,(cnt.get(o)||0)+1); }); });
- const top=[...cnt.entries()].map(([id,n])=>({p:playersById.get(id),n})).filter(x=>x.p)
-  .sort((a,b)=>b.n-a.n||a.p.name.localeCompare(b.p.name,'sv')).slice(0,10);
- return {total,top};
-}
-const tipEl=$('tip');
-function showTip(td){
- const pl=playersById.get(td.dataset.pid); if(!pl) return;
- const {total,top}=teammates(pl.id);
- tipEl.innerHTML=`<b>Flest matcher med ${esc(pl.name)}</b>`+(top.length?`<ol>${top.map(x=>`<li><span>${esc(x.p.name)}</span><span>${x.n} ${x.n===1?'match':'matcher'}</span></li>`).join('')}</ol>`:`<div class="none">${total?'Inga lagkamrater registrerade i hens matcher.':'Inga matcher med registrerad spelartrupp än.'}</div>`);
- tipEl.classList.remove('hidden');
- const r=td.getBoundingClientRect(), t=tipEl.getBoundingClientRect();
- let x=Math.min(r.left+8,innerWidth-t.width-8), y=r.bottom+6;
- if(y+t.height>innerHeight-8) y=Math.max(8,r.top-t.height-6);
- tipEl.style.left=Math.max(8,x)+'px'; tipEl.style.top=y+'px';
-}
-document.addEventListener('mouseover',e=>{ const td=e.target.closest&&e.target.closest('td.nm[data-pid]'); if(td) showTip(td); });
-document.addEventListener('mouseout',e=>{ if(e.target.closest&&e.target.closest('td.nm[data-pid]')) tipEl.classList.add('hidden'); });
-document.addEventListener('scroll',()=>tipEl.classList.add('hidden'),true);
 $('playerForm').addEventListener('submit',savePlayer);
 $('pCancel').addEventListener('click',()=>$('playerDialog').close());
 $('pDelete').addEventListener('click',deletePlayer);
