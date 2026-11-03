@@ -2,7 +2,7 @@
 <html lang="sv">
 <head>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,700;1,900&display=swap" rel="stylesheet">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Innebandyresultat ÖSK Ungdom P13 2026</title>
@@ -127,6 +127,44 @@ a.pchip:hover{border-color:var(--accent)}
 .ppage-head h2{font-size:clamp(32px,5vw,46px);line-height:1.1}
 .ppage-head.off h2{color:#8b93a3}
 .plink-big{display:inline-flex;align-self:center}.plink-big img{height:clamp(32px,5vw,46px);width:auto;display:block}
+
+/* Spelarsida – ljus design */
+.pv{display:grid;grid-template-columns:minmax(230px,350px) minmax(0,1fr);gap:30px;align-items:start;margin-top:4px}
+.pv-photo{position:relative;padding:0 0 0 0}
+.pv-photo::before{content:"";position:absolute;left:-44px;top:30px;width:150px;height:300px;background:repeating-linear-gradient(115deg,#e10613 0 16px,transparent 16px 34px);opacity:.16;border-radius:20px;z-index:0}
+.pv-photo img,.pv-photo .sil{position:relative;z-index:1;display:block;width:100%;aspect-ratio:3/4;object-fit:cover;object-position:50% 12%;border-radius:22px;box-shadow:0 14px 40px rgba(23,32,51,.18);background:#e8ebf1}
+.pv-photo .sil{display:flex;align-items:flex-end;justify-content:center;overflow:hidden}.pv-photo .sil svg{width:80%;height:auto}
+.pv-main{min-width:0;display:grid;gap:18px}
+.pv-title{display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+.pv-num{flex:none;background:#d90000;color:#fff;font-weight:900;font-style:italic;font-size:clamp(54px,8vw,104px);line-height:1;padding:.08em .2em .08em .14em;border-radius:16px;transform:skewX(-9deg);box-shadow:0 8px 20px rgba(217,0,0,.28);min-width:1.5em;text-align:center}
+.pv-num span{display:inline-block;transform:skewX(9deg)}
+.pv-bar{flex:none;width:3px;align-self:stretch;min-height:90px;background:#d90000;transform:skewX(-9deg)}
+.pv-name{display:grid;gap:0;min-width:0;text-transform:uppercase;font-style:italic;font-weight:900;color:#0e1116;line-height:.95}
+.pv-name .f{font-size:clamp(28px,4.2vw,52px)}.pv-name .l{font-size:clamp(38px,6.4vw,82px);overflow-wrap:anywhere}
+.pv-pos{justify-self:start;margin-top:12px;background:#0e1116;color:#fff;font-style:italic;font-weight:900;text-transform:uppercase;font-size:clamp(14px,1.6vw,20px);padding:7px 26px;border-radius:12px;transform:skewX(-9deg)}
+.pv-pos span{display:inline-block;transform:skewX(9deg)}
+.pv-tools{display:flex;gap:10px;align-items:center;margin-top:10px;flex-wrap:wrap}
+.pv.off .pv-name,.pv.off .pv-photo img{filter:grayscale(1);opacity:.7}.pv.off .pv-num{background:#9aa1ad;box-shadow:none}
+.pv-two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.pv-card{background:#fff;border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:16px 20px 18px;min-width:0}
+.pv-ttl{display:flex;align-items:baseline;gap:10px;font-weight:900;font-style:italic;text-transform:uppercase;font-size:18px;margin:0 0 12px}
+.pv-ttl::before{content:"";align-self:center;width:5px;height:20px;background:#d90000;transform:skewX(-14deg);border-radius:2px;flex:none}
+.pv-ttl small{font-weight:500;font-size:13px;text-transform:uppercase}
+.pv-grid{display:grid;grid-template-columns:repeat(4,1fr);text-align:center}
+.pv-grid>div{padding:2px 4px;border-left:1px solid var(--line)}.pv-grid>div:first-child{border-left:0}
+.pv-grid span{display:block;font-size:14px;color:#2b3345;margin-bottom:2px}
+.pv-grid b{display:inline-block;font-size:clamp(26px,3.2vw,40px);font-weight:900;line-height:1.15;font-variant-numeric:tabular-nums}
+.pv-grid b.pt{background:#d90000;color:#fff;border-radius:10px;padding:0 .35em}
+.pv-rows{display:grid;gap:6px}
+.pv-row{display:grid;grid-template-columns:70px minmax(0,1fr) 92px 82px;gap:10px;align-items:center;background:#f4f6fa;border-radius:10px;padding:8px 14px;font-size:16px}
+.pv-row .d{color:#2b3345}.pv-row .o{display:flex;align-items:center;gap:8px;min-width:0}.pv-row .o .tn{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pv-sc{text-align:center;color:#fff;font-weight:800;border-radius:7px;padding:3px 0;font-variant-numeric:tabular-nums}
+.pv-sc.W{background:#22a447}.pv-sc.L{background:#d11a1a}.pv-sc.D{background:#d99a1c}
+.pv-row .ma{text-align:right;color:#2b3345;font-variant-numeric:tabular-nums;white-space:nowrap}
+.pv-empty{color:var(--muted);padding:8px 0}
+.pv-extra{margin-top:18px;display:grid;gap:14px}
+@media(max-width:900px){.pv{grid-template-columns:1fr}.pv-photo{max-width:300px;margin:0 auto;width:100%}.pv-photo::before{display:none}.pv-two{grid-template-columns:1fr}}
+@media(max-width:520px){.pv-title{gap:12px}.pv-bar{display:none}.pv-row{grid-template-columns:52px minmax(0,1fr) 70px 64px;gap:6px;padding:8px 10px;font-size:14px}}
 .trupp-head{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
 
 /* Statistikfliken */
@@ -390,6 +428,7 @@ dialog h3{margin:0 0 16px;font-size:20px}
       <div class="field"><label for="pBaseDm">Matcher DM 2026 (före registrerade matcher)</label><input id="pBaseDm" type="number" min="0" max="999" step="1" inputmode="numeric"></div>
       <div class="field"><label for="pPos">Position</label><select id="pPos"><option value="">(ingen)</option><option>Målvakt</option><option>Back</option><option>Center</option><option>Forward</option></select></div>
       <div class="field"><label for="pLink">Länk (valfritt)</label><input id="pLink" type="url" placeholder="https://…" autocomplete="off"></div>
+      <div class="field full"><label for="pPhoto">Bild (filnamn i samma mapp som index.html, eller bildlänk)</label><input id="pPhoto" type="text" placeholder="t.ex. ErikGohl.jpg" autocomplete="off"></div>
       <div class="field full"><label class="check"><input id="pInactive" type="checkbox"> Inaktiv spelare (visas utgråad)</label></div>
     </div>
     <div class="actions">
@@ -445,7 +484,7 @@ async function loadRemote(){
   else { goalsError=''; gr.data.forEach(g=>(by[g.match_id]??=[]).push({id:g.id,scorer:g.scorer,assist:g.assist||''})); }
   const lineups={};
   if(pr.error||mpr.error){ const e=(pr.error||mpr.error).message; console.error('Kunde inte hämta spelare:',e); players=[]; playersError='Spelartruppen kunde inte hämtas ('+e+'). Har du kört supabase-players.sql, supabase-players-3.sql och supabase-players-4.sql?'; }
-  else { playersError=''; players=pr.data.map(r=>({id:r.id,number:r.number,name:r.name,baseSerie:r.base_serie||0,baseDm:r.base_dm||0,pos:r.position||'',link:r.link||'',active:r.active!==false})); mpr.data.forEach(x=>(lineups[x.match_id]??=[]).push(x.player_id)); }
+  else { playersError=''; players=pr.data.map(r=>({id:r.id,number:r.number,name:r.name,baseSerie:r.base_serie||0,baseDm:r.base_dm||0,pos:r.position||'',link:r.link||'',active:r.active!==false,photo:r.photo||''})); mpr.data.forEach(x=>(lineups[x.match_id]??=[]).push(x.player_id)); }
   playersById=new Map(players.map(x=>[x.id,x])); playerByName=new Map(players.map(x=>[normName(x.name),x]));
   matches=mr.data.map((r,i)=>({...fromRow(r,by[r.id]),players:lineups[r.id]||[],_i:i}));
 }
@@ -776,6 +815,8 @@ function topNames(map){   // alla med högsta antalet (vid lika)
  return {n:best,names:best?[...map.entries()].filter(([,n])=>n===best).map(([k])=>k).sort((a,b)=>a.localeCompare(b,'sv')):[]};
 }
 const chipHtml=(p,n,me)=>`<a class="pchip${me?' me':''}${p.active?'':' inactive'}" href="#spelare/${esc(p.id)}"><b>${p.number??''}</b>${esc(p.name)}${n!=null?`<small>${n} ${n===1?'match':'matcher'}</small>`:''}</a>`;
+const CUR_SEASON='Seriespel 26/27';
+const PV_SIL='<div class="sil"><svg viewBox="0 0 200 260" aria-hidden="true"><path fill="#c3c9d4" d="M100 14c-24 0-40 20-40 46 0 14 4 26 10 34-2 10-6 16-20 22C20 128 6 150 4 190v70h192v-70c-2-40-16-62-46-74-14-6-18-12-20-22 6-8 10-20 10-34 0-26-16-46-40-46z"/></svg></div>';
 function renderPlayerPage(){
  const host=$('playerPage'); if(!host) return;
  if(currentTab()!=='spelare'){ host.innerHTML=''; return; }
@@ -796,15 +837,20 @@ function renderPlayerPage(){
  }));
  const nameOf=k=>playerByName.get(k)?.name||k;
  const who=t=>t.n?`${t.names.map(k=>{const q=playerByName.get(k); return q?`<a href="#spelare/${esc(q.id)}" class="pl" style="color:inherit">${esc(q.name)}</a>`:esc(nameOf(k));}).join(', ')} <small>(${t.n} ${t.n===1?'assist':'assist'})</small>`:'–';
- const total=pl.baseSerie+pl.baseDm+mine.length;
+  const total=pl.baseSerie+pl.baseDm+mine.length;
  const form=res.slice(-5), letter={W:'V',D:'O',L:'F'};
- const tiles=`<div class="stats2">
-  <div class="stat"><b>${total}</b><span>Matcher totalt</span></div>
-  <div class="stat"><b>${g} <small>mål</small> · ${a} <small>assist</small></b><span>Poäng: ${g+a}</span></div>
-  <div class="stat"><b>${res.length?Math.round(wins/res.length*100)+'%':'–'}${res.length?` <small>(${wins} av ${res.length})</small>`:''}</b><span>Vinster i matcher med spelaren i laget</span></div>
-  <div class="stat">${form.length?`<div class="dots">${form.map(m=>`<span class="dot ${out(m)}" title="${esc(m.home+' '+m.homeGoals+'–'+m.awayGoals+' '+m.away)}">${letter[out(m)]}</span>`).join('')}</div>`:'<b>–</b>'}<span style="display:block;margin-top:8px">Form, senaste ${form.length||5} matcher (äldst till nyast)</span></div>
- </div>`;
- const formList=form.length?`<div class="formlist">${form.slice().reverse().map(m=>{const home=isOur(m.home); return `<div>${esc(dateParts(m).d||'')} · ${esc(m.home)} ${m.homeGoals}–${m.awayGoals} ${esc(m.away)} <b style="color:var(--${out(m)==='W'?'win':out(m)==='L'?'loss':'draw'})">${letter[out(m)]}</b></div>`;}).join('')}</div>`:'';
+ // innevarande seriespel (2026/27)
+ const inSeason=m=>m.type==='serie'&&m.competition===CUR_SEASON;
+ let sg=0,sa=0; matches.filter(inSeason).forEach(m=>(m.goals||[]).forEach(x=>{ if(normName(x.scorer)===key) sg++; if(normName(x.assist)===key) sa++; }));
+ const sm=mine.filter(inSeason).length;
+ const statGrid=(m,gg,aa)=>`<div class="pv-grid"><div><span>Matcher</span><b>${m}</b></div><div><span>Mål</span><b>${gg}</b></div><div><span>Assist</span><b>${aa}</b></div><div><span>Poäng</span><b class="pt">${gg+aa}</b></div></div>`;
+ const latest=res.slice(-5).reverse();
+ const rows=latest.map(m=>{ const our=isOur(m.home), gf=our?m.homeGoals:m.awayGoals, ga=our?m.awayGoals:m.homeGoals, opp=our?m.away:m.home, r=out(m);
+  let mg=0,ma=0; (m.goals||[]).forEach(x=>{ if(normName(x.scorer)===key) mg++; if(normName(x.assist)===key) ma++; });
+  return `<div class="pv-row"><span class="d">${esc(dateParts(m).d||'–')}</span><span class="o">${teamHtml(opp)}</span><span class="pv-sc ${r}" title="${esc(m.home+' '+m.homeGoals+'–'+m.awayGoals+' '+m.away)}">${gf} – ${ga}</span><span class="ma">${mg} M&nbsp; ${ma} A</span></div>`; }).join('');
+ const photo=pl.photo?`<img src="${esc(/^https?:\/\//i.test(pl.photo)?pl.photo:encodeURIComponent(pl.photo))}" alt="${esc(pl.name)}" onerror="this.outerHTML=PV_SIL">`:PV_SIL;
+ const parts=pl.name.trim().split(/\s+/), first=parts[0], last=parts.slice(1).join(' ');
+ const tools=(pl.link||!pl.active||session)?`<div class="pv-tools">${pl.link?`<a class="plink-big" href="${esc(pl.link)}" target="_blank" rel="noopener noreferrer" title="Öppna länk för ${esc(pl.name)}"><img src="spelarlank.png" alt="Länk" onerror="this.parentElement.textContent='🔗'"></a>`:''}${pl.active?'':'<span class="badge-off">Inaktiv</span>'}${session?`<button type="button" class="btn ghost small" data-pedit="${esc(pl.id)}">Redigera spelare</button>`:''}</div>`:'';
  // vanligaste uppställningen med vald spelare
  let pitch='';
  if(!pl.pos) pitch='<div class="empty">Ange spelarens position (Redigera i Spelartrupp) för att se uppställningen.</div>';
@@ -816,12 +862,28 @@ function renderPlayerPage(){
   for(let i=pick.length;i<need;i++) chips.push('<span class="pchip miss">saknas</span>');
   return `<div class="prow"><span>${label}</span><div class="pchips">${chips.join('')}</div></div>`;
  }).join('')+'</div><div class="lb-foot">Spelarna som spelat flest matcher tillsammans med '+esc(pl.name)+', fördelade på 1 målvakt, 4 backar, 2 centrar och 4 forwards. Siffran är gemensamma matcher.</div>';
- host.innerHTML=`<div class="ppage-head${pl.active?'':' off'}"><div><div class="eyebrow dim">Spelare</div><h2>${pl.number!=null?pl.number+' ':''}${esc(pl.name)}</h2></div>${pl.link?`<a class="plink-big" href="${esc(pl.link)}" target="_blank" rel="noopener noreferrer" title="Öppna länk för ${esc(pl.name)}"><img src="spelarlank.png" alt="Länk" onerror="this.parentElement.textContent='🔗'"></a>`:''}<span class="sub">${esc(pl.pos||'Position saknas')}</span>${pl.active?'':'<span class="badge-off">Inaktiv</span>'}${session?`<button type="button" class="btn ghost small" data-pedit="${esc(pl.id)}">Redigera</button>`:''}</div>
- ${tiles}${formList?`<div class="card"><h3>Senaste fem matcherna</h3>${formList.replace('class="formlist"','class="formlist" style="margin-top:0"')}</div>`:''}
- <div class="card"><h3>Vanligaste uppställningen</h3>${pitch}</div>
- <div class="records">
-  <div class="rec win"><small>Flest assist till</small><b>${who(topNames(toMap))}</b><small>Spelaren som gjort flest mål på ${esc(pl.name)}s assist</small></div>
-  <div class="rec win"><small>Flest assist från</small><b>${who(topNames(fromMap))}</b><small>Spelaren som assisterat ${esc(pl.name)} till flest mål</small></div>
+  host.innerHTML=`<div class="pv${pl.active?'':' off'}">
+  <div class="pv-photo">${photo}</div>
+  <div class="pv-main">
+   <div><div class="pv-title"><div class="pv-num"><span>${pl.number!=null?esc(pl.number):'–'}</span></div><div class="pv-bar"></div><div class="pv-name"><span class="f">${esc(first)}</span>${last?`<span class="l">${esc(last)}</span>`:''}</div></div>
+    ${pl.pos?`<div class="pv-pos"><span>${esc(pl.pos)}</span></div>`:''}${tools}</div>
+   <div class="pv-two">
+    <div class="pv-card"><h3 class="pv-ttl">Seriesäsong 2026/27</h3>${statGrid(sm,sg,sa)}</div>
+    <div class="pv-card"><h3 class="pv-ttl">Totalt <small>(alla säsonger)</small></h3>${statGrid(total,g,a)}</div>
+   </div>
+   <div class="pv-card"><h3 class="pv-ttl">Senaste 5 matcher</h3>${rows?`<div class="pv-rows">${rows}</div>`:'<div class="pv-empty">Inga matcher med registrerad spelartrupp än.</div>'}</div>
+  </div>
+ </div>
+ <div class="pv-extra">
+  <div class="stats2">
+   <div class="stat"><b>${res.length?Math.round(wins/res.length*100)+'%':'–'}${res.length?` <small>(${wins} av ${res.length})</small>`:''}</b><span>Vinster i matcher med spelaren i laget</span></div>
+   <div class="stat">${form.length?`<div class="dots">${form.map(m=>`<span class="dot ${out(m)}" title="${esc(m.home+' '+m.homeGoals+'–'+m.awayGoals+' '+m.away)}">${letter[out(m)]}</span>`).join('')}</div>`:'<b>–</b>'}<span style="display:block;margin-top:8px">Form, senaste ${form.length||5} matcher (äldst till nyast)</span></div>
+  </div>
+  <div class="card"><h3>Vanligaste uppställningen</h3>${pitch}</div>
+  <div class="records">
+   <div class="rec win"><small>Flest assist till</small><b>${who(topNames(toMap))}</b><small>Spelaren som gjort flest mål på ${esc(pl.name)}s assist</small></div>
+   <div class="rec win"><small>Flest assist från</small><b>${who(topNames(fromMap))}</b><small>Spelaren som assisterat ${esc(pl.name)} till flest mål</small></div>
+  </div>
  </div>`;
 }
 
@@ -1156,7 +1218,7 @@ function openPlayer(id){
  editingPlayer=p?p.id:null;
  $('playerTitle').textContent=p?'Redigera spelare':'Lägg till spelare';
  $('pNumber').value=p&&p.number!=null?p.number:''; $('pName').value=p?p.name:'';
- $('pInactive').checked=p?!p.active:false; $('pPos').value=p?p.pos:''; $('pLink').value=p?p.link:''; $('pBaseSerie').value=p?p.baseSerie:0; $('pBaseDm').value=p?p.baseDm:0;
+ $('pInactive').checked=p?!p.active:false; $('pPhoto').value=p?p.photo:''; $('pPos').value=p?p.pos:''; $('pLink').value=p?p.link:''; $('pBaseSerie').value=p?p.baseSerie:0; $('pBaseDm').value=p?p.baseDm:0;
  $('pDelete').classList.toggle('hidden',!p); showMsg('pMsg','','');
  $('playerDialog').showModal();
 }
@@ -1174,6 +1236,8 @@ async function savePlayer(e){
  const link=$('pLink').value.trim();
  if(link&&!/^https?:\/\/\S+$/i.test(link)){ showMsg('pMsg','Länken måste börja med http:// eller https://','err'); $('pSave').disabled=false; return; }
  const row={number:num,name,base_serie:bs,base_dm:bd,position:$('pPos').value||null,active:!$('pInactive').checked,link:link||null};
+ const photoV=$('pPhoto').value.trim(), oldP=editingPlayer?playersById.get(editingPlayer):null;
+ if(photoV||(oldP&&oldP.photo)) row.photo=photoV||null;   // kolumnen skickas bara när den används
  let err=null, renameErr=null;
  if(editingPlayer){
   const old=playersById.get(editingPlayer);
