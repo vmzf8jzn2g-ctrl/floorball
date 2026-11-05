@@ -162,6 +162,13 @@ a.pchip:hover{border-color:var(--accent)}
 .pv-row .ma{text-align:right;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
 .pv-empty{color:var(--muted);padding:8px 0}
 .pv-bottom{margin-top:16px}
+.tp-sec{margin:0 0 22px}.tp-sec .pv-ttl{font-size:18px}.tp-sec .pv-ttl small{font-size:13px}
+.tp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:14px}
+.tp{display:flex;flex-direction:column;align-items:center;text-align:center;gap:2px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px 8px 12px;text-decoration:none;color:var(--text);box-shadow:var(--shadow)}
+.tp:hover{border-color:var(--accent)}
+.tp-img{width:76px;height:76px;border-radius:50%;background:#e8ebf1;overflow:hidden;display:flex;align-items:flex-end;justify-content:center;margin-bottom:6px}
+.tp-img img{width:100%;height:100%;object-fit:cover;object-position:50% 8%}.tp-sil{width:70%;height:auto}
+.tp b{font-size:15px;font-weight:900;color:#d90000;line-height:1.2}.tp-n{font-size:14px;line-height:1.25;overflow-wrap:anywhere}
 @media(max-width:900px){.pv{grid-template-columns:1fr;align-items:start}.pv-photo{max-width:200px;margin:0 auto}.pv-two{grid-template-columns:1fr}}
 @media(max-width:520px){.pv-title{gap:12px}.pv-bar{display:none}.pv-row{grid-template-columns:52px minmax(0,1fr) 70px 64px;gap:6px;padding:8px 10px;font-size:14px}}
 .trupp-head{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
@@ -292,7 +299,7 @@ dialog h3{margin:0 0 16px;font-size:20px}
 <div class="section-head"><div><div class="eyebrow dim">Örebro SK</div><h2>Spelartrupp</h2></div></div>
 <div class="trupp-head" id="truppHead"></div>
 <div id="truppMsg"></div>
-<div class="card" id="truppBoard"></div>
+<div id="truppBoard"></div>
 </section>
 
 <!-- Spelarsida (öppnas från Spelartrupp) -->
@@ -303,6 +310,7 @@ dialog h3{margin:0 0 16px;font-size:20px}
 
 <!-- Flik för administratör (nås via Logga in i sidhuvudet) -->
 <section id="tab-admin" class="tabpanel hidden">
+<div id="adminPlayers"></div>
 <div class="section-head">
   <div><div class="eyebrow" style="color:var(--muted)">Administratör</div><h2>Registrera match</h2></div>
   <div class="authbar" id="authBar"></div>
@@ -799,13 +807,20 @@ function renderStatistik(){
 
 /* ===== Spelartrupp ===== */
 function renderTrupp(){
- $('truppHead').innerHTML=session&&!playersError?'<button type="button" class="btn" id="addPlayerBtn">+ Lägg till spelare</button>':'';
+ $('truppHead').innerHTML='';
+ const ap=$('adminPlayers');
+ if(ap) ap.innerHTML=session&&!playersError?`<div class="card" style="margin-top:16px"><h3>Spelare</h3><p class="note" style="margin:0 0 10px">Lägg till eller ändra spelare, position, bild och aktiv/inaktiv. Spelartruppen visar bara aktiva spelare.</p><div style="margin-bottom:12px"><button type="button" class="btn" id="addPlayerBtn">+ Lägg till spelare</button></div><div class="chips">${players.slice().sort((a,b)=>(a.number??1e9)-(b.number??1e9)||a.name.localeCompare(b.name,'sv')).map(p=>`<button type="button" class="chip${p.active?'':' inactive'}" data-pedit="${esc(p.id)}"><b>${p.number??''}</b>${esc(p.name)}${p.active?'':' (inaktiv)'}</button>`).join('')}</div></div>`:'';
  $('truppMsg').innerHTML=playersError?`<div class="msg err">${esc(playersError)}</div>`:'';
- const rows=playerBoard(matches,p=>p.baseSerie+p.baseDm,true);
- $('truppBoard').innerHTML=rows.length
-  ? lbTable('trupp',rows,['num','name','pos','m','g','a','p','ppm'],'num',{wide:true,rank:false,link:true,edit:!!session})+`<div class="foot">${rows.length} spelare. Matcher = seriespel 25/26 + DM 2026 (från truppen) + matcher där spelaren lagts in i en matchregistrering. Mål och assist räknas från registrerade matcher. Klicka på en kolumnrubrik för att sortera.</div>`
-  : '<div class="empty">Inga spelare än.</div>';
+ const act=players.filter(p=>p.active).sort((a,b)=>(a.number??1e9)-(b.number??1e9)||a.name.localeCompare(b.name,'sv'));
+ const groups=[['Målvakt','Målvakter'],['Back','Backar'],['Center','Centrar'],['Forward','Forwards']].map(([k,l])=>[l,act.filter(p=>p.pos===k)]);
+ const rest=act.filter(p=>!['Målvakt','Back','Center','Forward'].includes(p.pos));
+ if(rest.length) groups.push(['Position saknas',rest]);
+ const tile=p=>`<a class="tp" href="#spelare/${esc(p.id)}"><span class="tp-img">${p.photo?`<img src="${esc(/^https?:\/\//i.test(p.photo)?p.photo:encodeURIComponent(p.photo))}" alt="" loading="lazy" onerror="this.outerHTML=TP_SIL">`:TP_SIL}</span><b>${p.number!=null?esc(p.number):''}</b><span class="tp-n">${esc(p.name)}</span></a>`;
+ $('truppBoard').innerHTML=act.length
+  ? groups.filter(([,l])=>l.length).map(([t,l])=>`<section class="tp-sec"><h3 class="pv-ttl">${esc(t)} <small>${l.length}</small></h3><div class="tp-grid">${l.map(tile).join('')}</div></section>`).join('')
+  : `<div class="card"><div class="empty">${playersError?'':'Inga aktiva spelare än.'}</div></div>`;
 }
+const TP_SIL='<svg class="tp-sil" viewBox="0 0 200 260" aria-hidden="true"><path fill="#c3c9d4" d="M100 14c-24 0-40 20-40 46 0 14 4 26 10 34-2 10-6 16-20 22C20 128 6 150 4 190v70h192v-70c-2-40-16-62-46-74-14-6-18-12-20-22 6-8 10-20 10-34 0-26-16-46-40-46z"/></svg>';
 
 /* ===== Spelarsida ===== */
 const POS_SLOTS=[['Målvakt',1,'Målvakt'],['Back',4,'Backar'],['Center',2,'Centrar'],['Forward',4,'Forwards']];
@@ -872,7 +887,8 @@ function renderPlayerPage(){
    </div>
    <div class="pv-card"><h3 class="pv-ttl">Senaste 5 matcher</h3>${rows?`<div class="pv-rows">${rows}</div>`:'<div class="pv-empty">Inga matcher med registrerad spelartrupp än.</div>'}</div>
   </div>
- </div>`;
+ </div>
+ <div class="pv-card pv-bottom"><h3 class="pv-ttl">Vanligaste uppställningen</h3>${pitch}</div>`;
 }
 
 /* ===== Flikar (egna adresser: #serie, #cuper, #statistik, #admin) ===== */
