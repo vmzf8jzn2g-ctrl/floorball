@@ -108,6 +108,7 @@ details[open] .chev{transform:rotate(45deg)}
 .lb-card .lb td.n,.lb-card .lb th.n{font-variant-numeric:tabular-nums}
 .lb-wide{font-size:14px}.lb-wide th,.lb-wide td{padding:9px 8px}
 .lb-foot{font-size:12px;color:var(--muted);margin-top:8px}
+.lu-row{display:grid;grid-template-columns:78px minmax(0,1fr);gap:8px;margin-top:4px}.lu-l{color:var(--muted)}.lineup .gh{margin-bottom:3px}
 .lineup{font-size:13px;color:var(--text);background:#f4f7fb;border-radius:10px;padding:8px 12px;line-height:1.5}.lineup b{font-weight:500;color:var(--muted);margin-right:4px}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
 .chip{border:1px solid var(--line);background:#fff;color:var(--text);border-radius:999px;padding:6px 11px;font-size:13px;cursor:pointer}
@@ -622,14 +623,16 @@ function matchRow(m,team,dateFallback){
  const goals=(m.goals||[]).length
   ? `<div class="goals"><div class="gh">Mål (assist)</div>${m.goals.map(g=>`<div>${esc(g.scorer)}${g.assist?' ('+esc(g.assist)+')':''}</div>`).join('')}</div>` : '';
  const lu=lineupNames(m.players);
- const lineup=lu.length?`<div class="lineup"><b>Spelare (${lu.length})</b>${lu.map(p=>esc((p.number!=null?p.number+' ':'')+p.name)).join(' · ')}</div>`:'';
+ const luGroups=[['Målvakt','Målvakter'],['Back','Backar'],['Center','Centrar'],['Forward','Forwards'],['','Övriga']];
+ const luRows=luGroups.map(([k,l])=>[l,lu.filter(p=>k?p.pos===k:!['Målvakt','Back','Center','Forward'].includes(p.pos))]).filter(([,x])=>x.length);
+ const lineup=lu.length?`<div class="lineup"><div class="gh">Spelare (${lu.length})</div>${luRows.map(([l,x])=>`<div class="lu-row"><span class="lu-l">${l}</span><span>${x.map(p=>esc((p.number!=null?p.number+' ':'')+p.name)).join(' · ')}</span></div>`).join('')}</div>`:'';
  const edit=(session&&m.id)?`<button type="button" class="btn ghost small" data-edit="${esc(m.id)}">Redigera</button>`:'';
  const info=[m.stage].filter(Boolean).join(' · ');
  const meta=(info||edit)?`<div class="meta">${info?`<span>${esc(info)}</span>`:''}${edit}</div>`:'';
  const prevM=previousMeetings(m);
  const prev=prevM.length?`<div class="prev"><div class="gh">Tidigare möten</div>${prevM.map(x=>{ const r2=outcomeFor(team||OUR,x); const dl=x.date?new Date(x.date+'T12:00:00').toLocaleDateString('sv-SE',{day:'numeric',month:'short',year:'numeric'}).replace('.',''):''; const nm=n=>isOur(n)?`<span class="pn our">${esc(n)}</span>`:`<span class="pn">${esc(n)}</span>`;
    return `<div class="pr">${nm(x.home)}<span class="sep">-</span>${nm(x.away)}${dl?`<span class="pd">${esc(dl)}</span>`:''}<span class="ps ${r2}">${x.homeGoals}–${x.awayGoals}</span></div>`; }).join('')}</div>`:'';
- const more=meta+goals+prev+lineup;
+ const more=meta+prev+goals+lineup;
  const key=m.id||(m.competition+'|'+m.home+'|'+m.away+'|'+m.date);
  const open=!!more&&goalsOpen.has(key);
  const hg=played?m.homeGoals:'–', ag=played?m.awayGoals:'–';
