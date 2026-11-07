@@ -10,7 +10,8 @@
 <style>
 :root{--bg:#f4f7fb;--card:#fff;--text:#172033;--muted:#697386;--line:#e5e9f0;--accent:#1769e0;--accent2:#0b4fb3;--win:#15803d;--loss:#dc2626;--draw:#b7791f;--shadow:0 8px 28px rgba(23,32,51,.07)}
 *{box-sizing:border-box}button,input,select,textarea{font-family:inherit} body{margin:0;font-family:Roboto,system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}
-header{background:#080a07;color:white;padding:10px 20px 16px;text-align:center}
+header{background:#080a07 url(banner.jpg) 28% 60%/cover no-repeat;color:white;padding:10px 20px 0;text-align:center;position:relative;height:clamp(190px,25vw,330px);box-sizing:border-box}
+header .hero,header .eyebrow{display:none}header h1{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 .hero{display:flex;justify-content:center}
 .hero img{display:block;margin-top:-18px;height:clamp(100px,14vw,130px);width:auto;max-width:100%;object-fit:contain;-webkit-mask-image:radial-gradient(ellipse closest-side,#000 80%,transparent 100%);mask-image:radial-gradient(ellipse closest-side,#000 80%,transparent 100%)}
 .wrap{max-width:1120px;margin:auto}.eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:12px;font-weight:800;opacity:.75}
@@ -19,7 +20,7 @@ h1{font-size:clamp(28px,4.5vw,40px);margin:4px 0 0;line-height:1.15}
 .header-auth{display:flex;gap:8px}
 .hbtn{font:inherit;font-size:13px;font-weight:700;color:#cfd8d2;background:transparent;border:1px solid #2a352e;border-radius:10px;padding:7px 14px;cursor:pointer;text-decoration:none}
 .hbtn:hover{background:#141a15}
-.tabs{background:#080a07;position:sticky;top:0;z-index:20;border-bottom:1px solid #151d17}
+.tabs{background:rgba(8,10,7,.72);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);margin-top:-53px;position:sticky;top:0;z-index:20;border-bottom:1px solid #151d17}
 .tabs-in{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;max-width:1120px;margin:0 auto;padding:0 12px}
 .tabs-in{align-items:center}.nav-search{margin-left:auto;width:230px;max-width:100%;border:1px solid #2a352e;background:#121812;color:#fff;border-radius:10px;padding:8px 12px;font-size:14px;box-shadow:none}.nav-search::placeholder{color:#8c978f}.nav-search:focus{outline:2px solid #4d9bff;outline-offset:1px}
 .tabs a{padding:14px 22px;font-size:15px;font-weight:700;color:#aab5ae;border-bottom:3px solid transparent;text-decoration:none}
@@ -171,6 +172,7 @@ a.pchip:hover{border-color:var(--accent)}
 .tp b{font-size:15px;font-weight:900;color:#d90000;line-height:1.2}.tp-n{font-size:14px;line-height:1.25;overflow-wrap:anywhere}
 @media(max-width:900px){.pv{grid-template-columns:1fr;align-items:start}.pv-photo{max-width:200px;margin:0 auto}.pv-two{grid-template-columns:1fr}}
 @media(max-width:520px){.pv-title{gap:12px}.pv-bar{display:none}.pv-row{grid-template-columns:52px minmax(0,1fr) 70px 64px;gap:6px;padding:8px 10px;font-size:14px}}
+.serie-links ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}.serie-links a{color:var(--accent2);font-weight:700;text-decoration:none}.serie-links a:hover{text-decoration:underline}.serie-links a::after{content:' ↗';font-weight:400}
 .trupp-head{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
 
 /* Statistikfliken */
@@ -630,9 +632,11 @@ function compCard(kind,comp,ms,team,force,defOpen){
  return `<details class="competition"${open?' open':''}>
   <summary class="comp-title" data-key="${esc(key)}"><div class="comp-left"><span class="chev"></span><h3>${esc(comp)}</h3></div><small>${ms.length} ${ms.length===1?'match':'matcher'}${rec}</small></summary>
   <div class="comp-body"><div class="comp-matches">${ms.map(m=>matchRow(m,team)).join('')}</div>
-   <aside class="cup-side" aria-label="Poängliga i ${esc(comp)}">${boardCard('Poängliga','c:'+key,matches.filter(x=>(kind==='serie'?x.type==='serie':x.type!=='serie')&&x.competition===comp),compBase(kind,comp))}</aside></div>
+   <aside class="cup-side" aria-label="Poängliga i ${esc(comp)}">${boardCard('Poängliga','c:'+key,matches.filter(x=>(kind==='serie'?x.type==='serie':x.type!=='serie')&&x.competition===comp),compBase(kind,comp))}${kind==='serie'&&comp===CUR_SEASON?SERIE_LINKS:''}</aside></div>
  </details>`;
 }
+
+const SERIE_LINKS=`<div class="lb-card serie-links"><h3>Serietabeller</h3><ul>${[['Pantamera PK4 - ÖLIBF','https://stats.innebandy.se/sasong/44/serie/44891/serietabell'],['Pantamera PK4 - VIBF 2','https://stats.innebandy.se/sasong/44/serie/44795/serietabell']].map(([t,u])=>`<li><a href="${u}" target="_blank" rel="noopener noreferrer">${t}</a></li>`).join('')}</ul></div>`;
 
 /* ===== Poängliga (en tabell: matcher, mål, assist, poäng, poängsnitt, vinst%) ===== */
 const BASE_SERIE_COMP='Seriespel 25/26';
