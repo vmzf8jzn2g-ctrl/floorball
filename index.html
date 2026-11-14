@@ -83,7 +83,7 @@ details[open] .chev{transform:rotate(45deg)}
 .pr{display:flex;align-items:center;gap:6px;flex-wrap:wrap;line-height:1.3}.pr+.pr{margin-top:4px}
 .pr .pn{padding:2px 8px;margin:0 -2px;border-radius:6px}.pr .pn.our{background:#e9edf3}.pr .sep{color:var(--muted)}
 .pr .pd{color:var(--muted);margin-left:8px}.pr .ps{font-weight:700;font-variant-numeric:tabular-nums;margin-left:4px}
-.pr .ps.W{color:var(--win)}.pr .ps.L{color:var(--loss)}.pr .ps.D{color:var(--draw)}
+.pr .ps.U{color:var(--muted);font-weight:500}.pr .ps.W{color:var(--win)}.pr .ps.L{color:var(--loss)}.pr .ps.D{color:var(--draw)}
 .resultcol{grid-area:when;justify-self:end;width:96px;display:flex;justify-content:center;align-items:center;pointer-events:none}.result{font-size:11px;font-weight:700;letter-spacing:.02em;text-align:center;border-radius:999px;padding:3px 10px;white-space:nowrap}.W{background:#dcfce7;color:var(--win)}.L{background:#fee2e2;color:var(--loss)}.D{background:#fef3c7;color:var(--draw)}.U{background:#eaf2ff;color:var(--accent2)}.M{background:#ffedd5;color:#c2410c}
 .empty{padding:30px 20px;color:var(--muted)}
 .note{margin-top:26px;color:var(--muted);font-size:13px}
@@ -162,6 +162,9 @@ a.pchip:hover{border-color:var(--accent)}
 .pv-grid span{display:block;font-size:13px;color:var(--muted);margin-bottom:2px}
 .pv-grid b{display:inline-block;font-size:clamp(24px,3vw,34px);font-weight:900;line-height:1.15;font-variant-numeric:tabular-nums}
 .pv-grid b.pt{background:#d90000;color:#fff;border-radius:10px;padding:0 .35em}
+.pv-tabs{display:flex;justify-content:space-between;gap:12px;margin:0 0 12px;border-bottom:1px solid var(--line)}
+.pv-tab{border:0;background:none;font:inherit;font-weight:900;text-transform:uppercase;font-size:16px;letter-spacing:.02em;color:var(--muted);padding:0 0 8px;margin-bottom:-1px;border-bottom:3px solid transparent;cursor:pointer}
+.pv-tab:hover{color:var(--text)}.pv-tab.on{color:var(--text);border-bottom-color:#d90000}
 .pv-rows{display:grid;gap:6px}
 .pv-row{display:grid;grid-template-columns:70px minmax(0,1fr) 92px 82px;gap:10px;align-items:center;background:#f4f6fa;border-radius:10px;padding:8px 14px;font-size:15px}
 .pv-row .d{color:var(--muted)}.pv-row .o{display:flex;align-items:center;gap:8px;min-width:0}.pv-row .o .tn{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -602,12 +605,12 @@ function dateParts(m){
  return {d:d.toLocaleDateString('sv-SE',{day:'numeric',month:'short'}).replace('.',''),t:m.time||''};
 }
 const goalsOpen=new Set();   // matcher vars målskyttar användaren fällt ut
-// upp till tre senaste tidigare möten mellan samma två lag
+// alla andra möten mellan samma två lag (även kommande), nyaste överst
 function previousMeetings(m){
  const a=normName(m.home), b=normName(m.away);
- return matches.filter(x=>x!==m&&(!m.id||x.id!==m.id)&&isPlayed(x)&&(
-   (normName(x.home)===a&&normName(x.away)===b)||(normName(x.home)===b&&normName(x.away)===a))&&(!m.date||!x.date||x.date<m.date))
-  .sort((x,y)=>(y.date||'').localeCompare(x.date||'')||(y.time||'').localeCompare(x.time||'')).slice(0,3);
+ return matches.filter(x=>x!==m&&(!m.id||x.id!==m.id)&&(
+   (normName(x.home)===a&&normName(x.away)===b)||(normName(x.home)===b&&normName(x.away)===a)))
+  .sort((x,y)=>(!x.date)-(!y.date)||(y.date||'').localeCompare(x.date||'')||(y.time||'').localeCompare(x.time||''));
 }
 function matchRow(m,team,dateFallback){
  const played=isPlayed(m);
@@ -630,8 +633,8 @@ function matchRow(m,team,dateFallback){
  const info=[m.stage].filter(Boolean).join(' · ');
  const meta=(info||edit)?`<div class="meta">${info?`<span>${esc(info)}</span>`:''}${edit}</div>`:'';
  const prevM=previousMeetings(m);
- const prev=prevM.length?`<div class="prev"><div class="gh">Tidigare möten</div>${prevM.map(x=>{ const r2=outcomeFor(team||OUR,x); const dl=x.date?new Date(x.date+'T12:00:00').toLocaleDateString('sv-SE',{day:'numeric',month:'short',year:'numeric'}).replace('.',''):''; const nm=n=>isOur(n)?`<span class="pn our">${esc(n)}</span>`:`<span class="pn">${esc(n)}</span>`;
-   return `<div class="pr">${nm(x.home)}<span class="sep">-</span>${nm(x.away)}${dl?`<span class="pd">${esc(dl)}</span>`:''}<span class="ps ${r2}">${x.homeGoals}–${x.awayGoals}</span></div>`; }).join('')}</div>`:'';
+ const prev=prevM.length?`<div class="prev"><div class="gh">Alla möten</div>${prevM.map(x=>{ const pl2=isPlayed(x), r2=pl2?outcomeFor(team||OUR,x):'U'; const dl=x.date?new Date(x.date+'T12:00:00').toLocaleDateString('sv-SE',{day:'numeric',month:'short',year:'numeric'}).replace('.',''):''; const nm=n=>isOur(n)?`<span class="pn our">${esc(n)}</span>`:`<span class="pn">${esc(n)}</span>`;
+   return `<div class="pr">${nm(x.home)}<span class="sep">-</span>${nm(x.away)}${dl?`<span class="pd">${esc(dl)}</span>`:''}<span class="ps ${r2}">${pl2?x.homeGoals+'–'+x.awayGoals:'–'}</span></div>`; }).join('')}</div>`:'';
  const more=meta+prev+goals+lineup;
  const key=m.id||(m.competition+'|'+m.home+'|'+m.away+'|'+m.date);
  const open=!!more&&goalsOpen.has(key);
@@ -852,6 +855,7 @@ function topNames(map){   // alla med högsta antalet (vid lika)
  return {n:best,names:best?[...map.entries()].filter(([,n])=>n===best).map(([k])=>k).sort((a,b)=>a.localeCompare(b,'sv')):[]};
 }
 const chipHtml=(p,n,me)=>`<a class="pchip${me?' me':''}${p.active?'':' inactive'}" href="#spelare/${esc(p.id)}"><b>${p.number??''}</b>${esc(p.name)}${n!=null?`<small>${n} ${n===1?'match':'matcher'}</small>`:''}</a>`;
+let pvAll=false;   // spelarsidan: visa samtliga matcher i stället för de fem senaste
 const CUR_SEASON='Seriespel 26/27';
 const PV_SIL='<div class="sil"><svg viewBox="0 0 200 260" aria-hidden="true"><path fill="#c3c9d4" d="M100 14c-24 0-40 20-40 46 0 14 4 26 10 34-2 10-6 16-20 22C20 128 6 150 4 190v70h192v-70c-2-40-16-62-46-74-14-6-18-12-20-22 6-8 10-20 10-34 0-26-16-46-40-46z"/></svg></div>';
 function renderPlayerPage(){
@@ -881,7 +885,7 @@ function renderPlayerPage(){
  let sg=0,sa=0; matches.filter(inSeason).forEach(m=>(m.goals||[]).forEach(x=>{ if(normName(x.scorer)===key) sg++; if(normName(x.assist)===key) sa++; }));
  const sm=mine.filter(inSeason).length;
  const statGrid=(m,gg,aa)=>`<div class="pv-grid"><div><span>Matcher</span><b>${m}</b></div><div><span>Mål</span><b>${gg}</b></div><div><span>Assist</span><b>${aa}</b></div><div><span>Poäng</span><b class="pt">${gg+aa}</b></div></div>`;
- const latest=res.slice(-5).reverse();
+ const latest=(pvAll?res.slice():res.slice(-5)).reverse();
  const rows=latest.map(m=>{ const our=isOur(m.home), gf=our?m.homeGoals:m.awayGoals, ga=our?m.awayGoals:m.homeGoals, opp=our?m.away:m.home, r=out(m);
   let mg=0,ma=0; (m.goals||[]).forEach(x=>{ if(normName(x.scorer)===key) mg++; if(normName(x.assist)===key) ma++; });
   return `<div class="pv-row"><span class="d">${esc(dateParts(m).d||'–')}</span><span class="o">${teamHtml(opp)}</span><span class="pv-sc ${r}" title="${esc(m.home+' '+m.homeGoals+'–'+m.awayGoals+' '+m.away)}">${gf} – ${ga}</span><span class="ma">${mg} M&nbsp; ${ma} A</span></div>`; }).join('');
@@ -908,7 +912,7 @@ function renderPlayerPage(){
     <div class="pv-card"><h3 class="pv-ttl">Seriesäsong 2026/27</h3>${statGrid(sm,sg,sa)}</div>
     <div class="pv-card"><h3 class="pv-ttl">Totalt <small>(alla säsonger)</small></h3>${statGrid(total,g,a)}</div>
    </div>
-   <div class="pv-card"><h3 class="pv-ttl">Senaste 5 matcher</h3>${rows?`<div class="pv-rows">${rows}</div>`:'<div class="pv-empty">Inga matcher med registrerad spelartrupp än.</div>'}</div>
+   <div class="pv-card"><div class="pv-tabs" role="tablist"><button type="button" role="tab" class="pv-tab${pvAll?'':' on'}" aria-selected="${!pvAll}" data-pvtab="5">Senaste 5 matcher</button><button type="button" role="tab" class="pv-tab${pvAll?' on':''}" aria-selected="${pvAll}" data-pvtab="all">Samtliga matcher</button></div>${rows?`<div class="pv-rows">${rows}</div>`:'<div class="pv-empty">Inga matcher med registrerad spelartrupp än.</div>'}</div>
   </div>
  </div>
  <div class="pv-card pv-bottom"><h3 class="pv-ttl">Vanligaste uppställningen</h3>${pitch}</div>`;
@@ -1218,6 +1222,8 @@ document.addEventListener('click',e=>{
  if(sum) openState.set(sum.dataset.key,!sum.parentElement.open);   // klicket sker före själva växlingen
  const tg=e.target.closest('.match[data-toggle]');
  if(tg&&!e.target.closest('button,a,input,select')) toggleMatch(tg);
+ const pt=e.target.closest('[data-pvtab]');
+ if(pt){ pvAll=pt.dataset.pvtab==='all'; renderPlayerPage(); return; }
  const th=e.target.closest('th[data-sort]');
  if(th){ const key=th.dataset.tbl,k=th.dataset.sort,cur=sortState.get(key); sortState.set(key,cur&&cur.k===k?{k,dir:-cur.dir}:{k,dir:LB_COLS[k].asc?1:-1}); render(); return; }
  if(e.target.closest('#addPlayerBtn')) openPlayer(null);
