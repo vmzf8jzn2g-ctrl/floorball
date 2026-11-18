@@ -42,12 +42,16 @@ h2{font-size:24px;margin:34px 0 14px}.section-head{display:flex;justify-content:
 
 /* Cuper och serie: ihopfällbara kort */
 .competition{background:var(--card);border:1px solid var(--line);border-radius:18px;margin:12px 0;overflow:hidden;box-shadow:var(--shadow)}
-.comp-title{padding:18px 20px;display:flex;justify-content:space-between;align-items:center;gap:12px;cursor:pointer;list-style:none;user-select:none}
+.comp-title{padding:18px 20px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;cursor:pointer;list-style:none;user-select:none}
 .comp-title::-webkit-details-marker{display:none}
 .comp-title:hover{background:#f8fafd}
 details[open]>.comp-title{border-bottom:1px solid var(--line)}
 .comp-left{display:flex;align-items:center;gap:12px}
-.comp-title h3{margin:0;font-size:18px}.comp-title small{color:var(--muted);text-align:right}
+.comp-title h3{margin:0;font-size:18px}
+.comp-sum{display:flex;justify-content:center;gap:22px;text-align:center}.comp-sum>div{display:grid;gap:1px;min-width:62px}
+.comp-sum b{font-size:20px;font-weight:700;line-height:1.1;font-variant-numeric:tabular-nums}.comp-sum span{font-size:12px;color:var(--muted)}
+.comp-sum .w b{color:var(--win)}.comp-sum .d b{color:var(--draw)}.comp-sum .l b{color:var(--loss)}
+@media(max-width:700px){.comp-title{grid-template-columns:1fr}.comp-sum{gap:14px}}
 .chev{flex:none;width:8px;height:8px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(-45deg);transition:transform .15s}
 details[open] .chev{transform:rotate(45deg)}
 
@@ -278,9 +282,7 @@ dialog h3{margin:0 0 16px;font-size:20px}
 <!-- Flik 2: Cuper -->
 <section id="tab-cuper" class="tabpanel hidden">
 <div class="section-head"><div><div class="eyebrow dim">Matcher</div><h2>Cuper</h2></div><span class="pill">Klicka på en cup för att visa matcherna</span></div>
-<div class="filters">
-<select id="competition" aria-label="Välj cup"><option value="all">Alla cuper</option></select>
-</div>
+<input type="hidden" id="competition" value="all">
 <div class="toolbar">
 <span class="pill" id="matchCount"></span>
 <span class="pill" id="cupNum"></span>
@@ -652,7 +654,7 @@ function compCard(kind,comp,ms,team,force,defOpen){
  const s=calc(team,ms);
  const rec=s.played?` · ${s.w}V ${s.d}O ${s.l}F`:'';
  return `<details class="competition"${open?' open':''}>
-  <summary class="comp-title" data-key="${esc(key)}"><div class="comp-left"><span class="chev"></span><h3>${esc(comp)}</h3></div><small>${ms.length} ${ms.length===1?'match':'matcher'}${rec}</small></summary>
+  <summary class="comp-title" data-key="${esc(key)}"><div class="comp-left"><span class="chev"></span><h3>${esc(comp)}</h3></div><div class="comp-sum" aria-label="Sammanställning"><div><b>${s.played}</b><span>${s.played===1?'spelad match':'spelade matcher'}</span></div><div class="w"><b>${s.w}</b><span>${s.w===1?'vunnen':'vunna'}</span></div><div class="d"><b>${s.d}</b><span>${s.d===1?'oavgjord':'oavgjorda'}</span></div><div class="l"><b>${s.l}</b><span>${s.l===1?'förlorad':'förlorade'}</span></div></div><span></span></summary>
   <div class="comp-body"><div class="comp-matches">${ms.map(m=>matchRow(m,team)).join('')}</div>
    <aside class="cup-side" aria-label="Poängliga i ${esc(comp)}">${boardCard('Poängliga','c:'+key,matches.filter(x=>(kind==='serie'?x.type==='serie':x.type!=='serie')&&x.competition===comp),compBase(kind,comp))}${kind==='serie'&&comp===CUR_SEASON?SERIE_LINKS:''}</aside></div>
  </details>`;
