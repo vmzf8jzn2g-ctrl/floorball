@@ -50,6 +50,9 @@ details[open]>.comp-title{border-bottom:1px solid var(--line)}
 .comp-title h3{margin:0;font-size:18px}
 .comp-sum{display:flex;justify-content:center;gap:22px;text-align:center}.comp-sum>div{display:grid;gap:1px;min-width:62px}
 .comp-sum b{font-size:20px;font-weight:700;line-height:1.1;font-variant-numeric:tabular-nums}.comp-sum span{font-size:12px;color:var(--muted)}
+.donut{position:relative;width:64px;height:64px;flex:none;margin-left:10px;align-self:center}.donut svg{display:block}.donut .dp{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--text)}
+.donut .dw{stroke:var(--win)}.donut .dd{stroke:var(--draw)}.donut .dl{stroke:var(--loss)}
+.comp-sum{align-items:center}
 .comp-sum .w b{color:var(--win)}.comp-sum .d b{color:var(--draw)}.comp-sum .l b{color:var(--loss)}
 @media(max-width:700px){.comp-title{grid-template-columns:1fr}.comp-sum{gap:14px}}
 .chev{flex:none;width:8px;height:8px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(-45deg);transition:transform .15s}
@@ -648,13 +651,22 @@ function matchRow(m,team,dateFallback){
  const attrs=more?` data-toggle="${esc(key)}" role="button" tabindex="0" aria-expanded="${open}" title="Visa/dölj målskyttar, spelare och matchinfo"`:'';
  return `<div class="match ${cls}${open?' open':''}"${attrs}>${when}${pill}<div class="fixture">${isOur(m.home)?'<div class="hl hl-1"></div>':''}${isOur(m.away)?'<div class="hl hl-2"></div>':''}${tm(m.home,1)}${tm(m.away,2)}${score}</div>${more?`<div class="expand" aria-hidden="true"></div><div class="more">${more}</div>`:''}</div>`;
 }
+// cirkeldiagram över vunna / oavgjorda / förlorade – ritas om vid varje render, alltså efter varje sparat resultat
+function donut(s){
+ const n=s.w+s.d+s.l, R=15.9155;
+ let off=0;
+ const seg=(v,cls)=>{ if(!v) return ''; const len=v/n*100, o=`<circle class="${cls}" cx="21" cy="21" r="${R}" fill="none" stroke-width="7" stroke-dasharray="${len} ${100-len}" stroke-dashoffset="${25-off}"/>`; off+=len; return o; };
+ const pct=n?Math.round(s.w/n*100)+'%':'–';
+ const tip=n?`Vunna ${s.w} (${Math.round(s.w/n*100)}%), oavgjorda ${s.d} (${Math.round(s.d/n*100)}%), förlorade ${s.l} (${Math.round(s.l/n*100)}%)`:'Inga spelade matcher än';
+ return `<div class="donut" title="${tip}" role="img" aria-label="${tip}"><svg viewBox="0 0 42 42" width="64" height="64"><circle cx="21" cy="21" r="${R}" fill="none" stroke="#e8ecf2" stroke-width="7"/>${seg(s.w,'dw')}${seg(s.d,'dd')}${seg(s.l,'dl')}</svg><span class="dp">${pct}</span></div>`;
+}
 function compCard(kind,comp,ms,team,force,defOpen){
  const key=kind+':'+comp;
  const open=openState.has(key)?openState.get(key):(!!force||!!defOpen);
  const s=calc(team,ms);
  const rec=s.played?` · ${s.w}V ${s.d}O ${s.l}F`:'';
  return `<details class="competition"${open?' open':''}>
-  <summary class="comp-title" data-key="${esc(key)}"><div class="comp-left"><span class="chev"></span><h3>${esc(comp)}</h3></div><div class="comp-sum" aria-label="Sammanställning"><div><b>${s.played}</b><span>${s.played===1?'spelad match':'spelade matcher'}</span></div><div class="w"><b>${s.w}</b><span>${s.w===1?'vunnen':'vunna'}</span></div><div class="d"><b>${s.d}</b><span>${s.d===1?'oavgjord':'oavgjorda'}</span></div><div class="l"><b>${s.l}</b><span>${s.l===1?'förlorad':'förlorade'}</span></div></div><span></span></summary>
+  <summary class="comp-title" data-key="${esc(key)}"><div class="comp-left"><span class="chev"></span><h3>${esc(comp)}</h3></div><div class="comp-sum" aria-label="Sammanställning"><div><b>${s.played}</b><span>${s.played===1?'spelad match':'spelade matcher'}</span></div><div class="w"><b>${s.w}</b><span>${s.w===1?'vunnen':'vunna'}</span></div><div class="d"><b>${s.d}</b><span>${s.d===1?'oavgjord':'oavgjorda'}</span></div><div class="l"><b>${s.l}</b><span>${s.l===1?'förlorad':'förlorade'}</span></div>${donut(s)}</div><span></span></summary>
   <div class="comp-body"><div class="comp-matches">${ms.map(m=>matchRow(m,team)).join('')}</div>
    <aside class="cup-side" aria-label="Poängliga i ${esc(comp)}">${boardCard('Poängliga','c:'+key,matches.filter(x=>(kind==='serie'?x.type==='serie':x.type!=='serie')&&x.competition===comp),compBase(kind,comp))}${kind==='serie'&&comp===CUR_SEASON?SERIE_LINKS:''}</aside></div>
  </details>`;
