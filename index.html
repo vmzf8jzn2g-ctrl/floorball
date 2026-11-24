@@ -54,7 +54,8 @@ details[open]>.comp-title{border-bottom:1px solid var(--line)}
 .donut .dw{stroke:var(--win)}.donut .dd{stroke:var(--draw)}.donut .dl{stroke:var(--loss)}
 .comp-sum{align-items:center}
 .comp-sum .w b{color:var(--win)}.comp-sum .d b{color:var(--draw)}.comp-sum .l b{color:var(--loss)}
-@media(max-width:700px){.comp-title{grid-template-columns:1fr}.comp-sum{gap:14px}}
+@media(max-width:700px){.comp-title{grid-template-columns:1fr;gap:10px}.comp-sum{gap:10px;flex-wrap:wrap}.comp-sum>div{min-width:0}}
+@media(max-width:520px){.comp-title{padding:14px 12px}.comp-sum{gap:6px 8px}.comp-sum>div{flex:1 1 0}.comp-sum b{font-size:18px}.comp-sum span{font-size:11px}.donut{flex:none;width:52px;height:52px;margin-left:2px}.donut svg{width:52px;height:52px}.donut .dp{font-size:10px}}
 .chev{flex:none;width:8px;height:8px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(-45deg);transition:transform .15s}
 details[open] .chev{transform:rotate(45deg)}
 
@@ -84,8 +85,7 @@ details[open] .chev{transform:rotate(45deg)}
 .more{grid-area:more;display:none;gap:8px;margin-top:2px}.match.open .more{display:grid}
 .meta{font-size:12px;color:var(--muted);display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .goals{font-size:13px;color:var(--text);background:#f4f7fb;border-radius:10px;padding:8px 12px}
-.goals{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:4px 16px;align-items:center}.goals .gh{margin-bottom:2px}
-.gc{display:flex;align-items:center;gap:6px;min-width:0;line-height:1.3}.gc img{width:1.15em;height:1.15em;object-fit:contain;flex:none}.gc img[alt=Assist]{width:1.4em;height:1.4em;margin:-.1em -.1em -.1em -.1em}
+.goals div+div{margin-top:3px}
 .gh{font-weight:700}.goals .gh{margin-bottom:3px}
 .prev{font-size:13px;color:var(--text);background:#f4f7fb;border-radius:10px;padding:8px 12px}.prev .gh{margin-bottom:5px}
 .pr{display:flex;align-items:center;gap:6px;flex-wrap:wrap;line-height:1.3}.pr+.pr{margin-top:4px}
@@ -630,7 +630,7 @@ function matchRow(m,team,dateFallback){
  if(r) pill=`<div class="resultcol"><span class="result ${r}">${r==='W'?'Vinst':r==='L'?'Förlust':'Oavgjort'}</span></div>`;
  else if(!played&&involved) pill=(m.date&&m.date<todayStr())?'<div class="resultcol"><span class="result M">Resultat saknas</span></div>':'<div class="resultcol"><span class="result U">Kommande</span></div>';
  const goals=(m.goals||[]).length
-  ? `<div class="goals"><div class="gh">Mål</div><div class="gh">Assist</div>${m.goals.map(g=>`<div class="gc"><img src="ikon-mal.png" alt="Mål" onerror="this.remove()">${esc(g.scorer)}</div><div class="gc">${g.assist?`<img src="ikon-assist.png" alt="Assist" onerror="this.remove()">${esc(g.assist)}`:''}</div>`).join('')}</div>` : '';
+  ? `<div class="goals"><div class="gh">Mål (assist)</div>${m.goals.map(g=>`<div>${esc(g.scorer)}${g.assist?' ('+esc(g.assist)+')':''}</div>`).join('')}</div>` : '';
  const lu=lineupNames(m.players);
  const luGroups=[['Målvakt','Målvakter'],['Back','Backar'],['Center','Centrar'],['Forward','Forwards'],['','Övriga']];
  const luRows=luGroups.map(([k,l])=>[l,lu.filter(p=>k?p.pos===k:!['Målvakt','Back','Center','Forward'].includes(p.pos))]).filter(([,x])=>x.length);
